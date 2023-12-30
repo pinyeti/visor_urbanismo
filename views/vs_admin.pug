@@ -1,0 +1,167 @@
+extends layout
+block content
+
+     script.
+
+        $( function() {
+        $( "#speed" ).selectmenu();
+            $( "#speed" ).selectmenu( "enable" );
+           // $( "#speed" ).selectmenu( "open" );
+        } );
+
+
+        
+
+       
+
+      //  $("#estilos").attr("href","https://code.jquery.com/ui/1.12.1/themes/start/jquery-ui.css");
+
+        var serverPath="vscenegis.hopto.org";
+
+       
+
+        var htmlChart;
+        var html_QUERY;
+
+        //query("users_visor","action='acceso_revision'");
+        // create_browser();
+
+        // setInterval('create_browser()',30000);
+
+        query_admin()
+
+        async function query_admin(){
+
+            let url = new URL("http://"+serverPath+"/opg/select_query");
+            var select="select datname, pg_size_pretty(pg_database_size(datname)) from pg_database order by pg_database_size(datname) desc"
+            const params = {select: select};
+           // const params = {tabla: tableSource, filtro: filtroSQL};
+            Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+            const dataRequest = {
+                method: 'GET'
+            };
+            var response = await fetch(url,dataRequest);
+            console.log("response",response);
+            var info_query = await response.json();
+            console.log("response json",info_query);
+
+            var html_QUERY_HEAD=`
+                <TABLE id="table_query_admin" class="stripe row-border order-column" style="padding:3px;font-size:8pt;font-family:Arial;height:100%;width:100%">
+                <thead style="background-color:#e1eefb">
+                    <tr>
+                        <th>database name</td>
+                        <th>size</td>
+                       
+                    </tr>
+                </thead>`; 
+
+            html_QUERY_ROWS="<tbody>";     
+
+            if(info_query!=null)
+                for(var n=0;n< info_query.length;n++){   
+                    html_QUERY_ROWS=html_QUERY_ROWS+`
+
+                    <!--<tr onclick="doActionRowRPG(this)"> -->
+                    <tr>
+                        <td>${info_query[n].datname}</td>
+                        <td>${info_query[n].pg_size_pretty}</td>
+                       
+                        
+                    </tr>`; 
+
+                }
+            html_QUERY_ROWS=html_QUERY_ROWS+"</tbody>";
+
+            html_QUERY=html_QUERY_HEAD+html_QUERY_ROWS+`</TABLE>`;
+
+            // document.body.innerHTML=html_QUERY; 
+
+
+            // Layout easy
+
+             
+
+           
+
+            $( function() {
+               $('#cc').layout();
+               $('#cc').layout('add',{
+                    region: 'west',
+                    width: 180,
+                    title: 'West Title',
+                    split: true,
+                    tools: [{
+                        iconCls:'icon-add',
+                        handler:function(){alert('add')}
+                    },{
+                        iconCls:'icon-remove',
+                        handler:function(){alert('remove')}
+                    }]
+                });
+              
+             } );
+
+            /*  htmlLayout=`<div id="cc" class="easyui-layout" style="width:100%;height:100%;">
+                            <div data-options="region:'north',title:'North Title',split:true" style="height:100px;"></div>
+                            <div data-options="region:'south',title:'South Title',split:true" style="height:100px;"></div>
+                            <div data-options="region:'east',title:'East',split:true" style="width:100px;"></div>
+                            <div data-options="region:'west',title:'West',split:true" style="width:100px;"></div>
+                            <div data-options="region:'center',title:'center title'" style="padding:5px;background:#eee;">
+                                ${html_QUERY}
+                            </div>
+                        </div>`; */
+              htmlLayout=`<div id="cc" class="easyui-layout" style="width:100%;height:100%;">
+                            
+                           
+                            
+                            <div data-options="region:'center',title:'center title'" style="padding:5px;background:#eee;">
+                                ${html_QUERY}
+                            </div>
+                        </div>`;
+
+
+             document.body.innerHTML=htmlLayout
+
+            //
+
+
+
+
+            formatQuery();
+
+        }
+
+       
+
+        async function formatQuery(){
+        $(document).ready(function() {
+        $('#table_query_admin').removeAttr('width').DataTable( {
+            scrollY:  '50vh',
+            scrollCollapse: true,
+            "scrollX": true,
+            paging: false,        
+            padding:"3px",
+            "order": [],
+            language: {
+                        "decimal": "",
+                        "emptyTable": "No hay información",
+                        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas (Ultimos 7 dias)",
+                        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                        "infoPostFix": "",
+                        "thousands": ",",
+                        "lengthMenu": "Mostrar _MENU_ Entradas",
+                        "loadingRecords": "Cargando...",
+                        "processing": "Procesando...",
+                        "search": "Buscar:",
+                        "zeroRecords": "Sin resultados encontrados",
+                        "paginate": {
+                            "first": "Primero",
+                            "last": "Ultimo",
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        }
+                    },
+                });
+            } );
+        } 

@@ -1,0 +1,520 @@
+body {
+  padding: 50px;
+  width: 100%;
+  height: 100%;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+/* Estilos personalizados para el tooltip */
+.text-label {
+  padding: 3px; /* Ajusta el padding según sea necesario */
+  background-color: rgba(18, 18, 92, 0.8);
+  color: white;
+  font-family: "Arial Black", sans-serif; /* Fuente Arial Black */
+  font-size: 11px; /* Tamaño de la fuente */
+  text-align: center; /* Centro del texto */
+  border: 1px solid #fcf9f9; /* Borde de 1 píxel sólido de color negro */
+}
+
+.custom-control-paix {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%);
+  z-index: 1000; /* Ajusta el índice Z para superponer el control sobre el mapa */
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  left: 0;
+  text-align: center;
+}
+
+a {
+  color: #00b7ff;
+}
+
+.map-title a {
+  margin-left: 5px; /* Agrega un espacio entre el texto y la imagen */
+  text-decoration: none; /* Elimina la subrayado del enlace */
+  text-align: center;
+}
+
+.map-title img {
+  max-width: 100px; /* Establece un ancho máximo para la imagen si es necesario */
+  border-radius: 2%;
+  border: 1px solid #afc5d4;
+}
+
+.map-title {
+  text-align: center;
+  padding: 3px;
+  background: rgba(237, 241, 245, 0.95); /* Fondo semi-transparente */
+  color: rgb(102, 98, 98);
+  font-family: Arial black;
+  font-size: 10px;
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  right: 0;
+
+  left: 50%; /* Centra horizontalmente */
+  transform: translate(-50%, -50%);
+
+  display: inline-block;
+  margin-top: 20px;
+  border: 1px solid #7c94a7;
+  max-width: 300px;
+}
+
+#map2 {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 350px;
+}
+
+#map3 {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 700px;
+}
+
+html,
+body,
+#map {
+  top: 0px;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.custom-popup {
+  border-radius: 2px;
+  color: #f5f3f3;
+  font-family: "Molengo", sans-serif;
+  font-size: 12px;
+  line-height: 10px;
+  height: 10 px;
+  max-height: 300px;
+}
+
+.custom-popup,
+.leaflet-popup-tip {
+  background: #13462c;
+  border: none;
+  box-shadow: none;
+}
+
+.leaflet-popup-content-wrapper {
+  background: rgba(225, 236, 228, 0.95);
+  border-radius: 2px;
+}
+
+.leaflet-popup {
+  position: absolute;
+  text-align: center;
+}
+
+.leaflet-popup-content {
+  margin-top: 18px;
+  margin-left: 10px;
+  margin-right: 2px;
+  padding-left: 0px;
+  padding-right: 10px;
+  min-width: 100 px !important;
+  max-height: 400px;
+  max-width: 295px;
+  overflow: auto;
+}
+
+/*.leaflet-popup-content {
+    margin-top: 20px;
+    margin-right: 2px;
+    padding-right: 12px;
+    min-width: 100 px !important;
+    max-height: 400px;
+    max-width: 295px;
+    overflow: auto;
+    }*/
+
+.accordion {
+  background-color: rgb(182, 214, 233);
+  color: #444;
+  cursor: pointer;
+  padding: 11px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-family: Arial Black;
+  font-size: 8.5pt;
+  transition: 0.4s;
+  border-style: solid;
+  border-width: 0.1px;
+  border-color: rgb(255, 255, 255);
+}
+
+.accordionLegend {
+  background-color: rgb(182, 214, 233);
+  color: #444;
+  cursor: pointer;
+  padding: 11px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-family: Arial Black;
+  font-size: 8.5pt;
+  transition: 0.4s;
+  border-style: solid;
+  border-width: 0.1px;
+  border-color: rgb(255, 255, 255);
+}
+
+.accordion:hover {
+  background-color: rgb(108, 123, 170);
+  color: rgb(255, 255, 255);
+}
+
+.accordionLegend:hover {
+  background-color: rgb(108, 123, 170);
+  color: rgb(255, 255, 255);
+}
+
+.activeExp {
+  background-color: rgb(85, 140, 212);
+  color: rgb(255, 255, 255);
+  border-style: solid;
+  border-width: 0.2pt;
+  border-color: rgb(12, 1, 73);
+}
+
+.activeB {
+  background-color: rgb(59, 136, 187);
+  color: rgb(255, 255, 255);
+  border-style: solid;
+  border-width: 0.2pt;
+  border-color: rgb(12, 1, 73);
+}
+
+.activeLegend {
+  background-color: rgb(85, 140, 212);
+  color: rgb(255, 255, 255);
+  border-style: solid;
+  border-width: 0.2pt;
+  border-color: rgb(12, 1, 73);
+}
+
+.desactive {
+  background-color: rgb(175, 199, 230);
+  color: rgb(5, 3, 3);
+  border-style: solid;
+  border-width: 0.2pt;
+  border-color: rgb(12, 1, 73);
+}
+
+.accordion:after {
+  content: "\002B";
+  color: #777;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.accordionLegend:after {
+  content: "\002B";
+  color: #777;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.activeExp:after {
+  content: "\2212";
+  color: rgb(255, 255, 255);
+}
+
+.activeB:after {
+  content: "\2212";
+  color: rgb(255, 255, 255);
+}
+
+.activeLegend:after {
+  content: "\2212";
+  color: rgb(255, 255, 255);
+}
+
+.panel {
+  padding: 0 18px;
+  display: block;
+  background-color: white;
+  transition: max-height 0.2s ease-out;
+  overflow: auto;
+}
+
+img {
+  vertical-align: middle;
+}
+
+/* Position the image container (needed to position the left and right arrows) */
+.container {
+  position: relative;
+}
+
+/* Hide the images by default */
+.mySlides {
+  display: none;
+}
+
+/* Add a pointer when hovering over the thumbnail images */
+.cursor {
+  cursor: pointer;
+}
+
+/* Next & previous buttons */
+.prev,
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 40%;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(211, 160, 160, 0.8);
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* Container for image text */
+.caption-container {
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+  padding: 2px 2px;
+  color: white;
+  height: 0px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Six columns side by side */
+.column {
+  float: left;
+  width: 16.66%;
+}
+
+/* Add a transparency effect for thumnbail images */
+.demo {
+  opacity: 0.6;
+}
+
+.active,
+.demo:hover {
+  opacity: 1;
+}
+
+#table_queryPG2023 tbody tr:hover {
+  background-color: #56ac70;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#table_queryPG2023 tr:hover td.sorting_1 {
+  background-color: #177c45;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#table_queryPGOU98 tbody tr:hover {
+  background-color: #56ac70;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#table_queryPGOU98 tr:hover td.sorting_1 {
+  background-color: #177c45;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#table_queryPRI tbody tr:hover {
+  background-color: #56ac70;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#table_queryPRI tr:hover td.sorting_1 {
+  background-color: #177c45;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#table_queryEXP_PLANEAMIENTO tbody tr:hover {
+  background-color: #56ac70;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#table_queryEXP_PLANEAMIENTO tr:hover td.sorting_1 {
+  background-color: #177c45;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#table_queryRPG tbody tr:hover {
+  background-color: #56ac70;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#table_queryRPG tr:hover td.sorting_1 {
+  background-color: #177c45;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#table_query tbody tr:hover {
+  background-color: #e74242;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#table_query tr:hover td.sorting_1 {
+  background-color: #c70d06;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#table_query th,
+#table_query td {
+  white-space: nowrap;
+}
+#table_queryEXP th,
+#table_queryEXP td {
+  white-space: nowrap;
+}
+#table_queryS th,
+#table_queryEXP td {
+  white-space: nowrap;
+}
+
+#table_queryEXP tbody tr:hover {
+  background-color: #6b7fc0;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#table_queryEXP tr:hover td.sorting_1 {
+  background-color: #6b7fc0;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#table_queryS tr:hover td.sorting_1 {
+  background-color: #6b7fc0;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+#table_queryS tr:hover {
+  background-color: #6b7fc0;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.help {
+  font-size: 1em;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  z-index: 10;
+  background-color: rgb(29, 28, 78);
+  color: rgb(217, 250, 225);
+  padding: 3px;
+  margin: 0px;
+  text-align: center;
+}
+.help a.sources {
+  float: left;
+  margin-left: 25px;
+  color: rgb(10, 65, 27);
+}
+.help a.logo {
+  float: right;
+}
+.help a.logo img {
+  height: 20px;
+}
+
+.ui-controlgroup-vertical {
+  width: 310px;
+}
+.ui-controlgroup.ui-controlgroup-vertical > button.ui-button,
+.ui-controlgroup.ui-controlgroup-vertical > .ui-controlgroup-label {
+  text-align: center;
+}
+
+#add {
+  padding: 17px;
+  padding-left: 55px;
+  width: 300px;
+  border: 1px solid #f5f5f5;
+  font-size: 13px;
+  color: gray;
+  background-image: url("http://i47.tinypic.com/r02vbq.png");
+  background-repeat: no-repeat;
+  background-position: left center;
+  outline: 0;
+}
+
+.ui-tooltip-content {
+  padding: 5px;
+  margin: -6px -6px -6px -6px;
+  background: #e8f4f8;
+  color: rgb(5, 5, 5);
+  text-align: center;
+  font-weight: bold;
+  font-size: 11px;
+}
+
+.no_checkbox > i.jstree-checkbox {
+  display: none;
+}
+
+/* Estilo para mostrar los controles en una fila horizontal 
+.leaflet-top.leaflet-left {
+  display: flex;
+} */

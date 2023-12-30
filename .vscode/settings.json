@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/581435d3-40ae-4208-b9e7-67aa57db5ff9/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/visor1",
+    "appService.deploySubpath": "."
+}

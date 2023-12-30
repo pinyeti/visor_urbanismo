@@ -1,0 +1,3473 @@
+extends layout
+block content
+    #map
+    script.
+      /*  var myData = !{JSON.stringify(jsonData)};
+        var myDataEQ = !{JSON.stringify(jsonDataSLEQ)};
+        var myDataRES = !{JSON.stringify(jsonDataRES)};
+        var myDataCAT = !{JSON.stringify(jsonDataCAT)}; */
+
+        
+
+        var popup = L.popup();
+
+         
+        
+      //  console.log(myData);
+        // Create variable to hold map element, give initial settings to map
+        var map = L.map('map',{ center: [39.5695100, 2.6474500], zoom: 14, maxZoom: 21});
+
+        var help=false;
+        var defaultCursor=document.getElementById('map').style.cursor;
+        var icon1='fa fa-info-circle  fa-2x'
+        var icon2='fa fa-arrows-alt  fa-2x'
+
+        var actionInfo = L.Toolbar2.Action.extend({
+            options: {
+                toolbarIcon: {
+                    className: icon1
+                }
+            },
+            addHooks: function () {
+                if(help==false){             
+                    document.getElementById('map').style.cursor = 'help';
+                    help=true;             
+                }
+               
+            }
+
+        });
+        var actionDefault = L.Toolbar2.Action.extend({
+            options: {
+                toolbarIcon: {
+                    className: icon2
+                }
+            },
+            addHooks: function () {
+                if(help==true){             
+                    document.getElementById('map').style.cursor = defaultCursor;
+                    help=false;             
+                }             
+            }
+        });
+
+        new L.Toolbar2.Control({
+            position: 'topleft',
+            actions: [actionInfo,actionDefault]
+        }).addTo(map);
+
+       /*  var sleq=L.geoJson(myDataEQ,{
+            style: styleSLEQ,
+            onEachFeature: function (feature, layer) {
+                console.log("paix1");
+                suma=`<div>
+                                    <p> <b>IDENTIFICANTEpaix:</b> ${feature.properties.identif}<br>
+                                     <b>CODIGO:</b> ${feature.properties.codigo}<br>
+                                     <b>NOMBRE:</h2></b> ${feature.properties.denominaci}</p>
+                                 </div>`
+                layer.bindPopup(suma);   
+                layer.on({
+                    mouseover: highlightFeature,
+                    mouseout: resetHighlight,
+                    click: zoomToFeature
+                }); 
+            }
+        }).addTo(map); */
+
+        var geomCruce="";
+        var catalogosCadena="";
+        var parcelasCadena="";
+        var callesCadena="";
+        var hojas1000Cadena="";
+        var hojas1000UTMCadena="";
+        var zonasCadena="";
+        var clasSueloCadena="";
+        var htmlarray=new Array(); 
+        var arrayArticulos = new Array(); 
+        var arrayNormativa = new Array(); 
+        var contDiv=0;
+
+        function showDialog(entidad,feature){
+
+            console.log(parcelasCadena);
+            console.log(catalogosCadena);
+            console.log(hojas1000Cadena);
+            console.log(hojas1000UTMCadena);
+            console.log(zonasCadena);
+            console.log(callesCadena);
+
+            if(callesCadena.substring(0,1)=="0") callesCadena="-";
+
+            var area = turf.area(feature.geometry);
+            area=area.toFixed(2)+ " m2";
+
+            var options={
+                size: [700,570],
+                position: 'topleft',               
+                }
+
+            var titulo1="OTRO";
+            var titulo2="";
+            var leftTitulo1="150px";
+            var leftTitulo2="200px";
+            var divColor="#dbe7f2";
+            var titulo1Color="#003366";
+            switch(entidad){
+
+                case "SLEQ":
+                    titulo1="EQUIPAMENTS COMUNITARIS";
+                    titulo2="(SISTEMA LOCAL)";
+                    leftTitulo1="170px";
+                    leftTitulo2="220px";
+                    divColor="#dbe7f2"
+                    titulo1Color="#003366";
+                    break;
+                case "SGEQ":
+                    titulo1="EQUIPAMENTS COMUNITARIS";
+                    titulo2="(SISTEMA GENERAL)";
+                    leftTitulo1="170px";
+                    leftTitulo2="220px";
+                    divColor="#dbe7f2";
+                    titulo1Color="#003366";
+                    break;
+                case "SLEL":
+                    titulo1="ESPAIS LLIURES PUBLICS";
+                    titulo2="(SISTEMA LOCAL)";
+                    leftTitulo1="180px";
+                    leftTitulo2="220px";
+                    divColor="#ddf5dd";
+                    titulo1Color="#003300";
+                    break;
+                case "SGEL":
+                    titulo1="ESPAIS LLIURES";
+                    titulo2="(SISTEMA GENERAL)";
+                    leftTitulo1="230px";
+                    leftTitulo2="230px";
+                    divColor="#ddf5dd";
+                    titulo1Color="#003300";
+                    break;
+                case "SLCI":
+                    titulo1="COMUNICACIONES E IFRAESTRUCTURAS";
+                    titulo2="(SISTEMA LOCAL)";
+                    leftTitulo1="130px";
+                    leftTitulo2="220px";
+                    divColor="#eef0f0";
+                    titulo1Color="#003300";
+                    break;
+                case "SGCI":
+                    titulo1="COMUNICACIONES E IFRAESTRUCTURAS";
+                    titulo2="(SISTEMA GENERAL)";
+                    leftTitulo1="130px";
+                    leftTitulo2="220px";
+                    divColor="#eef0f0";
+                    titulo1Color="#003300";
+                    break;
+
+            }   
+            var html=`<div style='background-color:${divColor};border-style: solid;border-width:0.1pt;border-color:black;box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);position:absolute;width:675px;height:510px;top:10px;left:10px'>
+
+                                <LABEL style='padding:3px;font-size:10pt;font-family:Arial Black;color:${titulo1Color};width:350px;height:15px;position:absolute;top:10px;left:${leftTitulo1}'><u>${titulo1}</u></LABEL>
+                              
+                                <LABEL style='padding:3px;font-size:8pt;font-family:Arial Black;color:#660000;width:131px;height:15px;position:absolute;top:30px;left:${leftTitulo2}'>${titulo2}</LABEL>    
+
+                                <LABEL style='padding:3px;font-size:8pt;font-family:Arial Black;color:#000000;width:35px;height:15px;position:absolute;top:10px;left:525px'>IDENTIF</LABEL>
+                                <LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:#fdfde0;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:10px;left:582px'>${feature.properties.identif}</LABEL><BR>   
+                                <LABEL style='padding:3px;font-size:8pt;font-family:Arial Black;color:#000000;width:35px;height:15px;position:absolute;top:35px;left:525px'>CODI</LABEL>
+                                <LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:#fdfde0;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:35px;left:582px'>${feature.properties.codigo}</LABEL><BR>   
+
+                              
+                                <LABEL style='padding:3px;font-size:8pt;font-family:Arial Black;color:black;width:131px;height:15px;position:absolute;top:50px;left:20px'>1. Identificació</LABEL>    
+                              
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;color:black;width:131px;height:15px;position:absolute;top:75px;left:30px'>DENOMINACIÓ</LABEL>    
+                                <LABEL style='padding:2px;font-size:7.5pt;font-family:Arial Black;background-color:#fdfde0;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:300px;height:15px;position:absolute;top:75px;left:140px'>${feature.properties.denominaci}</LABEL>  
+                               
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;color:black;width:131px;height:15px;position:absolute;top:97px;left:30px'>ZONA ESTADISTICA</LABEL>    
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:300px;height:15px;position:absolute;top:97px;left:140px'>${zonasCadena}</LABEL>   
+                               
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;color:black;width:131px;height:15px;position:absolute;top:119px;left:30px'>FULL U.T.M.</LABEL>    
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:300px;height:15px;position:absolute;top:119px;left:140px'>${hojas1000UTMCadena}</LABEL>   
+                               
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;color:black;width:131px;height:15px;position:absolute;top:119px;left:30px'>FULL U.T.M.</LABEL>    
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:300px;height:15px;position:absolute;top:119px;left:140px'>${hojas1000UTMCadena}</LABEL>   
+                               
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;color:black;width:131px;height:15px;position:absolute;top:141px;left:30px'>FULL PGOU</LABEL>    
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:300px;height:15px;position:absolute;top:141px;left:140px'>${hojas1000Cadena}</LABEL>   
+                               
+
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;color:black;width:131px;height:15px;position:absolute;top:64px;left:470px'>REF. CATASTRAL</LABEL>    
+                                <LABEL style='padding:2px;font-size:7.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:180px;height:30px;position:absolute;top:82px;left:470px'>${parcelasCadena}</LABEL>   
+                               
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;color:black;width:131px;height:15px;position:absolute;top:115px;left:470px'>CALLES</LABEL>    
+                                <LABEL style='padding:2px;font-size:7.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:180px;height:45px;position:absolute;top:133px;left:470px'>${callesCadena}</LABEL>   
+                               
+
+                                <LABEL style='padding:3px;font-size:8pt;font-family:Arial Black;color:black;width:250px;height:15px;position:absolute;top:170px;left:20px'>2- Caracteristiques Funcionals</LABEL>    
+                              
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;color:black;width:131px;height:15px;position:absolute;top:195px;left:30px'>SUPERFICIE</LABEL>    
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:80px;height:15px;position:absolute;top:196px;left:140px'>${area}</LABEL>   
+                               
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;color:black;width:131px;height:15px;position:absolute;top:217px;left:30px'>NUM. INVENT</LABEL>    
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:80px;height:15px;position:absolute;top:217px;left:140px'>${feature.properties.num_inv}</LABEL>   
+
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;color:black;width:131px;height:15px;position:absolute;top:195px;left:290px'>DOMINI</LABEL>    
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:80px;height:15px;position:absolute;top:195px;left:350px'>${feature.properties.domini}</LABEL>   
+
+
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;color:black;width:131px;height:15px;position:absolute;top:217px;left:290px'>US</LABEL>    
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:80px;height:15px;position:absolute;top:217px;left:350px'>${feature.properties.us}</LABEL>   
+
+                                <LABEL style='padding:3px;font-size:8pt;font-family:Arial Black;color:black;width:250px;height:15px;position:absolute;top:245px;left:20px'>3- Normativa D' Aplicació</LABEL>    
+                              
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;color:black;width:131px;height:15px;position:absolute;top:270px;left:30px'>ORDENACIO</LABEL> 
+                                 <input style='padding:2px;;font-size:8pt;font-family:Arial Black;width:85px;height:20px;position:absolute;top:270px;left:140px' type="button" name="Boton1" value=${feature.properties.ordenacion} OnClick="showDialogParametrosEQ(this)">
+                               <!-- <LABEL style='padding:2px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:80px;height:15px;position:absolute;top:270px;left:140px'>${feature.properties.ordenacion}</LABEL>  --> 
+                                
+
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;color:black;width:131px;height:15px;position:absolute;top:292px;left:30px'>PLANEJ. APROV.</LABEL>    
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:80px;height:15px;position:absolute;top:292px;left:140px'>${feature.properties.plan_aprov}</LABEL>   
+                               
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;color:black;width:131px;height:15px;position:absolute;top:314px;left:30px'>PLANEJAMENT</LABEL>    
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:80px;height:15px;position:absolute;top:314px;left:140px'>${feature.properties.planejam}</LABEL>   
+                        
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;color:black;width:131px;height:15px;position:absolute;top:335px;left:30px'>ALTRES</LABEL>    
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:105px;height:15px;position:absolute;top:336px;left:140px'>${feature.properties.otros}</LABEL>   
+                        
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;color:black;width:131px;height:15px;position:absolute;top:270px;left:290px'>CLAS. SOL</LABEL>    
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:120px;height:15px;position:absolute;top:270px;left:350px'>${feature.properties.descripcion}</LABEL>   
+
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;color:black;width:131px;height:15px;position:absolute;top:292px;left:290px'>CATALOG</LABEL>    
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:120px;height:60px;position:absolute;top:292px;left:350px'>${catalogosCadena}</LABEL>   
+
+
+                                <LABEL style='padding:3px;font-size:8pt;font-family:Arial Black;color:black;width:250px;height:15px;position:absolute;top:365px;left:20px'>4- Gestió del sòl</LABEL>    
+                              
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;color:black;width:131px;height:15px;position:absolute;top:390px;left:30px'>ASSIGNACIÓ</LABEL>    
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:105px;height:15px;position:absolute;top:390px;left:140px'>${feature.properties.asignacio}</LABEL>   
+                        
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;color:black;width:131px;height:15px;position:absolute;top:412px;left:30px'>AMBIT</LABEL>    
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:30px;height:15px;position:absolute;top:412px;left:140px'>${feature.properties.ambit}</LABEL>   
+                        
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;color:black;width:131px;height:15px;position:absolute;top:412px;left:30px'>AMBIT</LABEL>    
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:412px;left:180px'>${feature.properties.codigo_ue}</LABEL>   
+                        
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;color:black;width:131px;height:15px;position:absolute;top:390px;left:290px'>SISTEMA</LABEL>    
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:80px;height:15px;position:absolute;top:390px;left:350px'>${feature.properties.sistema}</LABEL>   
+
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;color:black;width:131px;height:15px;position:absolute;top:412px;left:290px'>ETAPES</LABEL>    
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:80px;height:15px;position:absolute;top:412px;left:350px'>${feature.properties.etapes}</LABEL>   
+
+
+                                <LABEL style='padding:3px;font-size:8pt;font-family:Arial Black;color:black;width:250px;height:15px;position:absolute;top:440px;left:20px'>5- Observaciones</LABEL>    
+                                 
+                                <LABEL style='padding:2px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:555px;height:30px;position:absolute;top:465px;left:30px'>${feature.properties.observacions}</LABEL>   
+                        
+
+                              
+                                
+                            </div>`;
+                var dialog = L.control.dialog(options);
+                dialog.addTo(map);
+                dialog.setLocation([25,50]); 
+                dialog.setContent(html)
+                
+                     
+               
+        }
+
+        function showDialogParametrosRP(entidad,feature){
+
+
+            var options={
+                size: [585,600],
+                position: 'topleft',               
+                }
+
+            var titulo1="OTRO";  
+            var leftTitulo1="150px";
+            var divColor="#dbe7f2";
+            var titulo1Color="#003366";
+            switch(entidad){
+
+                case "RES":
+                    titulo1="PARÀMETRES DE EDIFICACIÓ";
+                    leftTitulo1="30px";
+                    divColor="#dbe7f2"
+                    titulo1Color="#003366";
+                    break;
+               
+
+            }   
+            var heightDiv2="1200px";
+            var topDiv3="1920px"
+            if(feature.properties.uso_caract=="UNIFAMILIAR" || feature.properties.uso_caract=="SECUNDARIO"){
+                heightDiv2="690px";
+                topDiv3="1410px"
+            }
+
+
+            var ruta1="http://vscenegis.hopto.org/joomla/images/sampledata/planoguia/Images Arxiu/PA-MODIFICACIO_PG/PA-201700030000/PA-20170003_Memoria_DEF.pdf#page=38"
+            var ruta2="http://vscenegis.hopto.org/joomla/images/sampledata/planoguia/Images Arxiu/PA-MODIFICACIO_PG/PA-201700030000/PA-20170003_Memoria_DEF.pdf#page=40"
+            var html=`<div style='background-color:${divColor};border-style: solid;border-width:0.1pt;border-color:black;box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);position:absolute;width:550px;height:680px;top:10px;left:10px'>
+
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial Black;color:${titulo1Color};width:350px;height:15px;position:absolute;top:25px;left:${leftTitulo1}'><u>${titulo1}</u></LABEL>
+                     
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial Black;color:#000000;width:80px;height:15px;position:absolute;top:10px;left:395px'>CALIFIC.</LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:#fdfde0;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:10px;left:465px'>${feature.properties.codigo}</LABEL><BR>   
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial Black;color:#000000;width:80px;height:15px;position:absolute;top:32px;left:395px'>TIPO EDIF.</LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:#fdfde0;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:32px;left:465px'>${feature.properties.t_ord}</LABEL><BR>   
+               
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:300px;height:15px;position:absolute;top:60px;left:30px'><b>A:</b> superfície mínima de parcel·la en metres</LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:60px;left:305px'>${feature.properties.s_m}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:300px;height:15px;position:absolute;top:82px;left:30px'><b>B:</b> amplada mínima de parcel·la en metres</LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:82px;left:305px'>${feature.properties.b}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:300px;height:15px;position:absolute;top:104px;left:30px'><b>H (núm. P):</b> altura en nombre de plantes</LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:104px;left:305px'>${feature.properties.h}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:300px;height:15px;position:absolute;top:126px;left:30px'><b>H com a màxim (m):</b> altura màxima en metres</LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:126px;left:305px'>${feature.properties.hmax}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:300px;height:15px;position:absolute;top:148px;left:30px'><b>H tot (m):</b> altura total en metres</LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:148px;left:305px'>${feature.properties.htot}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:300px;height:15px;position:absolute;top:170px;left:30px'><b>Oc (%):</b> ocupació en % </LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:170px;left:305px'>${feature.properties.oc}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:300px;height:15px;position:absolute;top:192px;left:30px'><b>O pp (%):</b> ocupació de les plantes pis en %</LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:192px;left:305px'>${feature.properties.opp}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:300px;height:15px;position:absolute;top:214px;left:30px'><b>I (m2/m2):</b> edificabilitat en m2/m2. </LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:214px;left:305px'>${feature.properties.e_p}</LABEL><BR>   
+               
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:280px;height:15px;position:absolute;top:236px;left:30px'><b>R pb (m):</b> separació mínima a confrontes de la planta baixa en metres</LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:236px;left:305px'>${feature.properties.rpb}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:280px;height:15px;position:absolute;top:276px;left:30px'><b>R pp (m):</b> separació mínima a confrontes de les plantes pis en metres</LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:276px;left:305px'>${feature.properties.rpp}</LABEL><BR>   
+               
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:280px;height:15px;position:absolute;top:316px;left:30px'><b>Ra (m):</b> separació mínima a alineacions en metres</LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:316px;left:305px'>${feature.properties.ra}</LABEL><BR>   
+               
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:280px;height:15px;position:absolute;top:338px;left:30px'><b>Rm (m):</b> separació mínima a mitgeres en metres </LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:338px;left:305px'>${feature.properties.rm}</LABEL><BR>   
+               
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:280px;height:15px;position:absolute;top:360px;left:30px'><b>Rm pb (m):</b> separació mínima a mitgeres de la planta baixa en metres</LABEL>
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:360px;left:305px'>${feature.properties.rmpb}</LABEL><BR>   
+               
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:270px;height:15px;position:absolute;top:400px;left:30px'><b>Ra pb (m):</b> separació mínima a vials i espais lliures públics de la planta baixa en metres</LABEL>
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:400px;left:305px'>${feature.properties.rapb}</LABEL><BR>   
+               
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:270px;height:15px;position:absolute;top:440px;left:30px'><b>Rm pp (m):</b> separació mínima a mitgeres de la planta pis en metres</LABEL>
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:440px;left:305px'>${feature.properties.rmpp}</LABEL><BR>   
+               
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:270px;height:15px;position:absolute;top:480px;left:30px'><b>Ra pp (m):</b> separació mínima a vials i espais lliures públics de plantes pis en metres </LABEL>
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:480px;left:305px'>${feature.properties.rapp}</LABEL><BR>   
+               
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:270px;height:15px;position:absolute;top:520px;left:30px'><b>Se (m):</b> separacions entre edificis en metres</LABEL>
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:520px;left:305px'>${feature.properties.se}</LABEL><BR>   
+               
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:270px;height:15px;position:absolute;top:542px;left:30px'><b>S com a màxim (m2):</b> superfície màxima edificable per edifici en m2</LABEL>
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:542px;left:305px'>${feature.properties.smax}</LABEL><BR>   
+               
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:270px;height:15px;position:absolute;top:582px;left:30px'><b>Ir (viv/m2):</b> índex d’intensitat d’ús residencial (nombre d’habitatges/m2) </LABEL>
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:582px;left:305px'>${feature.properties.irp}</LABEL><BR>   
+               
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:270px;height:15px;position:absolute;top:622px;left:30px'><b>It (places/m2):</b> índex d’intensitat d’ús turístic (nombre de places/m2) </LABEL>
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:622px;left:305px'>${feature.properties.irp}</LABEL><BR>   
+               
+
+                    </div>
+                    <div style='background-color:${divColor};border-style: solid;border-width:0.1pt;box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);position:absolute;width:550px;height:${heightDiv2};top:700px;left:10px'>
+                        
+                            ${feature.properties.cuadro_html}
+                        
+                    </div>`
+
+                if(feature.properties.uso_caract!="UNIFAMILIAR" && feature.properties.uso_caract!="SECUNDARIO"){
+                    html=html+`<div style='background-color:${divColor};border-style: solid;border-width:0.1pt;box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);position:absolute;width:550px;height:80px;top:${topDiv3};left:10px'>
+                        
+                        <a href="${ruta1}" style='padding:3px;font-size:8.5pt;font-family:Arial;color:blue;width:400px;height:15px;position:absolute;top:20px;left:30px' target="_blank">CONDICIONS NORMATIVES DEL RESIDENCIAL COMUNITARI</a>
+                        <a href="${ruta2}" style='padding:3px;font-size:8.5pt;font-family:Arial;color:blue;width:400px;height:15px;position:absolute;top:40px;left:30px' target="_blank">CONDICIONS NORMATIVES DE L’ÚS TURÍSTIC</a>
+                      
+                    </div>`
+                }     
+                
+                var dialog = L.control.dialog(options);
+                dialog.addTo(map);
+                dialog.setLocation([25,50]); 
+                dialog.setContent(html);
+                
+                     
+               
+        }
+
+        function showDialogParametrosAV(entidad,feature){
+
+
+            var options={
+                size: [585,600],
+                position: 'topleft',               
+                }
+
+            var titulo1="OTRO";  
+            var leftTitulo1="150px";
+            var divColor="#dbe7f2";
+            var titulo1Color="#003366";
+            switch(entidad){
+
+                case "RES":
+                    titulo1="PARAMETROS DE EDIFICACIÓN";
+                    leftTitulo1="30px";
+                    divColor="#dbe7f2"
+                    titulo1Color="#003366";
+                    break;
+               
+
+            }   
+            var ruta1="http://vscenegis.hopto.org/joomla/images/sampledata/planoguia/Images Arxiu/PA-MODIFICACIO_PG/PA-201700030000/PA-20170003_Memoria_DEF.pdf#page=38"
+            var ruta2="http://vscenegis.hopto.org/joomla/images/sampledata/planoguia/Images Arxiu/PA-MODIFICACIO_PG/PA-201700030000/PA-20170003_Memoria_DEF.pdf#page=40"
+           // var rutaArt="http://vscenegis.hopto.org/joomla/images/sampledata/planoguia/Images Arxiu/PA-MODIFICACIO_PG/PA-200101500000/PA-20010150_TR-04-09-2006/PA-20010150_TR-catala-2006.pdf#page=63"
+            // <a href="${rutaArt}" style='padding:3px;font-size:8.5pt;font-family:Arial;color:blue;width:400px;height:15px;position:absolute;top:25px;left:300px' target="_blank">Art</a>
+            var html=`<div style='background-color:${divColor};border-style: solid;border-width:0.1pt;border-color:black;box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);position:absolute;width:550px;height:350px;top:10px;left:10px'>
+
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial Black;color:${titulo1Color};width:350px;height:15px;position:absolute;top:25px;left:${leftTitulo1}'><u>${titulo1}</u></LABEL>
+                     
+                     
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial Black;color:#000000;width:80px;height:15px;position:absolute;top:10px;left:395px'>CALIFIC.</LABEL>
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:#fdfde0;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:10px;left:465px'>${feature.properties.codigo}</LABEL><BR>   
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial Black;color:#000000;width:80px;height:15px;position:absolute;top:32px;left:395px'>TIPO EDIF.</LABEL>
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:#fdfde0;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:32px;left:465px'>${feature.properties.t_ord}</LABEL><BR>   
+               
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;width:300px;height:15px;position:absolute;top:60px;left:30px'>SUPERFICIE MÍNIMA DE PARCEL·LA EN METRES:</LABEL>
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:60px;left:305px'>${feature.properties.s_m}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;color:#000000;width:300px;height:15px;position:absolute;top:82px;left:30px'>AMPLADA MÍNIMA DE PARCEL·LA EN METRES </LABEL>
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:82px;left:305px'>${feature.properties.b}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;color:#000000;width:300px;height:15px;position:absolute;top:104px;left:30px'>ALTURA EN NOMBRE DE PLANTES</LABEL>
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:104px;left:305px'>${feature.properties.h}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;color:#000000;width:300px;height:15px;position:absolute;top:126px;left:30px'>ALTURA MÁXIMA EN METRES</LABEL>
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:126px;left:305px'>${feature.properties.hmax}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;color:#000000;width:300px;height:15px;position:absolute;top:148px;left:30px'>ALTURA TOTAL EN METRES</LABEL>
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:148px;left:305px'>${feature.properties.htot}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;color:#000000;width:270px;height:15px;position:absolute;top:170px;left:30px'>VOLADA MÀXIMA EN METRES DE QUALSEVOL TIPES DE COS O ELEMENT VOLAT</LABEL>
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:170px;left:305px'>${feature.properties.vmax}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;color:#000000;width:270px;height:15px;position:absolute;top:208px;left:30px'>RECULADA DE FAÇANA RESPECTE DE L’ALINEACIÓ OFICIAL EN METRES</LABEL>
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:208px;left:305px'>${feature.properties.r}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;color:#000000;width:270px;height:15px;position:absolute;top:208px;left:30px'>RECULADA DE FAÇANA RESPECTE DE L’ALINEACIÓ OFICIAL EN METRES</LABEL>
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:208px;left:305px'>${feature.properties.r}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;color:#000000;width:270px;height:15px;position:absolute;top:246px;left:30px'>ÍNDEX D’INTENSITAT D’ÚS RESIDENCIAL (HABITATGES PER M2 DE SÒL COMPRÉS DINS LA PROFUNDITAT EDIFICABLE) </LABEL>
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:246px;left:305px'>${feature.properties.irp}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;color:#000000;width:270px;height:15px;position:absolute;top:298px;left:30px'>ALTURA MÁXIM SOSTRE PB EN METROS </LABEL>
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:298px;left:305px'>${feature.properties.ampb}</LABEL><BR> 
+
+                    </div>
+                    <div style='background-color:${divColor};border-style: solid;border-width:0.1pt;box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);position:absolute;width:550px;height:1200px;top:370px;left:10px'>
+                        
+                            ${feature.properties.cuadro_html}
+                        
+                    </div>
+                    <div style='background-color:${divColor};border-style: solid;border-width:0.1pt;box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);position:absolute;width:550px;height:80px;top:1580px;left:10px'>
+                        
+                        <a href="${ruta1}" style='padding:3px;font-size:8.5pt;font-family:Arial;color:blue;width:400px;height:15px;position:absolute;top:20px;left:30px' target="_blank">CONDICIONS NORMATIVES DEL RESIDENCIAL COMUNITARI</a>
+                        <a href="${ruta2}" style='padding:3px;font-size:8.5pt;font-family:Arial;color:blue;width:400px;height:15px;position:absolute;top:40px;left:30px' target="_blank">CONDICIONS NORMATIVES DE L’ÚS TURÍSTIC</a>
+                        
+
+                        
+                    </div>`
+                var html2=feature.properties.cuadro_html;  
+                var dialog = L.control.dialog(options);
+                dialog.addTo(map);
+                dialog.setLocation([25,50]); 
+                dialog.setContent(html);
+                
+                     
+               
+        }
+
+        function showDialogParametrosEQ(boton){
+            // alert('Ha hecho click sobre el boton: ' + boton.value);
+            var codigo=boton.value;
+            fetch("http://vscenegis.hopto.org:3000/infoFeature?tabla=calificacion_eq_visor&codigo="+codigo).then(response => response.json()).then(info_geojson => {
+           
+                console.log(info_geojson.features[0].properties.t_ord);
+                console.log(info_geojson.features[0].properties.codigo);
+
+                var feature=info_geojson.features[0];
+
+                var options={
+                    size: [585,600],
+                    position: 'topleft',               
+                }
+
+              
+                titulo1="PARÀMETRES DE EDIFICACIÓ";
+                leftTitulo1="30px";
+                divColor="#dbe7f2"
+                titulo1Color="#003366";
+               
+               
+                var html=`<div style='background-color:${divColor};border-style: solid;border-width:0.1pt;border-color:black;box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);position:absolute;width:550px;height:300px;top:10px;left:10px'>
+
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial Black;color:${titulo1Color};width:350px;height:15px;position:absolute;top:25px;left:${leftTitulo1}'><u>${titulo1}</u></LABEL>
+                     
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial Black;color:#000000;width:80px;height:15px;position:absolute;top:10px;left:395px'>CALIFIC.</LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:#fdfde0;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:10px;left:465px'>${feature.properties.codigo}</LABEL><BR>   
+                        <LABEL style='padding:3px;font-size:8pt;font-family:Arial Black;color:#000000;width:80px;height:15px;position:absolute;top:32px;left:395px'>TIPO EDIF.</LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:#fdfde0;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:65px;height:15px;position:absolute;top:32px;left:465px'>${feature.properties.t_ord}</LABEL><BR>   
+               
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:300px;height:15px;position:absolute;top:60px;left:30px'><b>A:</b> superfície mínima de parcel·la en metres</LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:70px;height:15px;position:absolute;top:60px;left:310px'>${feature.properties.s_m}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:300px;height:15px;position:absolute;top:82px;left:30px'><b>B:</b> amplada mínima de parcel·la en metres</LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:70px;height:15px;position:absolute;top:82px;left:310px'>${feature.properties.b}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:300px;height:15px;position:absolute;top:104px;left:30px'><b>H (núm. P):</b> altura en nombre de plantes</LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:70px;height:15px;position:absolute;top:104px;left:310px'>${feature.properties.h}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:300px;height:15px;position:absolute;top:126px;left:30px'><b>H com a màxim (m):</b> altura màxima en metres</LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:70px;height:15px;position:absolute;top:126px;left:310px'>${feature.properties.hmax}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:300px;height:15px;position:absolute;top:148px;left:30px'><b>H tot (m):</b> altura total en metres</LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:70px;height:15px;position:absolute;top:148px;left:310px'>${feature.properties.htot}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:300px;height:15px;position:absolute;top:170px;left:30px'><b>Oc (%):</b> ocupació en % </LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:70px;height:15px;position:absolute;top:170px;left:310px'>${feature.properties.oc}</LABEL><BR>   
+
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:300px;height:15px;position:absolute;top:192px;left:30px'><b>E (m2/m2):</b> edificabilitat en m2/m2. </LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:70px;height:15px;position:absolute;top:192px;left:310px'>${feature.properties.e_p}</LABEL><BR>   
+               
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:280px;height:15px;position:absolute;top:214px;left:30px'><b>Ra (m):</b> separació mínima a alineacions en metres</LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:70px;height:15px;position:absolute;top:214px;left:310px'>${feature.properties.ra}</LABEL><BR>   
+               
+                        <LABEL style='padding:3px;font-size:9pt;font-family:Arial;color:#000000;width:280px;height:15px;position:absolute;top:236px;left:30px'><b>Rm (m):</b> separació mínima a mitgeres en metres </LABEL>
+                        <LABEL style='padding:3px;font-size:8.5pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:70px;height:15px;position:absolute;top:236px;left:310px'>${feature.properties.rm}</LABEL><BR>   
+               
+                       
+
+                    </div>
+                    <div style='background-color:${divColor};border-style: solid;border-width:0.1pt;box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);position:absolute;width:550px;height:700px;top:320px;left:10px'>
+                        
+                            ${feature.properties.cuadro_html}
+                        
+                    </div>`
+                var html2=feature.properties.cuadro_html;  
+                var dialog = L.control.dialog(options);
+                dialog.addTo(map);
+                dialog.setLocation([25,50]); 
+                dialog.setContent(html);
+                
+                
+
+                return true;
+            });
+           
+        }
+
+        function changeColor(newColor) {
+            var elem = document.getElementById('div1');
+            var idhtml = document.getElementById("cambiar");
+            var indexHTML = idhtml.selectedIndex;
+            console.log("indice="+indexHTML);
+            console.log("array="+htmlarray);
+            elem.style.color = newColor;
+            elem.innerHTML=htmlarray[indexHTML];
+           
+        }
+
+        async function showDialogArticulo(boton){
+            var filtroSQL="articulo='128'";
+            let url = new URL("http://vscenegis.hopto.org:3000/infoquery");
+            const params = {tabla: "articulos", filtro: filtroSQL};
+            Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+            const dataRequest = {
+                method: 'GET'
+            };
+            let response = await fetch(url,dataRequest);
+           // console.log(response);
+            let info_geojson = await response.json();
+
+            var feature=info_geojson.features[0];
+
+            var options={
+                size: [585,600],
+                position: 'topleft',               
+            }
+            var html=feature.properties.contenido;
+           // var html1="<LABEL>{$"+info_geojson.features[0].properties.contenido+
+           // var html2=info_geojson.features[0].properties.contenido;
+
+            
+            var html1="<Label>paix 1</Label>";
+            var html2="<Label>paix 2</Label>";
+            htmlarray[0]="<Label>paix 1</Label>";
+            htmlarray[1]="<Label>paix 2</Label>";
+
+            var html=`<div style='overflow: scroll;background-color:#f2f2f2;border-style: solid;border-width:0.1pt;border-color:black;box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);position:absolute;width:460px;height:4000px;top:320px;left:30px' id="div1">
+                        ${html1}
+                        
+                    </div>
+                    <select style='width:150px;height:300px;overflow: scroll' name="enviar" id="cambiar" size="3">
+                        <option>Ahora</option>
+                        <option>Dentro de una hora fwefwwwwwwwwwwwwwwwwwwwwww</option>
+                        <option>Dentro de seis horasfwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbwww</option>
+                    </select>
+                    <button onclick="changeColor('blue')">cambiar</button>`
+
+           
+            var dialog = L.control.dialog(options);
+                dialog.addTo(map);
+                dialog.setLocation([25,50]); 
+               // dialog.setContent("<u><b>"+info_geojson.features[0].properties.articulo+info_geojson.features[0].properties.titulo+". </u></b><BR>"+info_geojson.features[0].properties.contenido);
+                 dialog.setContent(html);
+        }
+
+        
+
+        function GeomIntersectionClasSuelo(entidad,bbox,feature){
+
+            var geomF=feature.geometry;
+
+            fetch("http://vscenegis.hopto.org:3000/intersection?tabla=clasif_suelo&xmin="+bbox[0]+"&ymin="+bbox[1]+"&xmax="+bbox[2]+"&ymax="+bbox[3]).then(response => response.json()).then(intersection_geojson => {
+                // console.log(intersection_geojson.features[1].geometry.coordinates);
+                 console.log(geomF.coordinates);
+
+                 clasSueloCadena="";
+                 cont=0;
+
+                 /*for(var p=0;p<intersection_geojson.features.length;p++){ 
+
+                    if(p==0){
+                        clasSueloCadena=intersection_geojson.features[p].properties.descr_suelo;
+                    }else{   
+                        clasSueloCadena=clasSueloCadena+", "+intersection_geojson.features[p].properties.descr_suelo;
+                    }
+
+                 }  */  
+
+            /* for(var p=0;p<intersection_geojson.features.length;p++){ 
+                var polygon1 = [];
+                // For each polygon in this multipolygon layer
+                for (var i=0; i<geomF.coordinates.length; i++) {
+                    var feat={'type':'Polygon','coordinates':geomF.coordinates[i]};
+                    polygon1.push(feat);
+                }
+
+                var polygon2 = [];
+                // For each polygon in this multipolygon layer
+                for (var i=0; i<intersection_geojson.features[p].geometry.coordinates.length; i++) {
+                    var feat={'type':'Polygon','coordinates':intersection_geojson.features[p].geometry.coordinates[i]};
+                    polygon2.push(feat);
+                }
+
+                for (var i=0; i<polygon1.length; i++) {
+                    var currentPolygon = polygon1[i];
+                    for (var j=0; j<polygon2.length; j++) {
+                       try{ 
+                        if (turf.intersect(currentPolygon, polygon2[j])) {
+
+                            console.log("intersectiona");
+                            clasSueloCadena=clasSueloCadena+", "+intersection_geojson.features[p].properties.descr_suelo;
+                           
+                        }
+                       }catch(error){
+                           console.log(error);
+                           clasSueloCadena=clasSueloCadena+", "+intersection_geojson.features[p].properties.descr_suelo;
+                       } 
+                    }
+                }
+            } */
+
+
+   
+
+                 setTimeout(showDialog(entidad,feature), 1);
+             
+
+            });
+       
+        }
+
+        function GeomIntersectionZonas(entidad,bbox,feature){
+
+            var geomF=feature.geometry;
+
+            fetch("http://vscenegis.hopto.org:3000/intersection?tabla=zonas_estadisticas2&xmin="+bbox[0]+"&ymin="+bbox[1]+"&xmax="+bbox[2]+"&ymax="+bbox[3]).then(response => response.json()).then(intersection_geojson => {
+                // console.log(intersection_geojson.features[1].geometry.coordinates);
+                 console.log(geomF.coordinates);
+
+                 zonasCadena="";
+                 cont=0;
+
+                 if(intersection_geojson.features!=null)
+                 for(var n=0;n<intersection_geojson.features.length;n++){
+
+                    var multiPoly = turf.multiPolygon(intersection_geojson.features[n].geometry.coordinates[0]);
+                    var multiPoly2 = turf.multiPolygon(geomF.coordinates[0]);
+                    var coords=turf.getCoords(multiPoly);
+                    var multiPoly3 = turf.polygon(coords);
+                    var coords2=turf.getCoords(multiPoly2);
+                    var multiPoly4 = turf.polygon(coords2);
+
+
+                    try{
+                        var intersection1 = turf.intersect(multiPoly3,multiPoly4);
+                        if(turf.area(intersection1)>(turf.area(multiPoly4)*10)/100){
+                           
+                            if(cont==0){
+                                zonasCadena=intersection_geojson.features[n].properties.descr_zona;
+                            }else{   
+                                zonasCadena=zonasCadena+", "+intersection_geojson.features[n].properties.descr_zona;
+                            }
+
+                            cont++;
+                        }
+                       
+                    }catch(err){
+                       // console.log("error="+err); 
+                    }
+
+                 }
+                
+                 setTimeout(GeomIntersectionClasSuelo(entidad,bbox,feature), 1);
+             
+
+            });
+       
+        }
+
+        function GeomIntersectionHojas(entidad,bbox,feature){
+
+            //geomCruce="paso por interseccion";
+
+           // console.log(geom);
+
+            var geomF=feature.geometry;
+
+            fetch("http://vscenegis.hopto.org:3000/intersection?tabla=hojas1000_pgou98&xmin="+bbox[0]+"&ymin="+bbox[1]+"&xmax="+bbox[2]+"&ymax="+bbox[3]).then(response => response.json()).then(intersection_geojson => {
+                // console.log(intersection_geojson.features[1].geometry.coordinates);
+                 console.log(geomF.coordinates);
+
+                 hojas1000Cadena="";
+                 hojas1000UTMCadena="";
+                 cont=0;
+
+                 if(intersection_geojson.features!=null)
+                 for(var n=0;n<intersection_geojson.features.length;n++){
+
+                    var multiPoly = turf.multiPolygon(intersection_geojson.features[n].geometry.coordinates[0]);
+                    var multiPoly2 = turf.multiPolygon(geomF.coordinates[0]);
+                    var coords=turf.getCoords(multiPoly);
+                    var multiPoly3 = turf.polygon(coords);
+                    var coords2=turf.getCoords(multiPoly2);
+                    var multiPoly4 = turf.polygon(coords2);
+
+
+                    try{
+                        var intersection1 = turf.intersect(multiPoly3,multiPoly4);
+                        if(turf.area(intersection1)>(turf.area(multiPoly4)*10)/100){
+                           
+                            if(cont==0){
+                                hojas1000Cadena=intersection_geojson.features[n].properties.Hoja;
+                                hojas1000UTMCadena=intersection_geojson.features[n].properties.utm;
+                            }else{   
+                                hojas1000Cadena=hojas1000Cadena+", "+intersection_geojson.features[n].properties.Hoja;
+                                hojas1000UTMCadena=hojas1000UTMCadena+", "+intersection_geojson.features[n].properties.utm;
+                            }
+
+                            cont++;
+                        }
+                       
+                    }catch(err){
+                       // console.log("error="+err); 
+                    }
+
+                 }
+                 setTimeout(GeomIntersectionZonas(entidad,bbox,feature), 1);
+             
+
+            });
+       
+        }
+
+        function GeomIntersectionParcela(entidad,bbox,feature){
+
+            //geomCruce="paso por interseccion";
+
+           // console.log(geom);
+
+            var geomF=feature.geometry;
+
+            fetch("http://vscenegis.hopto.org:3000/intersection?tabla=parcela_su_ru_calles&xmin="+bbox[0]+"&ymin="+bbox[1]+"&xmax="+bbox[2]+"&ymax="+bbox[3]).then(response => response.json()).then(intersection_geojson => {
+                // console.log(intersection_geojson.features[1].geometry.coordinates);
+                 console.log(geomF.coordinates);
+
+                 parcelasCadena="";
+                 callesCadena="";
+                 cont=0;
+
+                 if(intersection_geojson.features!=null)
+                 for(var n=0;n<intersection_geojson.features.length;n++){
+
+                    var multiPoly = turf.multiPolygon(intersection_geojson.features[n].geometry.coordinates[0]);
+                    var multiPoly2 = turf.multiPolygon(geomF.coordinates[0]);
+                    var coords=turf.getCoords(multiPoly);
+                    var multiPoly3 = turf.polygon(coords);
+                    var coords2=turf.getCoords(multiPoly2);
+                    var multiPoly4 = turf.polygon(coords2);
+
+
+                    try{
+                        var intersection1 = turf.intersect(multiPoly3,multiPoly4);
+                        if(turf.area(intersection1)>(turf.area(multiPoly4)*10)/100){
+                           
+                            if(cont==0){
+                                parcelasCadena=intersection_geojson.features[n].properties.refcat;
+                                callesCadena=intersection_geojson.features[n].properties.tipo_via+ " "+intersection_geojson.features[n].properties.calle;
+                            }else{   
+                                parcelasCadena=parcelasCadena+", "+intersection_geojson.features[n].properties.refcat;
+                                callesCadena=callesCadena+", "+intersection_geojson.features[n].properties.tipo_via+ " "+intersection_geojson.features[n].properties.calle;
+                            }    
+
+                            cont++;
+                        }
+                       
+                    }catch(err){
+                       // console.log("error="+err); 
+                    }
+
+                 }
+                 setTimeout(GeomIntersectionHojas(entidad,bbox,feature), 1);
+             
+
+            });
+       
+        }
+
+        function GeomIntersection(entidad,bbox,feature){
+
+            //geomCruce="paso por interseccion";
+
+           // console.log(geom);
+
+            var geomF=feature.geometry;
+
+            fetch("http://vscenegis.hopto.org:3000/intersection?tabla=catalogos&xmin="+bbox[0]+"&ymin="+bbox[1]+"&xmax="+bbox[2]+"&ymax="+bbox[3]).then(response => response.json()).then(intersection_geojson => {
+                // console.log(intersection_geojson.features[1].geometry.coordinates);
+                 console.log(geomF.coordinates);
+
+                 catalogosCadena="";
+                 cont=0;
+
+                 if(intersection_geojson.features!=null)
+                 for(var n=0;n<intersection_geojson.features.length;n++){
+
+                    var multiPoly = turf.multiPolygon(intersection_geojson.features[n].geometry.coordinates[0]);
+                    var multiPoly2 = turf.multiPolygon(geomF.coordinates[0]);
+                    var coords=turf.getCoords(multiPoly);
+                     var multiPoly3 = turf.polygon(coords);
+                    var coords2=turf.getCoords(multiPoly2);
+                    var multiPoly4 = turf.polygon(coords2);
+
+                        // console.log(multiPoly);
+                        // console.log(multiPoly2);
+
+                    try{
+                        var intersection1 = turf.intersect(multiPoly3,multiPoly4);
+                        if(turf.area(intersection1)>(turf.area(multiPoly4)*10)/100){
+                           
+                            if(cont==0)
+                                catalogosCadena=intersection_geojson.features[n].properties.proteccion+"/"+intersection_geojson.features[n].properties.codigo
+                            else   
+                                catalogosCadena=catalogosCadena+", "+intersection_geojson.features[n].properties.proteccion+"/"+intersection_geojson.features[n].properties.codigo
+
+                            cont++;
+                        }
+                       
+                    }catch(err){
+                       // console.log("error="+err); 
+                    }
+
+                 }
+                 setTimeout(GeomIntersectionParcela(entidad,bbox,feature), 1);
+             
+
+            });
+            
+          
+
+        }
+
+        function changeArticle(cont){
+
+            console.log(arrayArticulos[0]);
+
+            var elemT = document.getElementById('divTitulo'+cont);
+            var elem = document.getElementById('divContent'+cont);
+            var idhtml = document.getElementById("select"+cont);
+            var indexHTML = idhtml.selectedIndex;
+       
+            var titulo="Art. "+arrayArticulos[indexHTML].properties.articulo+" "+arrayArticulos[indexHTML].properties.titulo;
+            elemT.innerHTML=titulo; 
+            elem.innerHTML=arrayArticulos[indexHTML].properties.contenido; 
+        }
+
+        function showDialogNormativa(arrayNormativa){
+
+           // arrayArticulos=arrayNormativa;
+            var strOptions=""
+            for(var n=0;n<arrayNormativa.length;n++){
+                feature=arrayNormativa[n];
+              //  console.log(feature.properties.articulo+" "+feature.properties.titulo);
+                strOptions=strOptions+"<option ><b>"+feature.properties.articulo+".</b> "+feature.properties.titulo+"</option>"+'\n';
+            }
+
+            var tituloNormativa=`<LABEL style='font-size:9pt;font-family:Arial Black'><U>Normativa especifica del elemento.  Texto refundido 2006</U></LABEL><br><BR>`
+           
+            var strSelect=`<select onclick='changeArticle(`+contDiv+`)' style='padding:5px;font-size:8pt;font-family:Arial;width:540px;height:200px;overflow: scroll' name="enviar" id="select`+contDiv+`" size="3">`+'\n'+strOptions+"</select>";
+             console.log(strSelect);  
+
+
+            var strButton=`<button  onclick='changeArticle(`+contDiv+`)'>cambiar</button>\n`;  
+
+            var titulo="Art. "+arrayNormativa[0].properties.articulo+" "+arrayNormativa[0].properties.titulo;
+
+            var strDivTitulo=`<div style='padding:10px;font-size:9pt;font-family:Arial Black;background-color:#f2f2f2;border-style: solid;border-width:0.1pt;border-color:black;box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);position:absolute;width:515px;height:45px;top:280px;left:20px' id="divTitulo`+contDiv+`">`+titulo+`</div>\n`;   
+
+            var strDiv=`<div style='padding:10px;overflow: scroll;background-color:#f2f2f2;border-style: solid;border-width:0.1pt;border-color:black;box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);position:absolute;width:515px;height:390px;top:325px;left:20px' id="divContent`+contDiv+`">`+arrayNormativa[0].properties.contenido+`</div>\n`;
+
+            var html=tituloNormativa+strSelect+strButton+strDivTitulo+strDiv;
+                    
+
+            var options={
+                size: [585,600],
+                position: 'topleft',               
+            }
+
+           
+            var dialog = L.control.dialog(options);
+                dialog.addTo(map);
+                dialog.setLocation([25,50]); 
+                dialog.setContent(html);
+            
+             contDiv++;
+        }
+
+        async function normativa(tabla,fid){
+
+            //console.log("tabla="+tabla+","+fid);
+
+            var tableName=tabla;
+
+            var filtroSQL="tabla='"+tableName+"'";
+            let url = new URL("http://vscenegis.hopto.org:3000/infoquery");
+            const params = {tabla: "articulos_data", filtro: filtroSQL};
+            Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+            const dataRequest = {
+                method: 'GET'
+            };
+            let response = await fetch(url,dataRequest);
+            //console.log(response);
+            let info_geojson = await response.json();
+            //console.log(info_geojson);
+
+            // var arrayArticulos = new Array(); 
+
+             arrayArticulos=[];
+
+            for(var n=0;n<info_geojson.features.length;n++){
+
+                //console.log(info_geojson.features[n].properties.articulo);
+
+                var filtroSQ="";
+                if(info_geojson.features[n].properties.filtro!="" && info_geojson.features[n].properties.filtro!=null)
+                    filtroSQL="fid="+fid+" and ("+info_geojson.features[n].properties.filtro+")";
+                else
+                    filtroSQL="fid="+fid;
+
+                let url = new URL("http://vscenegis.hopto.org:3000/infoquery");
+                const params = {tabla: tableName, filtro: filtroSQL};
+                Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+                const dataRequest = {
+                    method: 'GET'
+                };
+                let response2 = await fetch(url,dataRequest);
+                //console.log(response2);
+                let info_geojson2 = await response2.json();
+            
+                if(info_geojson2.features!=null){
+                  // console.log(info_geojson.features[n].properties.articulo+" "+info_geojson.features[n].properties.titulo);
+                   arrayArticulos.push(info_geojson.features[n]);
+                } 
+
+            }
+            showDialogNormativa(arrayArticulos);
+           
+            
+        }
+
+        function fichaRES(boton){
+            // alert('Ha hecho click sobre el boton: ' + boton.value);
+            var codigo=boton.value;
+            fetch("http://vscenegis.hopto.org:3000/infoFeature?tabla=calificacion_residencial_visor&codigo="+codigo).then(response => response.json()).then(info_geojson => {
+           
+                console.log(info_geojson.features[0].properties.t_ord);
+                console.log(info_geojson.features[0].properties.codigo);
+
+                if(info_geojson.features[0].properties.t_ord=="AV")
+                    setTimeout(showDialogParametrosAV("RES",info_geojson.features[0]), 1);
+                if(info_geojson.features[0].properties.t_ord=="RP")
+                    setTimeout(showDialogParametrosRP("RES",info_geojson.features[0]), 1);
+                
+
+                return true;
+            });
+           
+        }
+
+        function fichaSEC(boton){
+            // alert('Ha hecho click sobre el boton: ' + boton.value);
+            var codigo=boton.value;
+            fetch("http://vscenegis.hopto.org:3000/infoFeature?tabla=calificacion_secundario_visor&codigo="+codigo).then(response => response.json()).then(info_geojson => {
+           
+                console.log(info_geojson.features[0].properties.t_ord);
+                console.log(info_geojson.features[0].properties.codigo);
+
+                if(info_geojson.features[0].properties.t_ord=="AV")
+                    setTimeout(showDialogParametrosAV("RES",info_geojson.features[0]), 1);
+                if(info_geojson.features[0].properties.t_ord=="RP")
+                    setTimeout(showDialogParametrosRP("RES",info_geojson.features[0]), 1);
+                
+
+                return true;
+            });
+           
+        }
+
+
+
+        async function request(boton){
+            var filtroSQL="codigo='"+boton.value+"'";
+            let url = new URL("http://vscenegis.hopto.org:3000/infoquery");
+            const params = {tabla: "calificacion_secundario_visor", filtro: filtroSQL};
+            Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+            const dataRequest = {
+                method: 'GET'
+            };
+            let response = await fetch(url,dataRequest);
+           // console.log(response);
+            let info_geojson = await response.json();
+            if(info_geojson.features[0].properties.t_ord=="AV")
+                setTimeout(showDialogParametrosAV("RES",info_geojson.features[0]), 1);
+            if(info_geojson.features[0].properties.t_ord=="RP")
+                setTimeout(showDialogParametrosRP("RES",info_geojson.features[0]), 1);
+        }
+
+        function fichaSLEQ(boton,tabla,fid){
+
+            console.log("tabla="+tabla+","+fid);
+            // alert('Ha hecho click sobre el boton: ' + boton.value);
+            var codigo=boton.value;
+            fetch("http://vscenegis.hopto.org:3000/infoFeature?tabla=v_slocal_equipamientos&codigo="+codigo).then(response => response.json()).then(info_geojson => {
+           
+                console.log(info_geojson.features[0].properties.identif);
+                var area = turf.area(info_geojson.features[0].geometry);
+                area=area.toFixed(2)+ " m2";
+
+                var bbox=turf.bbox(info_geojson.features[0].geometry);
+                var latlng = L.latLng(bbox[0], bbox[1]);
+                var x=latlng.utm().x
+                var y=latlng.utm().y
+                console.log(x+","+y);
+                 console.log(bbox[0]+","+ bbox[1]);
+
+              
+                  setTimeout(GeomIntersection("SLEQ",bbox,info_geojson.features[0]), 1);
+
+                return true;
+            });
+           
+        }
+
+        function fichaSGEQ(boton){
+            // alert('Ha hecho click sobre el boton: ' + boton.value);
+            var codigo=boton.value;
+            fetch("http://vscenegis.hopto.org:3000/infoFeature?tabla=v_sgeneral_equipamientos&codigo="+codigo).then(response => response.json()).then(info_geojson => {
+           
+                
+                var bbox=turf.bbox(info_geojson.features[0].geometry);
+                             
+                setTimeout(GeomIntersection("SGEQ",bbox,info_geojson.features[0]), 1);
+
+                return true;
+            });
+           
+        }
+
+        function fichaSLEL(boton){
+            // alert('Ha hecho click sobre el boton: ' + boton.value);
+            var codigo=boton.value;
+            fetch("http://vscenegis.hopto.org:3000/infoFeature?tabla=v_slocal_espacioslibres_publicos&codigo="+codigo).then(response => response.json()).then(info_geojson => {
+           
+                console.log(info_geojson.features[0].properties.identif);
+                var area = turf.area(info_geojson.features[0].geometry);
+                area=area.toFixed(2)+ " m2";
+
+                var bbox=turf.bbox(info_geojson.features[0].geometry);
+                var latlng = L.latLng(bbox[0], bbox[1]);
+                var x=latlng.utm().x
+                var y=latlng.utm().y
+                console.log(x+","+y);
+                 console.log(bbox[0]+","+ bbox[1]);
+
+              
+                  setTimeout(GeomIntersection("SLEL",bbox,info_geojson.features[0]), 1);
+
+                return true;
+            });
+           
+        }
+
+        function fichaSGEL(boton){
+            // alert('Ha hecho click sobre el boton: ' + boton.value);
+            var codigo=boton.value;
+            fetch("http://vscenegis.hopto.org:3000/infoFeature?tabla=v_sgeneral_espacioslibres&codigo="+codigo).then(response => response.json()).then(info_geojson => {
+           
+                console.log(info_geojson.features[0].properties.identif);
+                var area = turf.area(info_geojson.features[0].geometry);
+                area=area.toFixed(2)+ " m2";
+
+                var bbox=turf.bbox(info_geojson.features[0].geometry);
+                var latlng = L.latLng(bbox[0], bbox[1]);
+                var x=latlng.utm().x
+                var y=latlng.utm().y
+                console.log(x+","+y);
+                 console.log(bbox[0]+","+ bbox[1]);
+
+              
+                  setTimeout(GeomIntersection("SGEL",bbox,info_geojson.features[0]), 1);
+
+                return true;
+            });
+           
+        }    
+
+        function fichaSLCI(boton){
+            // alert('Ha hecho click sobre el boton: ' + boton.value);
+            var codigo=boton.value;
+            fetch("http://vscenegis.hopto.org:3000/infoFeature?tabla=v_slocal_comunicaciones_infraestructuras&codigo="+codigo).then(response => response.json()).then(info_geojson => {
+           
+                console.log(info_geojson.features[0].properties.identif);
+                var area = turf.area(info_geojson.features[0].geometry);
+                area=area.toFixed(2)+ " m2";
+
+                var bbox=turf.bbox(info_geojson.features[0].geometry);
+                var latlng = L.latLng(bbox[0], bbox[1]);
+                var x=latlng.utm().x
+                var y=latlng.utm().y
+                console.log(x+","+y);
+                 console.log(bbox[0]+","+ bbox[1]);
+
+              
+                  setTimeout(GeomIntersection("SLCI",bbox,info_geojson.features[0]), 1);
+
+                return true;
+            });
+           
+        }  
+
+        function fichaSGCI(boton){
+            // alert('Ha hecho click sobre el boton: ' + boton.value);
+            var codigo=boton.value;
+            fetch("http://vscenegis.hopto.org:3000/infoFeature?tabla=v_sgeneral_comunicaciones_infraestructuras&codigo="+codigo).then(response => response.json()).then(info_geojson => {
+           
+                console.log(info_geojson.features[0].properties.identif);
+                var area = turf.area(info_geojson.features[0].geometry);
+                area=area.toFixed(2)+ " m2";
+
+                var bbox=turf.bbox(info_geojson.features[0].geometry);
+                var latlng = L.latLng(bbox[0], bbox[1]);
+                var x=latlng.utm().x
+                var y=latlng.utm().y
+                console.log(x+","+y);
+                 console.log(bbox[0]+","+ bbox[1]);
+
+              
+                  setTimeout(GeomIntersection("SGCI",bbox,info_geojson.features[0]), 1);
+
+                return true;
+            });
+           
+        }        
+
+        var content="paix"
+        map.on('click', function(e) {
+
+          if(help==true){  
+            var popLocation= e.latlng;
+            var x=e.latlng.utm().x
+            var y=e.latlng.utm().y
+            console.log(x+","+y);
+          
+           var arrayTablas = new Array(20); 
+           arrayTablas[0]=["sleq"];
+           arrayTablas[1]=["sgeq"];
+           arrayTablas[2]=["slel"];
+           arrayTablas[3]=["sgel"];
+           arrayTablas[4]=["slci"];
+           arrayTablas[5]=["sgci"];
+           arrayTablas[6]=["residencial"];
+           arrayTablas[7]=["sec"];
+           arrayTablas[8]=["cat"];
+           arrayTablas[9]=["api"];
+           arrayTablas[10]=["exp_pa"];
+           arrayTablas[11]=["exp_pb"];
+           arrayTablas[12]=["exp_pbx"];
+           arrayTablas[13]=["exp_pc"];
+           arrayTablas[14]=["exp_pd"];
+           arrayTablas[15]=["exp_pe"];
+           arrayTablas[16]=["exp_pf"];
+           arrayTablas[17]=["exp_pg"];
+           arrayTablas[18]=["exp_ph"];
+           arrayTablas[19]=["exp_pi"];
+           arrayTablas[20]=["exp_pj"];
+           
+
+           var contentFinal="";
+          
+           var tabla;
+           var prop;
+
+           var n=0;
+           var html="";
+           function servicio(){
+                tabla=arrayTablas[n]; 
+              //  console.log("paix"+tabla);
+                fetch("http://vscenegis.hopto.org:3000/"+tabla+"?x="+x+"&y="+y).then(response => response.json()).then(geojsonRES => {
+
+                    if(geojsonRES==null) console.log("null")
+                    try{
+                   
+                        console.log(tabla);
+                        console.log(geojsonRES.features.length);
+
+                       if(geojsonRES.features.length>0) 
+                        if(tabla=="exp_pa"){
+                          //  html=html+`<LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>EXPEDIENTES</u><BR>
+                          //         </LABEL>`;
+
+                           
+                          //  var num_subcodexp=subcodexop.parseInt(subcodexp,10);
+
+                           // console.log(subexp);
+                          //  console.log(num_subcodexp);
+                           
+                            for(var r=0;r<geojsonRES.features.length;r++){
+                                 var codexp2="";
+                                 var codexp=geojsonRES.features[r].properties.codigo;
+                                 var subcodexp=codexp.substring(8,12);
+                                 var num_subcodexp=parseInt(subcodexp,10);
+                                 console.log(subcodexp);
+                                 console.log(num_subcodexp);
+                                 var ruta2="";
+                                 if(num_subcodexp>0){
+                                    codexp2=codexp.substring(0,8)+"0000"; 
+                                    ruta2="http://vscenegis.hopto.org/joomla/images/sampledata/planoguia/Images Arxiu/PA-MODIFICACIO_PG/PA-"+
+                                        codexp2+"/PA-"+
+                                        codexp2+"_PORTADA.pdf";                          
+
+                                 }
+                                
+                                var ruta="http://vscenegis.hopto.org/joomla/images/sampledata/planoguia/Images Arxiu/PA-MODIFICACIO_PG/PA-"+
+                                         geojsonRES.features[r].properties.codigo+"/PA-"+
+                                        geojsonRES.features[r].properties.codigo+"_PORTADA.pdf";                          
+
+                                html=html+`<div>
+                                    </LABEL>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>PA - MODIFICACIO PG:
+                                    </LABEL>
+                                    <a href="${ruta}"  target="_blank">${geojsonRES.features[r].properties.codigo}</a>
+                                    <a href="${ruta2}"  target="_blank">${codexp2}</a>
+                                    </LABEL><BR> ${geojsonRES.features[r].properties.descripcio}<BR></LABEL>           
+                                    </div>`;
+                                   
+                            }
+                            html=html+'<BR>';
+                        }    
+                        if(tabla=="exp_pb"){
+                           // html=html+`<LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>EXPEDIENTES</u><BR>
+                           //        </LABEL>`;
+                            for(var r=0;r<geojsonRES.features.length;r++){
+                                
+                                var ruta="http://vscenegis.hopto.org/joomla/images/sampledata/planoguia/Images Arxiu/PB-PLA_ESPECIAL/PB-"+
+                                         geojsonRES.features[r].properties.codigo+"/PB-"+
+                                        geojsonRES.features[r].properties.codigo+"_PORTADA.pdf";                          
+
+                                html=html+`<div>
+                                    </LABEL>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>PB -PLA ESPECIAL:
+                                    </LABEL>
+                                    <a href="${ruta}"  target="_blank">${geojsonRES.features[r].properties.codigo}</a><BR>
+                                    </LABEL>${geojsonRES.features[r].properties.descripcio}<BR></LABEL>           
+                                    </div>`;
+                                   
+                            }
+                            html=html+'<BR>';
+                        }
+                        if(tabla=="exp_pbx"){
+                          //  html=html+`<LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>EXPEDIENTES</u><BR>
+                          //         </LABEL>`;
+                            for(var r=0;r<geojsonRES.features.length;r++){
+                                
+                                var ruta="http://vscenegis.hopto.org/joomla/images/sampledata/planoguia/Images Arxiu/PBX_PERIS/PBX-"+
+                                         geojsonRES.features[r].properties.codigo+"/PBX-"+
+                                        geojsonRES.features[r].properties.codigo+"_PORTADA.pdf";                          
+
+                                html=html+`<div>
+                                    </LABEL>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>PBX - PERIS:
+                                    </LABEL>
+                                    <a href="${ruta}"  target="_blank">${geojsonRES.features[r].properties.codigo}</a><BR>
+                                    </LABEL>${geojsonRES.features[r].properties.descripcio}<BR></LABEL>           
+                                    </div>`;
+                                   
+                            }
+                            html=html+'<BR>';
+                        } 
+                        if(tabla=="exp_pc"){
+                           // html=html+`<LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>EXPEDIENTES</u><BR>
+                           //        </LABEL>`;
+                            for(var r=0;r<geojsonRES.features.length;r++){
+                                
+                                var ruta="http://vscenegis.hopto.org/joomla/images/sampledata/planoguia/Images Arxiu/PC-PLA_PARCIAL/PC-"+
+                                         geojsonRES.features[r].properties.codigo+"/PC-"+
+                                        geojsonRES.features[r].properties.codigo+"_PORTADA.pdf";                          
+
+                                html=html+`<div>
+                                    </LABEL>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>PC - PLA PARCIAL:
+                                    </LABEL>
+                                    <a href="${ruta}"  target="_blank">${geojsonRES.features[r].properties.codigo}</a><BR>
+                                    </LABEL>${geojsonRES.features[r].properties.descripcio}<BR></LABEL>           
+                                    </div>`;
+                                   
+                            }
+                            html=html+'<BR>';
+                        } 
+                        if(tabla=="exp_pd"){
+                           // html=html+`<LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>EXPEDIENTES</u><BR>
+                           //        </LABEL>`;
+                            for(var r=0;r<geojsonRES.features.length;r++){
+                                
+                                var ruta="http://vscenegis.hopto.org/joomla/images/sampledata/planoguia/Images Arxiu/PD-URBANITZACIO/PD-"+
+                                         geojsonRES.features[r].properties.codigo+"/PD-"+
+                                        geojsonRES.features[r].properties.codigo+"_PORTADA.pdf";                          
+
+                                html=html+`<div>
+                                    </LABEL>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>PD - URBANITZACIO:
+                                    </LABEL>
+                                    <a href="${ruta}"  target="_blank">${geojsonRES.features[r].properties.codigo}</a><BR>
+                                    </LABEL>${geojsonRES.features[r].properties.descripcio}<BR></LABEL>           
+                                    </div>`;
+                                   
+                            }
+                            html=html+'<BR>';
+                        } 
+                        if(tabla=="exp_pe"){
+                           // html=html+`<LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>EXPEDIENTES</u><BR>
+                           //        </LABEL>`;
+                            for(var r=0;r<geojsonRES.features.length;r++){
+                                
+                                var ruta="http://vscenegis.hopto.org/joomla/images/sampledata/planoguia/Images Arxiu/PE-ESTUDI_DETALL/PE-"+
+                                         geojsonRES.features[r].properties.codigo+"/PE-"+
+                                        geojsonRES.features[r].properties.codigo+"_PORTADA.pdf";                          
+
+                                html=html+`<div>
+                                    </LABEL>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>PE - ESTUDI DETALL
+                                    </LABEL>
+                                    <a href="${ruta}"  target="_blank">${geojsonRES.features[r].properties.codigo}</a><BR>
+                                    </LABEL>${geojsonRES.features[r].properties.descripcio}<BR></LABEL>           
+                                    </div>`;
+                                   
+                            }
+                            html=html+'<BR>';
+                        } 
+                        if(tabla=="exp_pf"){
+                           // html=html+`<LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>EXPEDIENTES</u><BR>
+                           //        </LABEL>`;
+                            for(var r=0;r<geojsonRES.features.length;r++){
+                                
+                                var ruta="http://vscenegis.hopto.org/joomla/images/sampledata/planoguia/Images Arxiu/PF-DOTACIO_SERVEIS/PF-"+
+                                         geojsonRES.features[r].properties.codigo+"/PF-"+
+                                        geojsonRES.features[r].properties.codigo+"_PORTADA.pdf";                          
+
+                                html=html+`<div>
+                                    </LABEL>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>PF - DOTACIO SERVEIS
+                                    </LABEL>
+                                    <a href="${ruta}"  target="_blank">${geojsonRES.features[r].properties.codigo}</a><BR>
+                                    </LABEL>${geojsonRES.features[r].properties.descripcio}<BR></LABEL>           
+                                    </div>`;
+                                   
+                            }
+                            html=html+'<BR>';
+                        } 
+                        if(tabla=="exp_pg"){
+                           // html=html+`<LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>EXPEDIENTES</u><BR>
+                           //        </LABEL>`;
+                            for(var r=0;r<geojsonRES.features.length;r++){
+                                
+                                var ruta="http://vscenegis.hopto.org/joomla/images/sampledata/planoguia/Images Arxiu/PG-RECEPCIO_OBRES/PG-"+
+                                         geojsonRES.features[r].properties.codigo+"/PG-"+
+                                        geojsonRES.features[r].properties.codigo+"_PORTADA.pdf";                          
+
+                                html=html+`<div>
+                                    </LABEL>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>PG - RECEPCIO OBRES
+                                    </LABEL>
+                                    <a href="${ruta}"  target="_blank">${geojsonRES.features[r].properties.codigo}</a><BR>
+                                    </LABEL>${geojsonRES.features[r].properties.descripcio}<BR></LABEL>           
+                                    </div>`;
+                                   
+                            }
+                            html=html+'<BR>';
+                        }
+                        if(tabla=="exp_ph"){
+                           // html=html+`<LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>EXPEDIENTES</u><BR>
+                           //        </LABEL>`;
+                            for(var r=0;r<geojsonRES.features.length;r++){
+                                
+                                var ruta="http://vscenegis.hopto.org/joomla/images/sampledata/planoguia/Images Arxiu/PH-PARCELACIONS/PH-"+
+                                         geojsonRES.features[r].properties.codigo+"/PH-"+
+                                        geojsonRES.features[r].properties.codigo+"_PORTADA.pdf";                          
+
+                                html=html+`<div>
+                                    </LABEL>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>PH - PARCELACIONS
+                                    </LABEL>
+                                    <a href="${ruta}"  target="_blank">${geojsonRES.features[r].properties.codigo}</a><BR>
+                                    </LABEL>${geojsonRES.features[r].properties.descripcio}<BR></LABEL>           
+                                    </div>`;
+                                   
+                            }
+                            html=html+'<BR>';
+                        }
+                        if(tabla=="exp_pi"){
+                           // html=html+`<LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>EXPEDIENTES</u><BR>
+                           //        </LABEL>`;
+                            for(var r=0;r<geojsonRES.features.length;r++){
+                                
+                                var ruta="http://vscenegis.hopto.org/joomla/images/sampledata/planoguia/Images Arxiu/PI-INTERES_GENERAL/PI-"+
+                                         geojsonRES.features[r].properties.codigo+"/PI-"+
+                                        geojsonRES.features[r].properties.codigo+"_PORTADA.pdf";                          
+
+                                html=html+`<div>
+                                    </LABEL>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>PI - INTERES GENERAL
+                                    </LABEL>
+                                    <a href="${ruta}"  target="_blank">${geojsonRES.features[r].properties.codigo}</a><BR>
+                                    </LABEL>${geojsonRES.features[r].properties.descripcio}<BR></LABEL>           
+                                    </div>`;
+                                   
+                            }
+                            html=html+'<BR>';
+                        }
+                        if(tabla=="exp_pj"){
+                           // html=html+`<LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>EXPEDIENTES</u><BR>
+                           //        </LABEL>`;
+                            for(var r=0;r<geojsonRES.features.length;r++){
+                                
+                                var ruta="http://vscenegis.hopto.org/joomla/images/sampledata/planoguia/Images Arxiu/PJ-DELIMITACIO_U_A/PJ-"+
+                                         geojsonRES.features[r].properties.codigo+"/PJ-"+
+                                        geojsonRES.features[r].properties.codigo+"_PORTADA.pdf";                          
+
+                                html=html+`<div>
+                                    </LABEL>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>PJ - DELIMITACIO UA
+                                    </LABEL>
+                                    <a href="${ruta}"  target="_blank">${geojsonRES.features[r].properties.codigo}</a><BR>
+                                    </LABEL>${geojsonRES.features[r].properties.descripcio}<BR></LABEL>           
+                                    </div>`;
+                                   
+                            }
+                        } 
+                        if(tabla=="sleq"){
+                            html=html+`<LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>EQUIPAMENTS COMUNITARIS</u><BR>
+                                    </LABEL>
+                                    <LABEL style='font-size:7.692307692307692pt;font-family:Arial Black;color:#660000;width:131px;height'>(SISTEMA LOCAL)<BR>
+                                    </LABEL>`;
+                            for(var r=0;r<geojsonRES.features.length;r++){   
+
+                                 html=html+`<div>     
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>NOMBRE:
+                                    </LABEL>${geojsonRES.features[r].properties.denominaci}<BR>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>IDENTIFICANTE:
+                                    </LABEL>${geojsonRES.features[r].properties.identif}<BR>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>CODIGO:
+                                    <input type="button" name="Boton1" value=${geojsonRES.features[r].properties.codigo} OnClick="fichaSLEQ(this,'SLEQ','${geojsonRES.features[r].properties.fid}')">
+                                    <input type="button" name="Boton1" value="Articles normativa" OnClick="normativa('slocal_equipamientos','${geojsonRES.features[r].properties.fid}')"><BR><BR>
+                                    
+                                    </div>`;
+                            }
+                        } 
+                        if(tabla=="sgeq"){
+                            html=html+`<LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>EQUIPAMENTS COMUNITARIS</u><BR>
+                                    </LABEL>
+                                    <LABEL style='font-size:7.692307692307692pt;font-family:Arial Black;color:#660000;width:131px;height'>(SISTEMA GENERAL)<BR>
+                                    </LABEL>`;
+                            for(var r=0;r<geojsonRES.features.length;r++){   
+
+                                 html=html+`<div>     
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>NOMBRE:
+                                    </LABEL>${geojsonRES.features[r].properties.denominaci}<BR>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>IDENTIFICANTE:
+                                    </LABEL>${geojsonRES.features[r].properties.identif}<BR>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>CODIGO:
+                                    <input type="button" name="Boton1" value=${geojsonRES.features[r].properties.codigo} OnClick="fichaSGEQ(this)">
+                                    <input type="button" name="Boton1" value="Articles normativa" OnClick="normativa('sgeneral_equipamientos','${geojsonRES.features[r].properties.fid}')"><BR><BR>
+                                            
+                                    </div>`;
+                            }
+                        }  
+                        if(tabla=="slel"){
+                            html=html+`<LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>ESPACIOS LIBRES PÚBLICOS</u><BR>
+                                    </LABEL>
+                                    <LABEL style='font-size:7.692307692307692pt;font-family:Arial Black;color:#660000;width:131px;height'>(SISTEMA LOCAL)<BR>
+                                    </LABEL>`;
+                            for(var r=0;r<geojsonRES.features.length;r++){   
+
+                                 html=html+`<div>     
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>NOMBRE:
+                                    </LABEL>${geojsonRES.features[r].properties.denominaci}<BR>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>IDENTIFICANTE:
+                                    </LABEL>${geojsonRES.features[r].properties.identif}<BR>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>CODIGO:
+                                    <input type="button" name="Boton1" value=${geojsonRES.features[r].properties.codigo} OnClick="fichaSLEL(this)"> 
+                                    <input type="button" name="Boton1" value="Articles normativa" OnClick="normativa('slocal_espacioslibres_publicos','${geojsonRES.features[r].properties.fid}')"><BR><BR>
+                                                
+                                    </div>`;
+                            }
+                        }   
+                        if(tabla=="sgel"){
+                            html=html+`<LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>ESPACIOS LIBRES</u><BR>
+                                    </LABEL>
+                                    <LABEL style='font-size:7.692307692307692pt;font-family:Arial Black;color:#660000;width:131px;height'>(SISTEMA GENERAL)<BR>
+                                    </LABEL>`;
+                            for(var r=0;r<geojsonRES.features.length;r++){   
+
+                                 html=html+`<div>     
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>NOMBRE:
+                                    </LABEL>${geojsonRES.features[r].properties.denominaci}<BR>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>IDENTIFICANTE:
+                                    </LABEL>${geojsonRES.features[r].properties.identif}<BR>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>CODIGO:
+                                    <input type="button" name="Boton1" value=${geojsonRES.features[r].properties.codigo} OnClick="fichaSGEL(this)"> 
+                                    <input type="button" name="Boton1" value="Articles normativa" OnClick="normativa('sgeneral_espacioslibres','${geojsonRES.features[r].properties.fid}')"><BR><BR>
+                                       
+                                    </div>`;
+                            }
+                        }  
+                        if(tabla=="slci"){
+                            html=html+`<LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>COMUNICACIONES E INFRAESTRUCTURAS</u><BR>
+                                    </LABEL>
+                                    <LABEL style='font-size:7.692307692307692pt;font-family:Arial Black;color:#660000;width:131px;height'>(SISTEMA LOCAL)<BR>
+                                    </LABEL>`;
+                            for(var r=0;r<geojsonRES.features.length;r++){   
+
+                                 html=html+`<div>     
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>NOMBRE:
+                                    </LABEL>${geojsonRES.features[r].properties.denominaci}<BR>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>IDENTIFICANTE:
+                                    </LABEL>${geojsonRES.features[r].properties.identif}<BR>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>CODIGO:
+                                    <input type="button" name="Boton1" value=${geojsonRES.features[r].properties.codigo} OnClick="fichaSLCI(this)">     
+                                    <input type="button" name="Boton1" value="Articles normativa" OnClick="normativa('slocal_comunicaciones_infraestructuras','${geojsonRES.features[r].properties.fid}')"><BR><BR>
+                                    
+                                    </div>`;
+                            }
+                        }  
+                        if(tabla=="sgci"){
+                            html=html+`<LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>COMUNICACIONES E INFRAESTRUCTURAS</u><BR>
+                                    </LABEL>
+                                    <LABEL style='font-size:7.692307692307692pt;font-family:Arial Black;color:#660000;width:131px;height'>(SISTEMA GENERAL)<BR>
+                                    </LABEL>`;
+                            for(var r=0;r<geojsonRES.features.length;r++){   
+
+                                 html=html+`<div>     
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>NOMBRE:
+                                    </LABEL>${geojsonRES.features[r].properties.denominaci}<BR>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>IDENTIFICANTE:
+                                    </LABEL>${geojsonRES.features[r].properties.identif}<BR>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>CODIGO:
+                                    <input type="button" name="Boton1" value=${geojsonRES.features[r].properties.codigo} OnClick="fichaSGCI(this)">   
+                                    <input type="button" name="Boton1" value="Articles normativa" OnClick="normativa('sgeneral_comunicaciones_infraestructuras','${geojsonRES.features[r].properties.fid}')"><BR><BR>
+                                       
+                                    </div>`;
+                            }
+                        }  
+                        if(tabla=="residencial"){
+                            html=html+`<LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>RESIDENCIAL</u><BR>
+                                    </LABEL>`;
+                            for(var r=0;r<geojsonRES.features.length;r++){   
+
+                                 html=html+`<div>     
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>CALIFICACIÓN:
+                                    <input type="button" name="Boton1" value=${geojsonRES.features[r].properties.codigo} OnClick="fichaRES(this)">
+                                     <input type="button" name="Boton1" value="Articles normativa" OnClick="normativa('zona_residencial','${geojsonRES.features[r].properties.fid}')"><BR><BR>
+                                   
+                                              
+                                    </div>`;
+                            }
+                        }  
+                        if(tabla=="sec"){
+                            html=html+`<LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>SECUNDARIO</u><BR>
+                                    </LABEL>`;
+                            for(var r=0;r<geojsonRES.features.length;r++){   
+
+                                 html=html+`<div>     
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>CALIFICACIÓN:
+                                    <input type="button" name="Boton1" value=${geojsonRES.features[r].properties.codigo} OnClick="fichaSEC(this)">
+                                    <input type="button" name="Boton1" value="Articles normativa" OnClick="normativa('zona_secundaria','${geojsonRES.features[r].properties.fid}')"><BR><BR>
+                                   
+                                              
+                                    </div>`;
+                            }
+                        }  
+                        if(tabla=="cat"){
+                            html=html+`<LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>CATALOGOS</u><BR>
+                                   </LABEL>`;
+                            for(var r=0;r<geojsonRES.features.length;r++){
+                                codigo=geojsonRES.features[r].properties.proteccion+"/"+
+                                    geojsonRES.features[r].properties.codigo
+                                html=html+`<div>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>NOMBRE:
+                                    </LABEL>${geojsonRES.features[r].properties.denominacion}<BR>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>CODIGO:
+                                    </LABEL>${codigo}<BR><BR>
+                                    </div>`;
+                            }         
+                        }
+                        if(tabla=="api"){
+                            console.log(geojsonRES.features[0].properties.codigo);
+                            html=html+`<LABEL style='font-size:7.692307692307692pt;font-family:Arial Black;color:#660000;width:131px;height'><U>(API) AREA PLANEAMIENTO INCORPORADO</u><BR>
+                                    </LABEL>`;;
+                            for(var r=0;r<geojsonRES.features.length;r++){
+                                codigo="API/"+geojsonRES.features[r].properties.codigo
+                                html=html+`<div>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>CODIGO:
+                                    </LABEL>${codigo}<BR><BR>
+                                    </div>`;
+                            }      
+                           
+                        }
+                        // geojsonRES=null;
+                    }catch( err ) {
+                        //content[n]=""
+                        console.log("No hay"+arrayTablas[n]);
+                    }   
+                    
+                    
+
+                    n++;
+                    if(n<21)
+                       setTimeout(servicio, 1);
+                    else{
+                       if(html!=""){
+                         L.popup({className: 'custom-popup'})
+                            .setLatLng(e.latlng)
+                            .setContent(html)
+                            .openOn(map);
+                            
+                    } 
+                    }   
+                    
+                    
+               })
+
+           }
+
+           setTimeout(servicio, 1);
+
+          
+          
+          /*
+           for(var n=0;n<arrayTablas.length;n++){
+
+               tabla=arrayTablas[n]; 
+               // var url1='http://vscenegis.hopto.org:3000/'+arrayTablas[n]+'?x='+x+'&y='+y;
+               console.log("paix"+tabla);
+               
+
+               fetch("http://vscenegis.hopto.org:3000/"+tabla+"?x="+x+"&y="+y).then(response => response.json()).then(geojsonRES => {
+
+                    console.log("http://vscenegis.hopto.org:3000/"+tabla+"?x="+x+"&y="+y);
+                    try {
+                    var prop=geojsonRES.features[n].properties.codigo;
+                    content[n]="";
+                    content[n]=`<div>
+                        </LABEL>
+                        <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>CODIGO:
+                        </LABEL>${prop}<BR><BR>           
+                        </div>`;
+                    contentFinal=contentFinal+content[n]; 
+                    }catch( err ) {
+                        content[n]=""
+                        console.log("No hay"+arrayTablas[n]);
+                    }   
+                    
+                    console.log("content="+content);
+                    if(n==arrayTablas.length-1 && content!=""){
+                         popup
+                            .setLatLng(e.latlng)
+                            .setContent(content)
+                            .openOn(map);
+                            
+                    }
+                    
+               })
+
+
+           }; */
+
+
+
+            /*
+          
+           var sleqcontent='';
+           var catcontent='';
+           var expcontent='';
+           
+            fetch("http://vscenegis.hopto.org:3000/sleq?x="+x+"&y="+y).then(response => response.json()).then(geojsonEQ => {
+           
+               
+                try {
+                    sleqcontent=''
+                    sleqcontent=`<div>
+                        <LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>EQUIPAMENTS COMUNITARIS</u><BR>
+                        </LABEL>
+                        <LABEL style='font-size:7.692307692307692pt;font-family:Arial Black;color:#660000;width:131px;height'>(SISTEMA LOCAL)<BR>
+                        </LABEL>
+                        <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>NOMBRE:
+                        </LABEL>${geojsonEQ.features[0].properties.denominaci}<BR>
+                        <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>IDENTIFICANTE:
+                        </LABEL>${geojsonEQ.features[0].properties.identif}<BR>
+                        <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>CODIGO:
+                        </LABEL>${geojsonEQ.features[0].properties.codigo}<BR><BR>           
+                        </div>`;
+                }catch( err ) {
+                    sleqcontent=''
+                    console.log("No hay equipamientos");
+                }    
+              
+                fetch("http://vscenegis.hopto.org:3000/cat?x="+x+"&y="+y).then(response => response.json()).then(geojsonCAT => {
+           
+                    console.log("paix2");
+                    catcontent=`<LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>CATALOGOS</u><BR>
+                               </LABEL>`;
+                    
+                    try {
+                        for(var n=0;n<geojsonCAT.features.length;n++){
+                            codigo=geojsonCAT.features[n].properties.proteccion+"/"+
+                                geojsonCAT.features[n].properties.codigo
+                            catcontent=catcontent+`<div>
+                                </LABEL>
+                                <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>NOMBRE:
+                                </LABEL>${geojsonCAT.features[n].properties.denominacion}<BR>
+                                <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>CODIGO:
+                                </LABEL>${codigo}<BR><BR>
+                                </div>`;
+                        }
+                    }catch( err ) {
+                       catcontent=''; 
+                       console.log("No hay catalogos");
+                    }
+
+                    fetch("http://vscenegis.hopto.org:3000/exp?x="+x+"&y="+y).then(response => response.json()).then(geojsonEXP => {
+                       
+                        expcontent=`<LABEL style='font-size:10.0pt;font-family:Arial Black;color:#003366;width:272px;height:25px'><u>EXPEDIENTES PA</u><BR>
+                               </LABEL>`;
+                        console.log(geojsonEXP);
+                        try {
+                            for(var n=0;n<geojsonEXP.features.length;n++){
+
+                                var ruta="http://vscenegis.hopto.org/joomla/images/sampledata/planoguia/Images Arxiu/PA-MODIFICACIO_PG/PA-"+
+                                          geojsonEXP.features[n].properties.cod_exp+"/PA-"+
+                                            geojsonEXP.features[n].properties.cod_exp+"_PORTADA.pdf";                          
+
+                               
+                                expcontent=expcontent+`<div>
+                                    </LABEL>
+                                    <LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>COD EXP:
+                                    </LABEL>
+                                    <a href="${ruta}"  target="_blank">${geojsonEXP.features[n].properties.cod_exp}</a><BR> 
+                                    </div>`;
+                            }
+                        }catch( err ) {
+                            expcontent=''; 
+                            console.log("No hay catalogos");
+                        }
+
+                        if(catcontent!='' || sleqcontent!='' || expcontent!='')
+                            popup
+                                .setLatLng(e.latlng)
+                                .setContent(sleqcontent+catcontent+expcontent)
+                                .openOn(map);
+                            catcontent='';
+                            sleqcontent='';
+                            expcontent='';
+                        });
+                    
+                    
+
+                }); 
+               
+                
+            });
+          
+           */
+            
+
+          //  while (sleqcontent!="") ;
+              
+          }  
+        });
+        // Add OpenStreetMap tile layer to map element
+        /* var osm=L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            maxZoom: 21,
+            maxNativeZoom: 19,
+        	attribution: '© OpenStreetMap'
+        }).addTo(map); */
+
+      /*  function style(feature) { 
+            return { 
+                fillColor:'green', 
+                weight: 2, 
+                    opacity: 1, 
+                    color: 'white', 
+                  //  dashArray: '3', 
+                    fillOpacity: 0.7 
+            }; 
+        }
+        function styleSLEQ(feature) { 
+            return { 
+                fillColor:'#BD0026', 
+                weight: 2, 
+                    opacity: 1, 
+                    color: 'white', 
+                   // dashArray: '3', 
+                    fillOpacity: 0.7 
+            }; 
+        }
+        function styleRES(feature) { 
+            return { 
+                fillColor:'cyan', 
+                weight: 1, 
+                    opacity: 1, 
+                    color: 'black', 
+                   // dashArray: '3', 
+                    fillOpacity: 0.0 
+            }; 
+        }
+        function styleCAT(feature) { 
+            return { 
+                fillColor:'magenta', 
+                weight: 1, 
+                    opacity: 1, 
+                    color: 'black', 
+                   // dashArray: '3', 
+                    fillOpacity: 0.4 
+            }; 
+        }
+
+        function resetHighlight(e) {
+            // var layer = e.target;
+            sleq.resetStyle(e.target);
+        }
+
+        function highlightFeature(e) {
+            var layer = e.target;
+
+            layer.setStyle({
+                weight: 5,
+                color: '#666',
+                dashArray: '',
+                fillOpacity: 0.7
+             });     
+
+            if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                layer.bringToFront();
+            }
+        }
+
+
+        
+
+        function zoomToFeature(e) {
+            map.fitBounds(e.target.getBounds());
+        } */
+
+        // Add JSON to map
+
+        /*
+        var suma
+        var paix=L.geoJson(myData,{
+            style: style,
+            onEachFeature: function (feature, layer) {
+              
+                layer.bindPopup(`<div>
+                                    <p> <b>IDENTIFICANTE:</b> ${feature.properties.identif}<br>
+                                     <b>CODIGO:</b> ${feature.properties.codigo}<br>
+                                     <b>NOMBRE:</h2></b> ${feature.properties.denominaci}</p>
+                                 </div>`);
+            }
+        }).addTo(map);
+
+       
+
+        var resid=L.geoJson(myDataRES,{
+            style: styleRES,
+            onEachFeature: function (feature, layer) {
+                layer.bindPopup(`<div>
+                                    <h3> CODIGO: ${feature.properties.codigo}</h3>
+                                 </div>`);   
+
+            }
+        }).addTo(map);
+
+        var catalogos=L.geoJson(myDataCAT,{
+            style: styleCAT,
+            onEachFeature: function (feature, layer) {
+              console.log("paix2");
+                suma=`<div>
+                                    <h3> CODIGO: ${feature.properties.codigo}</h3>
+                                 </div>`
+             //   layer.bindPopup(suma);   
+              //  suma=''
+
+            }
+        }).addTo(map); */
+
+         var wmsRES = L.tileLayer.wms("http://vscenegis.hopto.org:1024/geoserver/pgou98/wms?", {
+                      
+            layers:'zona_residencial_1',
+            format: 'image/png',
+            // crs: crs25831,
+            transparent: true,
+            continuousWorld: true,
+            attribution: 'Toni & Feliu',
+             maxZoom: 21,
+           // tiled:true,
+           // gridset:'EPSG:3857'
+
+        }); 
+
+        var wmsCONSTRU_SU = L.tileLayer.wms("http://vscenegis.hopto.org:1024/geoserver/pgou98/wms?", {
+                      
+            layers:'constru_su2',
+            format: 'image/png',
+            // crs: crs25831,
+            transparent: true,
+            continuousWorld: true,
+            attribution: 'Toni & Feliu',
+             maxZoom: 21,
+           
+        })
+
+        var wmsSEC = L.tileLayer.wms("http://vscenegis.hopto.org:1024/geoserver/pgou98/wms?", {
+                      
+            layers:'zona_secundaria',
+            format: 'image/png',
+            // crs: crs25831,
+            transparent: true,
+            continuousWorld: true,
+            attribution: 'Toni & Feliu',
+           
+        });
+
+        var wmsTER = L.tileLayer.wms("http://vscenegis.hopto.org:1024/geoserver/pgou98/wms?", {
+                      
+            layers:'zona_terciaria',
+            format: 'image/png',
+            // crs: crs25831,
+            transparent: true,
+            continuousWorld: true,
+            attribution: 'Toni & Feliu',
+       
+        });
+
+         var wmsNR = L.tileLayer.wms("http://vscenegis.hopto.org:1024/geoserver/pgou98/wms?", {
+                      
+            layers:'zonas_centro_historico',
+            format: 'image/png',
+            // crs: crs25831,
+            transparent: true,
+            continuousWorld: true,
+            attribution: 'Toni & Feliu',
+            maxZoom: 22,
+          
+        }); 
+
+        var wmsVOLESP = L.tileLayer.wms("http://vscenegis.hopto.org:1024/geoserver/pgou98/wms?", {
+                      
+            layers:'volumetries',
+            format: 'image/png',
+            // crs: crs25831,
+            transparent: true,
+            continuousWorld: true,
+            attribution: 'Toni & Feliu',
+        
+        }); 
+
+
+     /*   var wmsLineasZONAS = L.tileLayer.wms("http://vscenegis.hopto.org:1024/geoserver/pgou98/wms?", {
+                      
+            layers:'lineas_separacion_zonas',
+            format: 'image/png',
+            // crs: crs25831,
+            transparent: true,
+            continuousWorld: true,
+            attribution: 'Toni & Feliu',
+            tiled:true,
+            gridset:'EPSG:3857'
+     
+            
+        }).addTo(map);
+
+        var wmsProfEDIF = L.tileLayer.wms("http://vscenegis.hopto.org:1024/geoserver/pgou98/wms?", {
+                      
+            layers:'lineas_profundidad_edificable',
+            format: 'image/png',
+            // crs: crs25831,
+            transparent: true,
+            continuousWorld: true,
+            attribution: 'Toni & Feliu',
+            tiled:true,
+            gridset:'EPSG:3857'
+           
+     
+            
+        }).addTo(map); */
+
+        var wmsPG = L.tileLayer.wms("http://vscenegis.hopto.org:1024/geoserver/pgou98/wms?", {
+                      
+            layers:'plan_general1',
+            format: 'image/png',
+            // crs: crs25831,
+            transparent: true,
+            continuousWorld: true,
+            attribution: 'Toni & Feliu',
+         //   tiled:true,
+         //   gridset:'EPSG:3857',
+            maxZoom: 22
+       
+            
+        }); 
+
+        var wmsPGP = L.tileLayer.wms("http://vscenegis.hopto.org:1024/geoserver/pgou98/wms?", {
+                      
+            layers:'plan_general1_puntos',
+            format: 'image/png',
+            // crs: crs25831,
+            transparent: true,
+            continuousWorld: true,
+            attribution: 'Toni & Feliu',
+         //   tiled:true,
+         //   gridset:'EPSG:3857',
+            maxZoom: 22
+       
+            
+        }); 
+
+
+        var wmsSLEQ = L.tileLayer.wms("http://vscenegis.hopto.org:1024/geoserver/pgou98/wms?", {
+                      
+            layers:'slocal_equipamientos',
+            format: 'image/png',
+            // crs: crs25831,
+            transparent: true,
+            continuousWorld: true,
+            attribution: 'Toni & Feliu',
+         //   tiled:true,
+         //   gridset:'EPSG:3857',
+            maxZoom: 22
+       
+            
+        }); 
+
+        var wmsSGEQ = L.tileLayer.wms("http://vscenegis.hopto.org:1024/geoserver/pgou98/wms?", {
+                      
+            layers:'sgeneral_equipamientos',
+            format: 'image/png',
+            // crs: crs25831,
+            transparent: true,
+            continuousWorld: true,
+            attribution: 'Toni & Feliu',
+          //  tiled:true,
+          //  gridset:'EPSG:3857'
+            
+        });
+
+        var wmsSLEL = L.tileLayer.wms("http://vscenegis.hopto.org:1024/geoserver/pgou98/wms?", {
+                      
+            layers:'slocal_espacioslibres_publicos',
+            format: 'image/png',
+            // crs: crs25831,
+            transparent: true,
+            continuousWorld: true,
+            attribution: 'Toni & Feliu',
+            tiled:true,
+            gridset:'EPSG:3857'
+       
+            
+        });
+
+        var wmsSGEL = L.tileLayer.wms("http://vscenegis.hopto.org:1024/geoserver/pgou98/wms?", {
+                      
+            layers:'sgeneral_espacioslibres',
+            format: 'image/png',
+            // crs: crs25831,
+            transparent: true,
+            continuousWorld: true,
+            attribution: 'Toni & Feliu',
+            tiled:true,
+            gridset:'EPSG:3857'
+            
+        }); 
+
+        var wmsSGCI = L.tileLayer.wms("http://vscenegis.hopto.org:1024/geoserver/pgou98/wms?", {
+                      
+            layers:'sgeneral_comunicaciones_infraestructuras',
+            format: 'image/png',
+            // crs: crs25831,
+            transparent: true,
+            continuousWorld: true,
+            attribution: 'Toni & Feliu',
+         
+            
+        }); 
+
+        var wmsSLCI = L.tileLayer.wms("http://vscenegis.hopto.org:1024/geoserver/pgou98/wms?", {
+                      
+            layers:'slocal_comunicaciones_infraestructuras',
+            format: 'image/png',
+            // crs: crs25831,
+            transparent: true,
+            continuousWorld: true,
+            attribution: 'Toni & Feliu',
+         
+            
+        }); 
+
+        /* var wmsCAT = L.tileLayer.wms("http://vscenegis.hopto.org:1024/geoserver/pgou98/wms?", {
+                      
+            layers:'catalogos',
+            format: 'image/png',
+            // crs: crs25831,
+            transparent: true,
+            continuousWorld: true,
+            attribution: 'Toni & Feliu',
+         
+            
+        }).addTo(map); */
+
+        /*var wmsMANZANA = L.tileLayer.wms("http://vscenegis.hopto.org:1024/geoserver/pgou98/wms?", {
+                      
+            layers:'manzana_urbanistica',
+            format: 'image/png',
+            // crs: crs25831,
+            transparent: true,
+            continuousWorld: true,
+            attribution: 'Toni & Feliu',
+            tiled:true,
+            gridset:'EPSG:3857'
+            
+        }).addTo(map); */
+
+        var wmsAPI = L.tileLayer.wms("http://vscenegis.hopto.org:1024/geoserver/pgou98/wms?", {
+                      
+            layers:'api',
+            format: 'image/png',
+            // crs: crs25831,
+            transparent: true,
+            continuousWorld: true,
+            attribution: 'Toni & Feliu',
+           // tiled:true,
+           // gridset:'EPSG:3857'
+            
+        });
+
+      /*  var wmsUE = L.tileLayer.wms("http://vscenegis.hopto.org:1024/geoserver/pgou98/wms?", {
+                      
+            layers:'unidad_ejecucion',
+            format: 'image/png',
+            // crs: crs25831,
+            transparent: true,
+            continuousWorld: true,
+            attribution: 'Toni & Feliu',
+            tiled:true,
+            gridset:'EPSG:3857'
+            
+        }).addTo(map);
+
+         var wmsED = L.tileLayer.wms("http://vscenegis.hopto.org:1024/geoserver/pgou98/wms?", {
+                      
+            layers:'estudios_detalle',
+            format: 'image/png',
+            // crs: crs25831,
+            transparent: true,
+            continuousWorld: true,
+            attribution: 'Toni & Feliu',
+            tiled:true,
+            gridset:'EPSG:3857'
+          
+            
+        }).addTo(map); */
+
+        var wmsARE = L.tileLayer.wms("http://vscenegis.hopto.org:1024/geoserver/pgou98/wms?", {
+                      
+            layers:'area_regimen_especial',
+            format: 'image/png',
+            // crs: crs25831,
+            transparent: true,
+            continuousWorld: true,
+            attribution: 'Toni & Feliu',
+            tiled:true,
+            gridset:'EPSG:3857'
+            
+        })
+
+        /* var baseMaps = {
+                                     
+                "OSM": osm, 
+                                   
+        }; */
+
+        /*var overlayMaps = {
+            "Zona Residencial": wmsRES,
+            "Zona Secundaria": wmsSEC,
+            "Zona Terciaria": wmsTER,
+            "Zona Volumetria especifica": wmsVOLESP,
+            "Lineas Separación zonas": wmsLineasZONAS,
+            "Profundidad edificable": wmsProfEDIF,
+            "Zona Centro historico N/R": wmsNR,
+            "(SL) Equipamientos": wmsSLEQ,
+            "(SG) Equipamientos": wmsSGEQ,
+            "(SL) Espacios Libres Públicos": wmsSLEL,
+            "(SG) Espacios Libres": wmsSGEL,
+            "(SL) Comunicaciones e Infraestructuras": wmsSLCI,
+            "(SG) Comunicaciones e Infraestructuras": wmsSGCI,
+            "Catalogos": wmsCAT,
+            "(API) Area de planeamiento incorporado": wmsAPI,
+            "(ARE) Area de régomen especial": wmsARE,
+            "(UE) Unidad de ejecución": wmsUE,
+            "(ED) Estudios de detalle": wmsED,
+          
+                                     
+        }; */
+
+        
+       /* let pnoaOrthoWMS = L.tileLayer.wms('http://www.ign.es/wms-inspire/pnoa-ma?', {
+            layers: 'OI.OrthoimageCoverage',
+            attribution: 'PNOA cedido por © <a href="http://www.ign.es/ign/main/index.do" target="_blank">Instituto Geográfico Nacional de España</a>'
+        }).addTo(map);*/
+        
+
+      //  L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+         var baseTree = [
+            {
+                label: "<LABEL style='font-size:8pt;font-family:Arial Black;color:black'><U>INFORMACIÓN BASE</U></LABEL>",
+                children: [
+                   /* {label: '<i class="fa fa-bars fa-xs"></i> OSM', layer: osm, name: 'OpenStreeMap'},
+                     {label: "(OSM) Open Street Map", layer: osm, name: 'osm'},*/
+                   
+                   
+                ]
+            }
+        ];     
+
+       /*var overlayTree = [
+            {
+                label: "<LABEL style='font-size:8pt;font-family:Arial Black;color:black'><U>PLAN GENERAL VIGENTE</U></LABEL>",
+                
+                children: [
+                    {label: "<LABEL style='font-size:7.7pt;font-family:Arial Black;color:#154a72'>CALIFICACIONES (SUELO URBANO</LABEL>",
+                        selectAllCheckbox: true,
+                        children: [
+                            {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=zona_residencial_cyan'> Zona Residencial Edificable", layer: wmsRES, name: 'res'},
+                            {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=Zona Secundaria'> Zona Secundaria", layer: wmsSEC, name: 'sec'},  
+                            {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=zona_terciaria'> Zona Terciaria", layer: wmsTER, name: 'ter'},  
+                            {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=Volumetrias'> Volumetria Especifica", layer: wmsVOLESP, name: 've'},  
+                        
+                        ]
+                    },
+                    {label: "<LABEL style='font-size:7.7pt;font-family:Arial Black;color:#154a72'>PROTECCIÓN</LABEL>",
+                        selectAllCheckbox: true,
+                        children: [
+                            {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=Zona N y R'> Zona Centro historico (N/R)", layer: wmsNR, name: 'nr'},  
+                            {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=catalogos'> Catalogos", layer: wmsCAT, name: 'cat'},  
+                        ]
+                    },                            
+                    {label: "<LABEL style='font-size:7.7pt;font-family:Arial Black;color:#154a72'>SISTEMAS</LABEL>",
+                        selectAllCheckbox: true,
+                        children: [
+                             {label: "<LABEL style='font-size:7.7pt;font-family:Arial Black;color:#72152a'>LOCALES</LABEL>",
+                                selectAllCheckbox: true,
+                                children: [
+                                    {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=equipamientos'> (SL) Equipamientos", layer: wmsSLEQ, name: 'sleq'},  
+                                    {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=espacios_libres_local'> (SL) Espacios libres Publicos", layer: wmsSLEL, name: 'slel'},  
+                                    {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=comunicacione_inf_local'> (SL) Comunicaciones e Infraestructuras", layer: wmsSLCI, name: 'slcI'},  
+                               
+                                ]
+                            },
+                            {label: "<LABEL style='font-size:7.7pt;font-family:Arial Black;color:#72152a'>GENERALES</LABEL>",
+                                selectAllCheckbox: true,
+                                children: [
+                                    {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=(SG) Equipamientos'> (SG) Equipamientos", layer: wmsSGEQ, name: 'sgeq'},  
+                                    {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=espacios_libres_general'> (SG) Espacios Libres", layer: wmsSGEL, name: 'sgel'},  
+                                    {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=comunicacione_inf_general'> (SG) Comunicaciones e Infraestructuras", layer: wmsSGCI, name: 'sgeci'}  
+                              
+                                ]
+                            },
+                        ]
+                    },
+                    {label: "<LABEL style='font-size:7.7pt;font-family:Arial Black;color:#154a72'>UNIDADES DE GESTION</LABEL>",
+                        selectAllCheckbox: true,
+                        children: [
+                            {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=manzana_urbanistica'> Manzana urbanistica", layer: wmsMANZANA, name: 'manzana'},              
+                            {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=API'> (API) Area Planeamiento Incorporado", layer: wmsAPI, name: 'api'},                
+                            {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=are'> (ARE) Area Regimen Especial", layer: wmsARE, name: 'are'},                
+                            {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=ue2'> (UE) Unidad Ejecución", layer: wmsUE, name: 'ue'},                
+                            {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=Estudios detalle'> (ED) Estusio de Detalle", layer: wmsED, name: 'ed'},                
+                      
+                        ]
+                    }
+                   
+                   
+                ]
+            }
+        ];                   
+
+      L.control.layers.tree(baseTree,overlayTree).addTo(map); */
+
+        /*var urlCONSTRU = 'http://vscenegis.hopto.org:3000/mvt_constru/{x}/{y}/{z}';
+        var  vt_CONSTRU= L.vectorGrid.protobuf(urlCONSTRU,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    constru: {
+                        fill: true,
+                        weight: 1,
+                        fillColor: '#dafffb',
+                        color: '#17e8ff',
+                        fillOpacity: 0.7,
+                        opacity: 1
+                    }
+                    
+                },
+                interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        );*/
+        
+
+        var urlPG = 'http://vscenegis.hopto.org:3000/mvt_pg/{x}/{y}/{z}';
+        var  vt_PG= L.vectorGrid.protobuf(urlPG,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    pg: function(properties, zoom) {
+                        var p = properties.entidad;
+                        return {
+                            fillColor: 
+                                p === 'RES' ? '#dafffb' :
+                                p === 'SEC' ? '#cce6ff' :
+                                p === 'TER' ? '#e6ccff' :
+                                p === 'VOL' ? '#b3e6e6' :
+                                p === 'NR' ? '#ebc797' :
+                                p === 'SLEQ' ? '#006699' :
+                                p === 'SGEQ' ? '#ff9999' :
+                                p === 'SLEL' ? '#99cc00' :   
+                                p === 'SGEL' ? '#4d804d' :                    
+                                p === 'SLCI' ? '#edf193' : 
+                                p === 'SGCI' ? '#ff9e17' : 
+                                p === 'API' ? 'yellow' : 
+                                '#FFEDA0',
+                            fillOpacity: 
+                                p === 'API' ? 0.1: 
+                                0.7,
+                            opacity:1,
+                            stroke: true,
+                            fill: true,
+                            color:
+                                p === 'RES' ? '#17e8ff' :
+                                p === 'SEC' ? '#b3ccff' :
+                                p === 'TER' ? '#ccb3ff' :
+                                p === 'VOL' ? '#003333' :
+                                p === 'NR' ? '#c17511' :
+                                p === 'SLEQ' ? '#006699' :                               
+                                p === 'SGEQ' ? '#910e2d' :
+                                p === 'SLEL' ? '#388036' :
+                                p === 'SGEL' ? '#388036' : 
+                                p === 'SLCI' ? '#edf193' : 
+                                p === 'SGCI' ? '#ff9e17' : 
+                                p === 'API' ? '#990000' : 
+                                '#FFEDA0',
+                            weight:
+                                p === 'RES' ? 1 :
+                                p === 'SEC' ? 1 :
+                                p === 'TER' ? 1 :
+                                p === 'VOL' ? 0.7 :
+                                p === 'NR' ? 0.7 :
+                                p === 'SLEQ' ? 1.5 :                               
+                                p === 'SGEQ' ? 1.5 :
+                                p === 'SLEL' ? 1.5 :
+                                p === 'SGEL' ? 2 : 
+                                p === 'SLCI' ? 2 :
+                                p === 'SGCI' ? 2 :
+                                p === 'API' ? 3 : 4
+
+                        }
+                    }  
+                },
+                //  interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        );
+    
+         var urlRES = 'http://vscenegis.hopto.org:3000/mvt_res/{x}/{y}/{z}';
+        var  vt_RES= L.vectorGrid.protobuf(urlRES,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    residencial: function(properties, zoom) {
+                        var codigo = properties.codigo;
+                        var p='X';
+                        if(codigo!=null)
+                           p=codigo.substring(0,1);
+
+                        var z=zoom;
+                        // console.log("zoom="+z+","+codigo+","+p);
+                        return {
+                            fill: true,
+                            weight: 1,
+                            fillColor: 
+                                p === 'A' ? '#ff647f' :
+                                p === 'B' ? '#ff7f7f' :
+                                p === 'C' ? '#ff003c' :
+                                p === 'D' ? '#ff947f' :
+                                p === 'I' ? '#ffdc5b' :
+                                p === 'J' ? '#ffc85a' :
+                                '#ffb592',
+                            color: 
+                                p === 'A' ? '#ff647f' :
+                                p === 'B' ? '#ff7f7f' :
+                                p === 'C' ? '#ff003c' :
+                                p === 'D' ? '#ff947f' :
+                                p === 'I' ? '#ffdc5b' :
+                                p === 'J' ? '#ffc85a' :
+                                '#ffb592',
+                            fillOpacity: 0.4,
+                            opacity: 1
+                           
+                        }
+                    }  
+                    
+                    
+                },
+              //  interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        );
+      //  map.addLayer(vt_RES);
+
+         var urlLSZ = 'http://vscenegis.hopto.org:3000/mvt_lsz/{x}/{y}/{z}';
+        var  vt_LSZ= L.vectorGrid.protobuf(urlLSZ,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    lsz: {
+                        fill: false,
+                        weight: 1,
+                        fillColor: '#dafffb',
+                        color: 'black',
+                        fillOpacity: 0.7,
+                        opacity: 1,
+                        dashArray: '4, 2',
+                    }
+                    
+                },
+              //  interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        );
+
+        var urlNR = 'http://vscenegis.hopto.org:3000/mvt_nr/{x}/{y}/{z}';
+        var  vt_NR= L.vectorGrid.protobuf(urlNR,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    nr: function(properties, zoom) {
+                        var codigo = properties.codigo;
+                        var p=codigo.substring(0,1);
+                        var z=zoom;
+                        console.log("zoom="+z);
+                        return {
+                            stroke:  z >= 10 ? true: false,
+                            fill:  z >= 10 ? true: false,
+                            weight: 1,
+                            fillColor: 
+                                p === 'N' ? '#a66a4e' :
+                                '#c49782',
+                            color:
+                                p === 'N' ? '#a66a4e' :
+                                '#c49782',
+                            fillOpacity: 0.7,
+                            opacity: 1
+                            
+                           
+                        }
+                    }  
+                    
+                    
+                },
+              //  interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        ); 
+    
+      /*  var marcador = new Array(); 
+
+       var CustomIcon = L.Icon.extend({
+            options: {
+                iconSize:     [120, 90],
+                iconAnchor:   [22, 94],
+                popupAnchor:  [-3, -76]
+            }
+        });
+        var svgrect = `<svg xmlns="https://www.w3.org/2000/svg"><text>  Texto sin nada. </text></svg>`;
+        var url = encodeURI("data:image/svg+xml," + svgrect).replace('#','%23');
+        var rectIcon = new CustomIcon({iconUrl: url})
+
+      
+        
+
+        vt_RES.on('tileload', function(e) {
+           // console.log("paixxxxxxxx="+e)
+            var cont=0;
+            for(i=0;i<marcador.length;i++) {
+                map.removeLayer(marcador[i]);
+            }  
+
+            Object.keys(vt_RES._vectorTiles).forEach(function(e){
+               // console.log(vt_RES._vectorTiles[e]);
+
+                var features=vt_RES._vectorTiles[e]._features;
+                
+               // console.log(vt_RES._vectorTiles[e]._features.layer);
+                Object.keys(features).forEach(function(i){
+                  //  console.log(features[i].feature.properties.codigo);
+                  //  console.log(features[i].feature.properties);
+                    var lat=features[i].feature.properties.st_x;
+                    var lon=features[i].feature.properties.st_y;
+                    if(map.getZoom()>16){
+                         var resMarker = new L.marker([lon, lat]).bindPopup(features[i].feature.properties.codigo,{ noHide: true }); 
+                       // var resMarker =new L.marker([lon, lat], {icon: rectIcon}).bindPopup("Soy un marcador SVG.");
+
+                       // var resMarker = new L.marker([lon, lat], { opacity: 0.01 }); //opacity may be set to zero
+                       // resMarker.bindTooltip(features[i].feature.properties.codigo, {permanent: true });
+                       
+                       // console.log( resMarker);
+                        marcador[cont]=resMarker;
+                        map.addLayer(marcador[cont]);
+                        marcador[cont].addTo(map); 
+
+
+                       cont++;
+                      // marker.addTo(map);
+                    }
+                }) 
+
+            })
+           
+          //  marker.addTo(map);
+        })  */
+
+       //  console.log(vt_RES);
+
+      /*  var urlALL = 'http://vscenegis.hopto.org:3000/mvt_all/{x}/{y}/{z}';
+        var  vt_ALL= L.vectorGrid.protobuf(urlALL,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    sgci: {
+                        fill: true,
+                        weight: 1.5,
+                        fillColor: '#ff9e17',
+                        color: '#ff9e17',
+                        fillOpacity: 0.7,
+                        opacity: 1
+                    },
+                    slci: {                        
+                        fill: true,
+                        weight: 1.5,
+                        fillColor: '#edf193',
+                        color: '#ff9e17',
+                        fillOpacity: 0.7,
+                        opacity: 1,
+                    }
+                    
+                },
+              //  interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        );
+       // map.addLayer(vt_ALL);
+         vt_ALL.on('tileload', function(e) {
+            console.log("paixxxxxxxx="+e.getDataLayerNames)
+           
+        }) */
+
+         var urlSLEQ = 'http://vscenegis.hopto.org:3000/mvt/{x}/{y}/{z}';
+        var vt_SLEQ= L.vectorGrid.protobuf(urlSLEQ,{              
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    equipamientos: {
+                        fill: true,
+                        weight: 1,
+                        fillColor: '#5bb0e8',
+                        color: 'black',
+                        fillOpacity: 0.7,
+                        opacity: 1
+                    },
+                    place_label: function(properties) {
+                        return [];
+                    }
+                },
+                // interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                },   
+                
+            }
+        );
+        // map.addLayer(vt_SLEQ); 
+
+        var urlSGEQ = 'http://vscenegis.hopto.org:3000/mvt_sgeq/{x}/{y}/{z}';
+        var vt_SGEQ= L.vectorGrid.protobuf(urlSGEQ,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    sgeq: {
+                        fill: true,
+                        weight: 1,
+                        fillColor: '#326499',
+                        color: 'black',
+                        fillOpacity: 0.7,
+                        opacity: 1
+                    }
+                    
+                },
+              //  interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        );
+      //  map.addLayer(vt_SGEQ);
+
+        var urlSGEL = 'http://vscenegis.hopto.org:3000/mvt_sgel/{x}/{y}/{z}';
+        var vt_SGEL= L.vectorGrid.protobuf(urlSGEL,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    sgel: {
+                        fill: true,
+                        weight: 1,
+                        fillColor: '#008000',
+                        color: 'black',
+                        fillOpacity: 0.7,
+                        opacity: 1
+                    }
+                    
+                },
+             //   interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        );
+     //   map.addLayer(vt_SGEL);
+
+        var urlSLEL = 'http://vscenegis.hopto.org:3000/mvt_slel/{x}/{y}/{z}';
+        var vt_SLEL= L.vectorGrid.protobuf(urlSLEL,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    slel: {
+                        fill: true,
+                        weight: 1,
+                        fillColor: '#32e700',
+                        color: 'black',
+                        fillOpacity: 0.7,
+                        opacity: 1
+                    }
+                    
+                },
+             //   interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        );
+      //  map.addLayer(vt_SLEL);
+
+        var urlSLCI = 'http://vscenegis.hopto.org:3000/mvt_slci/{x}/{y}/{z}';
+        var vt_SLCI= L.vectorGrid.protobuf(urlSLCI,{
+               
+                rendererFactory: L.svg.tile,
+                
+                vectorTileLayerStyles: {
+                    
+                    slci: {
+                        
+                        fill: true,
+                        weight: 1,
+                        fillColor: '#6e87a0',
+                        color: 'black',
+                        fillOpacity: 0.7,
+                        opacity: 1,
+                 
+                    }
+                    
+                },
+                
+              //  interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        );
+      //  map.addLayer(vt_SLCI);
+     
+
+        var urlSGCI = 'http://vscenegis.hopto.org:3000/mvt_sgci/{x}/{y}/{z}';
+        var vt_SGCI= L.vectorGrid.protobuf(urlSGCI,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    sgci: {
+                        fill: true,
+                        weight: 1,
+                        fillColor: '#6e87a0',
+                        color: 'black',
+                        fillOpacity: 0.7,
+                        opacity: 1
+                    }
+                    
+                },
+              //  interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        );
+      //  map.addLayer(vt_SGCI);
+
+        function popup_sleq (feature, layer) {
+            layer.bindPopup(feature.properties.codigo);
+        };  
+
+        var marker=null;
+
+     
+
+       var urlAPI = 'http://vscenegis.hopto.org:3000/mvt_api/{x}/{y}/{z}';
+        var  vt_API= L.vectorGrid.protobuf(urlAPI,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    api: function(properties, zoom) {
+                        var p = properties.entidad;
+                        var z=zoom;
+                        console.log("zoom="+z);
+                        return {
+                            fill: false,
+                            weight: z >= 16 ? 3: 2,
+                            fillColor: 'yellow',
+                            color: '#990000',
+                            fillOpacity: z >= 16 ? 0.1: 0.2,
+                            opacity: 1
+                            
+                           
+                        }
+                    }  
+                    
+                    
+                },
+              //  interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        );
+
+        var urlARE = 'http://vscenegis.hopto.org:3000/mvt_are/{x}/{y}/{z}';
+        var vt_ARE= L.vectorGrid.protobuf(urlARE,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    are: {
+                        fill: true,
+                        weight: 5,
+                        fillColor: '#4d66cc',
+                        color: '#4d66cc',
+                        fillOpacity: 0.1,
+                        opacity: 1,
+                        dashArray: '2, 6',
+                    }
+                    
+                },
+              //  interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        );
+
+        var urlUE = 'http://vscenegis.hopto.org:3000/mvt_ue/{x}/{y}/{z}';
+        var vt_UE= L.vectorGrid.protobuf(urlUE,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    ue: {
+                        fill: false,
+                        weight: 4,
+                        fillColor: '#880526',
+                        color: '#e41a1c',
+                        fillOpacity: 0.1,
+                        opacity: 1,
+                        dashArray: '2, 5',
+                    }
+                    
+                },
+              //  interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        );
+
+        var urlED = 'http://vscenegis.hopto.org:3000/mvt_ed/{x}/{y}/{z}';
+        var vt_ED= L.vectorGrid.protobuf(urlED,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    ed: {
+                        fill: true,
+                        weight: 3,
+                        fillColor: '#80fa75',
+                        color: '#0e6a06',
+                        fillOpacity: 0.1,
+                        opacity: 1,
+                        dashArray: '1, 6',
+                    }
+                    
+                },
+              //  interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        ); 
+
+
+        var urlSEC = 'http://vscenegis.hopto.org:3000/mvt_sec/{x}/{y}/{z}';
+        var vt_SEC= L.vectorGrid.protobuf(urlSEC,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    sec: {
+                        fill: true,
+                        weight: 1,
+                        fillColor: '#8c4ec6',
+                        color: '#8c4ec6',
+                        fillOpacity: 0.7,
+                        opacity: 1,
+                    }
+                    
+                },
+              //  interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        ); 
+
+        var urlTER = 'http://vscenegis.hopto.org:3000/mvt_layers/{x}/{y}/{z}?table=zona_terciaria';
+        var vt_TER= L.vectorGrid.protobuf(urlTER,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    layer: function(properties, zoom) {
+                        var codigo = properties.codigo;
+                        var p='X';
+                        if(codigo!=null)
+                           p=codigo.substring(0,1);
+                        var z=zoom;
+                        console.log("zoom="+z);
+                        return {
+                            stroke:  true,
+                            fill:  true,
+                            weight: 1,
+                            fillColor: 
+                                p === 'S' ? '#ff82ff' :
+                                '#007dff',
+                            color:
+                                p === 'S' ? '#ff82ff' :
+                                '#007dff',
+                            fillOpacity: 0.7,
+                            opacity: 1
+                            
+                           
+                        }
+                    }  
+                    
+                },
+              //  interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        ); 
+
+        var urlVOLESP = 'http://vscenegis.hopto.org:3000/mvt_layers/{x}/{y}/{z}?table=volumetries_corregidas';
+        var vt_VOLESP= L.vectorGrid.protobuf(urlVOLESP,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    layer: {
+                        fill: true,
+                        weight: 1,
+                        fillColor: '#b3e6e6',
+                        color: '#003333',
+                        fillOpacity: 0.7,
+                        opacity: 1,
+                    }
+                    
+                },
+              //  interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        ); 
+
+        var urlCAT = 'http://vscenegis.hopto.org:3000/mvt_layers/{x}/{y}/{z}?table=catalogos';
+        var vt_CAT= L.vectorGrid.protobuf(urlCAT,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    layer: {
+                        fill: true,
+                        weight: 1.5,
+                        fillColor: '#ff009b',
+                        color: '#ff009b',
+                        fillOpacity: 0.2,
+                        opacity: 1,
+                    }
+                    
+                },
+              //  interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        ); 
+
+        var urlURBANIZABLE = 'http://vscenegis.hopto.org:3000/mvt_urbanizable/{x}/{y}/{z}?table=suelo_urbanizable';
+        var vt_URBANIZABLE= L.vectorGrid.protobuf(urlURBANIZABLE,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    layer: function(properties, zoom) {
+                        var p = properties.uso;
+                        var z=zoom;
+                        console.log("zoom="+z);
+                        return {
+                            stroke:  true,
+                            fill:  true,
+                            weight: 4,
+                            fillColor: 
+                                p === 'R' ? '#4d8080' :
+                                '#4d8080',
+                            color:
+                                p === 'R' ? '#4d8080' :
+                                '#4d8080',
+                            fillOpacity: 0.5,
+                            opacity: 1,
+                            dashArray: '2, 6'
+                            
+                           
+                        }
+                    }  
+                },
+              //  interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        ); 
+
+        var urlAT = 'http://vscenegis.hopto.org:3000/mvt_layers/{x}/{y}/{z}?table=at_dot';
+        var vt_AT= L.vectorGrid.protobuf(urlAT,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    layer: {
+                        fill: true,
+                        weight: 1.5,
+                        fillColor: '#f1c254',
+                        color: '#f1c254',
+                        fillOpacity: 0.22,
+                        opacity: 1,
+                    }
+                    
+                },
+              //  interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        ); 
+
+        var urlAANP = 'http://vscenegis.hopto.org:3000/mvt_layers/{x}/{y}/{z}?table=aanp';
+        var vt_AANP= L.vectorGrid.protobuf(urlAANP,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    layer: {
+                        fill: true,
+                        weight: 1.5,
+                        fillColor: '#264d00',
+                        color: '#264d00',
+                        fillOpacity: 0.5,
+                        opacity: 1,
+                    }
+                    
+                },
+              //  interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        ); 
+
+        var urlANEI = 'http://vscenegis.hopto.org:3000/mvt_layers/{x}/{y}/{z}?table=area_natural_especial_interes';
+        var vt_ANEI= L.vectorGrid.protobuf(urlANEI,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    layer: {
+                        fill: true,
+                        weight: 1.5,
+                        fillColor: '#6d6d37',
+                        color: '#6d6d37',
+                        fillOpacity: 0.5,
+                        opacity: 1,
+                    }
+                    
+                },
+              //  interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        ); 
+
+        var urlAIA = 'http://vscenegis.hopto.org:3000/mvt_layers/{x}/{y}/{z}?table=aia_dot';
+        var vt_AIA= L.vectorGrid.protobuf(urlAIA,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    layer: {
+                        fill: true,
+                        weight: 1.5,
+                        fillColor: '#d7c29e',
+                        color: '#d7c29e',
+                        fillOpacity: 0.5,
+                        opacity: 1,
+                    }
+                    
+                },
+              //  interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        ); 
+
+        var urlSRG = 'http://vscenegis.hopto.org:3000/mvt_layers/{x}/{y}/{z}?table=srg_dot';
+        var vt_SRG= L.vectorGrid.protobuf(urlSRG,{
+               // rendererFactory: L.canvas.tile,
+                rendererFactory: L.svg.tile,
+                vectorTileLayerStyles: {
+                    layer: {
+                        fill: true,
+                        weight: 1.5,
+                        fillColor: '#ffff94',
+                        color: '#ffff94',
+                        fillOpacity: 0.5,
+                        opacity: 1,
+                    }
+                    
+                },
+              //  interactive: true,
+                getFeatureId: function(feature) {
+                    return feature.properties["fid"]
+                }   
+            }
+        ); 
+
+       
+
+     //  console.log(vt_ARE._dataLayersName);
+
+     //  console.log(vt_ARE.e);
+
+     /*    var buf = new Pbf(vt_ARE._vectorTiles);
+        var  vt = new VectorTile(buf);
+       console.log("paixvt="+vt.layers);
+        console.log(vt_ARE.getDataLayerNames('are'));
+         console.log(vt_ARE._vectorTiles);
+
+         var vtTiles=vt_ARE._vectorTiles;
+        for (var id in vtTiles._layers) {
+            var layer = vtTiles._layers[id];
+            for (var i = 0; i < layer.length; i++) {
+                var feature = layer.feature(i);
+                console.log("paix:"+feature);
+                if (loadGeom) feature.loadGeometry();
+            }
+        } */
+
+     
+     
+     // console.log(vt_SLEQ.getDataLayerNames;
+
+        
+      /* var id=0;
+      
+        vt_SLEQ.on('click', function(e) {
+           
+            console.log("pjpj"+e);
+            console.log(vt_SLEQ.options);
+            if (e.layer.feature) {
+                var prop = e.layer.feature.properties;
+                //var latlng = [e.latlng.lat,e.latlng.lng];
+            }else {
+                var prop = e.layer.properties;
+                //var latlng = [Number(parcel.y),Number(parcel.x)];
+            }
+            //settimeout otherwise when map click fires it will override this color change
+           
+            console.log("fid="+id);
+            if (id != 0) {
+                console.log("pasa="+id);
+                vt_SLEQ.setFeatureStyle(id, {
+                    fill: true,
+                    weight: 2,
+                    fillColor: 'red',
+                    color: 'green',
+                    fillOpacity: 0.5,
+                    opacity: 1
+                });
+            } 
+            id = prop["fid"];
+          //  id = prop["codigo"];
+            setTimeout(function() {
+                vt_SLEQ.setFeatureStyle(id, {
+                    fill: true,
+                    weight: 2,
+                    fillColor: 'red',
+                    color: 'yellow',
+                    fillOpacity: 0.7,
+                    opacity: 1
+                }, 100);
+            }); 
+        }); 
+
+        
+
+
+         var baseTree = [
+            {
+                label: "<LABEL style='font-size:8pt;font-family:Arial Black;color:black'><U>INFORMACIÓN BASE</U></LABEL>",
+                children: [
+                  //  {label: '<i class="fa fa-bars fa-xs"></i> OSM', layer: osm, name: 'OpenStreeMap'},
+                     {label: "(OSM) Open Street Map", layer: osm, name: 'osm'},
+                   
+                   
+                ]
+            }
+        ];     */
+
+        // map.addLayer(vt_PG); 
+
+        /*var mb = L.tileLayer.mbTiles('http://vscenegis.hopto.org:3000/images/prueba3.mbtiles', {
+            minZoom: 12,
+            maxZoom: 19
+        }).addTo(map); */
+
+        /* L.tileLayer('http://vscenegis.hopto.org:3000/images//mbtiles/{z}/{x}/{y}.png', {
+        //L.tileLayer('http://84.120.6.158:1025/data/prueba/{z}/{x}/{y}.png', {
+            minZoom: 12,
+            maxZoom: 19,
+            tms: false,
+            attribution: 'Generated by TilesXYZ'
+        }).addTo(map);  */
+
+        // map.addLayer(vt_PG); 
+       //  map.addLayer(wmsPGP);
+       /*  map.addLayer(wmsRES); 
+         map.addLayer(wmsSLEQ); 
+        map.addLayer(wmsSGEQ); 
+        map.addLayer(wmsSLEL); 
+        map.addLayer(wmsSGEL); */
+
+        // var layerGroup = L.layerGroup([vt_SLCI,vt_SGCI]);
+        var resGroup = L.layerGroup([vt_RES,wmsRES]);
+        var sleqGroup = L.layerGroup([vt_SLEQ,wmsSLEQ]);
+        var sgeqGroup = L.layerGroup([vt_SGEQ,wmsSGEQ]);
+        var slelGroup = L.layerGroup([vt_SLEL,wmsSLEL]);
+        var sgelGroup = L.layerGroup([vt_SGEL,wmsSGEL]);
+        var slciGroup = L.layerGroup([vt_SLCI,wmsSLCI]);
+        var sgciGroup = L.layerGroup([vt_SGCI,wmsSGCI]);
+        var apiGroup = L.layerGroup([vt_API,wmsAPI]);
+        var areGroup = L.layerGroup([vt_ARE,wmsARE]);
+        var ueGroup = L.layerGroup([vt_UE]);
+        var edGroup = L.layerGroup([vt_ED]);
+        var nrGroup = L.layerGroup([vt_NR,wmsNR]); 
+        map.addLayer(resGroup);
+        map.addLayer(vt_SEC);
+        map.addLayer(vt_TER);
+        map.addLayer(vt_VOLESP);
+        map.addLayer(vt_LSZ);
+        map.addLayer(sleqGroup);
+        map.addLayer(sgeqGroup);
+        map.addLayer(slelGroup);
+        map.addLayer(sgelGroup);
+        map.addLayer(slciGroup); 
+        map.addLayer(sgciGroup);
+        map.addLayer(nrGroup);
+        map.addLayer(apiGroup);
+        map.addLayer(areGroup);
+        map.addLayer(vt_URBANIZABLE);
+        map.addLayer(vt_AT);
+        map.addLayer(vt_AANP);
+        map.addLayer(vt_ANEI);
+        map.addLayer(vt_AIA);
+        map.addLayer(vt_SRG);
+        
+        //map.addLayer(ueGroup);
+        //map.addLayer(edGroup);
+        
+        map.on('zoomend', function () {
+            if (map.getZoom() <12) {
+                map.removeLayer(nrGroup);
+                map.removeLayer(resGroup);
+                map.removeLayer(vt_SEC);
+                map.removeLayer(vt_TER);
+                map.removeLayer(vt_VOLESP);
+                //map.removeLayer(vt_LSZ);
+                map.removeLayer(ueGroup);
+                map.removeLayer(edGroup);
+                map.removeLayer(vt_CAT);
+            }else{
+                 map.addLayer(vt_CAT);
+                map.addLayer(nrGroup);
+                map.addLayer(resGroup);
+                map.addLayer(vt_SEC);
+                map.addLayer(vt_TER);
+                map.addLayer(vt_VOLESP);
+                // map.addLayer(vt_LSZ);
+                map.addLayer(ueGroup);
+                map.addLayer(edGroup);
+               
+            }
+            if (map.getZoom() <17) {
+                map.removeLayer(vt_LSZ);
+              //  map.removeLayer(wmsCONSTRU_SU);
+            }else{
+                map.addLayer(vt_LSZ);
+              //  map.addLayer(wmsCONSTRU_SU);
+            }
+        }); 
+
+       
+
+
+      /*   for(var n=0;n<vt_ARE._vectorTiles.length;n++){
+            console.log(vt_ARE._vectorTiles[n]);
+        } */
+
+        
+
+     
+
+        
+
+        /*var appearanceControl = L.control.appearance(baseMaps,overlaysMap, over, {opacity:true,
+                                                    remove:true,
+                                                    color:true,
+                                                    removeIcon:"./static/js/leaflet/img/remove_icon.png"});
+        appearanceControl.addTo(map); */
+
+        
+        
+        var overlayTree = [
+            {
+                label: "<LABEL style='font-size:8pt;font-family:Arial Black;color:black'><U>PLAN GENERAL VIGENTE</U></LABEL>",
+                
+                children: [
+                    {label: "<LABEL style='font-size:7.7pt;font-family:Arial Black;color:#154a72'>CALIFICACIONES (SUELO URBANO</LABEL>",
+                        selectAllCheckbox: true,
+                        children: [
+                            
+                            {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=res_mapa1'>", layer: resGroup, name: 'res'},
+                            {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=Zona Secundaria'> Zona Secundaria", layer: vt_SEC, name: 'sec'},  
+                            {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=zona_terciaria'> Zona Terciaria", layer: vt_TER, name: 'ter'},  
+                            {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=Volumetrias'> Volumetria Especifica", layer: vt_VOLESP, name: 've'},  
+                            {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=linea separacion zonas'> Separación Zonas", layer: vt_LSZ, name: 'res'},
+                        
+                        ]
+                    },
+                                            
+                    {label: "<LABEL style='font-size:7.7pt;font-family:Arial Black;color:#154a72'>SISTEMAS</LABEL>",
+                        selectAllCheckbox: true,
+                        children: [
+                             {label: "<LABEL style='font-size:7.7pt;font-family:Arial Black;color:#72152a'>LOCALES</LABEL>",
+                                selectAllCheckbox: true,
+                                children: [
+                                    {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=equipamientos'> (SL) Equipamientos", layer: sleqGroup, name: 'sleq'},  
+                                    {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=espacios_libres_local'> (SL) Espacios libres Publicos", layer: slelGroup, name: 'slel'},  
+                                    {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=comunicacione_inf_local'> (SL) Comunicaciones e Infraestructuras", layer: slciGroup, name: 'slcI'},  
+                               
+                                ]
+                            },
+                            {label: "<LABEL style='font-size:7.7pt;font-family:Arial Black;color:#72152a'>GENERALES</LABEL>",
+                                selectAllCheckbox: true,
+                                children: [
+                                    {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=(SG) Equipamientos'> (SG) Equipamientos", layer: sgeqGroup, name: 'sgeq'},  
+                                    {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=espacios_libres_general'> (SG) Espacios Libres", layer: sgelGroup, name: 'sgel'},  
+                                    {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=comunicacione_inf_general'> (SG) Comunicaciones e Infraestructuras", layer:sgciGroup, name: 'sgeci'}  
+                              
+                                ]
+                            },
+                        ]
+                    },
+                    {label: "<LABEL style='font-size:7.7pt;font-family:Arial Black;color:#154a72'>PROTECCIÓN</LABEL>",
+                        selectAllCheckbox: true,
+                        children: [
+                            {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=Zona N y R'> Zona Centro historico (N/R)", layer: nrGroup, name: 'nr'},  
+                            {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=catalogos'> Catalogos", layer: vt_CAT, name: 'cat'},  
+                        ]
+                    },    
+                    {label: "<LABEL style='font-size:7.7pt;font-family:Arial Black;color:#154a72'>UNIDADES DE GESTION</LABEL>",
+                        selectAllCheckbox: true,
+                        children: [
+                         //   {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=manzana_urbanistica'> Manzana urbanistica", layer: wmsMANZANA, name: 'manzana'},              
+                            {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=API'> (API) Area Planeamiento Incorporado", layer: apiGroup, name: 'api'},                
+                            {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=are'> (ARE) Area Regimen Especial", layer: areGroup, name: 'are'},                
+                            {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=ue2'> (UE) Unidad Ejecución", layer: ueGroup, name: 'ue'},                
+                            {label: "<IMAGE SRC='http://vscenegis.hopto.org:1024/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style=Estudios detalle'> (ED) Estusio de Detalle", layer: edGroup, name: 'ed'},                
+                      
+                        ]
+                    }
+                   
+                   
+                ]
+            }
+        ];                  
+
+         L.control.layers.tree(baseTree,overlayTree).addTo(map);  
+         map.addControl(new L.Control.Fullscreen());
+
+        /* var overlay = {
+            "Zona Residencial": vt_RES,
+            "Zona Secundaria": vt_SEC,
+         }   
+
+         var appearanceControl = L.control.appearance(null,overlay,overlay, {
+                                                    opacity:true,
+                                                    remove:true,
+                                                    color:true,
+                                                    removeIcon:"./static/js/leaflet/img/remove_icon.png"});
+         appearanceControl.addTo(map); */
+
+     /*  fetch('http://localhost:3000/catalogos').then(response => response.json()).then(vigo_geojson => {
+           //   var features=vigo_geojson.features
+            //  for (var i in features) {
+              //   console.log(vigo_geojson.features[0].properties),
+            //  }   
+             console.log(vigo_geojson.features[0].properties.codigo);
+            L.geoJSON(vigo_geojson, {
+                pointToLayer: function(feature, latlng) {
+                    return L.circleMarker(latlng, geojsonMarkerOptions);
+                }
+            }).addTo(map);
+        }); */
+
+      
+        /*fetch('http://vscenegis.hopto.org:3000/data').then(function(response){
+            return response.json();
+        }).then(function(json){
+            
+        console.log("vectorgrid"+json);
+
+        var vectorGrid = L.vectorGrid.slicer( json, {
+            rendererFactory: L.canvas.tile,
+            vectorTileLayerStyles: {
+                'paix': function(properties, zoom) {
+                    console.log(properties);
+                    var p = properties.mapcolor7 % 5;
+                        return {
+                       
+                            fillColor: p === 0 ? '#800026' :
+                                p === 1 ? '#E31A1C' :
+                                p === 2 ? '#FEB24C' :
+                                p === 3 ? '#B2FE4C' : '#FFEDA0',
+                            fillOpacity: 0.5,
+                                //fillOpacity: 1,
+                            stroke: true,
+                            fill: true,
+                            color: 'red',
+                            // opacity: 0.2,
+                            weight: 2
+                        }
+                    }
+                }
+            }).addTo(map)
+       });  */

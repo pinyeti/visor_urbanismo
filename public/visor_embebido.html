@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Visor Urbanismo</title>
+  <style>
+    /* Estilos para el mensaje de carga */
+    #cargando {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 20%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 5px;
+      z-index: 9999;
+    }
+    #mensaje {
+      text-align: left;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Visor Urbanismo</h1>
+  <h3>SIGDU (Servicio de Innovación y gestión de datos urbanísticos).</h3>
+  <h4>Urbanismo. Ajuntament de Palma</h4>
+  <!-- Mensaje de carga -->
+  <div id="cargando">Cargando...</div>
+
+  <!-- Iframe -->
+  <iframe id="iframeVisor" width="50%" height="600" title="Visor Urbanismo"></iframe>
+
+  <!-- Mensaje debajo del iframe -->
+  <div id="mensaje">
+    <p>Visor urbanístico del Plan General de 2023 y del POD de 1998.</p>
+    <!-- Corrige la dirección URL del enlace -->
+    <p>Para ir a la aplicación del visor: <a href="http://localhost:3000/opg/visor_urbanismo">Visor Urbanismo de Palma</a></p>
+  </div>
+
+  <!-- Script para mostrar/ocultar el mensaje de carga -->
+  <script>
+    const iframe = document.getElementById('iframeVisor');
+    const cargando = document.getElementById('cargando');
+
+    iframe.onload = function() {
+      // Cuando el iframe termina de cargar, oculta el mensaje de carga
+      cargando.style.display = 'none';
+    };
+
+    iframe.onerror = function() {
+      // En caso de error al cargar el iframe, también oculta el mensaje de carga
+      cargando.style.display = 'none';
+    };
+
+    // Muestra el mensaje de carga al iniciar la carga del iframe
+    iframe.src = 'http://localhost:3000/opg/visor_urbanismo';
+    cargando.style.display = 'block';
+  </script>
+</body>
+</html>

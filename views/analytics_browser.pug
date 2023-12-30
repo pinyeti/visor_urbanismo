@@ -1,0 +1,260 @@
+extends layout
+block content
+
+     script.
+
+        $( function() {
+        $( "#speed" ).selectmenu();
+            $( "#speed" ).selectmenu( "enable" );
+           // $( "#speed" ).selectmenu( "open" );
+        } );
+
+        prueba=`
+        <div id='divprueba'>
+        <select class="speed" name="speed" id="speed">
+            <option>Slower</option>
+            <option>Slow</option>
+        </select>
+        </div>
+        `;
+        console.log(document);
+
+        // var elem = document.getElementById('statistic');
+        //document.body.innerHTML=prueba; 
+
+        $("#estilos").attr("href","https://code.jquery.com/ui/1.12.1/themes/start/jquery-ui.css");
+
+        var serverPath="vscenegis.hopto.org";
+
+        /*$(document).ready(function() {
+            $('#table_query_analytics').DataTable( {
+                dom: 'Bfrtip',
+                "buttons": [
+                    
+                    'copyHtml5',
+                  
+                ],
+                paging: false
+            } );
+        } );*/
+
+       
+
+        var htmlChart;
+        var html_QUERY;
+
+        //query("users_visor","action='acceso_revision'");
+        create_browser();
+
+        setInterval('create_browser()',30000);
+
+        // create_browser();
+
+        // statistic_access();
+
+        async function create_browser(){
+
+            await query_access_all();
+            // await statistic_access();
+
+            //document.body.innerHTML=html_QUERY+htmlChart;
+
+        }
+
+        async function query_access_all(){
+
+            let url = new URL("http://"+serverPath+"/select_query");
+            var select="SELECT * FROM users_visor WHERE fid>0 and (date_obj BETWEEN (NOW() - interval '1 day') AND NOW()) ORDER BY CAST (year AS INTEGER) DESC, CAST (month AS INTEGER) DESC,CAST (day AS INTEGER) DESC,CAST (hour AS INTEGER) DESC,CAST (minute AS INTEGER) DESC,CAST (second AS INTEGER) DESC"
+            const params = {select: select};
+           // const params = {tabla: tableSource, filtro: filtroSQL};
+            Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+            const dataRequest = {
+                method: 'GET'
+            };
+            var response = await fetch(url,dataRequest);
+            console.log("response",response);
+            var info_query = await response.json();
+            console.log("response json",info_query);
+
+            var html_QUERY_HEAD=`
+                <TABLE id="table_query_analytics"   style="padding:3px;font-size:8pt;font-family:Arial;height:100%;width:100%">
+                <thead style="background-color:#e1eefb">
+                    <tr>
+                        <th>IP</td>
+                        <th>ACCION</td>
+                        <th>PAIS</td> 
+                        <th>REGIÓN</td>
+                        <th>CIUDAD</td>
+                        <th>DIA</td> 
+                        <th>MES</td>   
+                        <th>AÑO</td>
+                        <th>HORA</td>
+                        <th>MINUTO</td>
+                        <th>SEGUNDO</td>    
+                    </tr>
+                </thead>`; 
+
+            html_QUERY_ROWS="<tbody>";     
+
+            if(info_query!=null)
+                for(var n=0;n< info_query.length;n++){   
+                    html_QUERY_ROWS=html_QUERY_ROWS+`
+
+                    <!--<tr onclick="doActionRowRPG(this)"> -->
+                    <tr>
+                        <td>${info_query[n].ip}</td>
+                        <td>${info_query[n].action}</td>
+                        <td>${info_query[n].country}</td>  
+                        <td>${info_query[n].region}</td>      
+                        <td>${info_query[n].city}</td>    
+                        <td>${info_query[n].day}</td> 
+                        <td>${info_query[n].month}</td> 
+                        <td>${info_query[n].year}</td> 
+                        <td>${info_query[n].hour}</td>
+                        <td>${info_query[n].minute}</td> 
+                        <td>${info_query[n].second}</td>  
+                        
+                    </tr>`; 
+
+                }
+            html_QUERY_ROWS=html_QUERY_ROWS+"</tbody>";
+
+            html_QUERY=html_QUERY_HEAD+html_QUERY_ROWS+`</TABLE>`;
+
+            //formatQuery();
+
+            statistic_access()
+            //document.body.innerHTML=html_QUERY;
+            document.body.innerHTML=html_QUERY+htmlChart; 
+
+        }
+
+        async function statistic_access(){
+
+             let urlS = new URL("http://"+serverPath+"/select_query");
+            //var selectS="SELECT day,hour,COUNT(action) as num_actions  FROM users_visor where (action='acceso_revision' or action='acceso_vigente') and (date_obj BETWEEN (NOW() - interval '7 day') AND NOW()) GROUP BY day,hour order by CAST (day AS INTEGER) DESC, CAST (hour AS INTEGER) DESC"
+             var selectS="SELECT date_obj,year,month,day,hour,COUNT(action) as num_actions  FROM users_visor where (action='acceso_revision' or action='acceso_vigente') and (date_obj BETWEEN (NOW() - interval '7 day') AND NOW()) GROUP BY date_obj,year,month,day,hour order by date_obj desc, CAST (hour AS INTEGER) DESC"
+            // var selectS="SELECT date_obj,year,month,day,COUNT(action) as num_actions  FROM users_visor where (action='acceso_revision' or action='acceso_vigente') and (date_obj BETWEEN (NOW() - interval '7 day') AND NOW()) GROUP BY date_obj,year,month,day order by date_obj desc"
+         
+            const paramsS = {select: selectS};
+           // const params = {tabla: tableSource, filtro: filtroSQL};
+            Object.keys(paramsS).forEach(key => urlS.searchParams.append(key, paramsS[key]));
+            const dataRequestS = {
+                method: 'GET'
+            };
+            var responseS = await fetch(urlS,dataRequestS);
+            console.log("response",responseS);
+            var info_query = await responseS.json();
+            console.log("response json",info_query);
+
+              
+
+            var arrayHoras=new Array();
+            var arrayAccesos=new Array();
+            var arrayBackground=new Array();
+            var maxAccesos=0
+            if(info_query!=null){
+                for(var n=0;n< info_query.length;n++){
+
+                    if(info_query[n].num_actions>maxAccesos) maxAccesos=info_query[n].num_actions;
+
+                    //console.log(info_query[n].day,info_query[n].minute);
+                    //arrayHoras.push("Dia:"+info_query[n].day+" Hora:"+info_query[n].hour);
+                    arrayHoras.push("("+("0"+info_query[n].day).slice(-2)+"-"+info_query[n].month+"-"+info_query[n].year+") H:"+("0"+info_query[n].hour).slice(-2));
+                   // arrayHoras.push("("+info_query[n].day+"-"+info_query[n].month+"-"+info_query[n].year+")");
+                    arrayAccesos.push(info_query[n].num_actions);
+                   
+
+                }
+                for(var n=0;n< info_query.length;n++){
+                    arrayBackground.push("rgba(249, 107, 21,"+info_query[n].num_actions/maxAccesos+")");
+                   
+                }
+            }
+            
+
+
+        htmlChart=`<div style="overflow:auto;width:100%;height:42%"><canvas id="myChart"  style="overflow:auto;width:500px"></canvas></div>`;
+
+        document.body.innerHTML=html_QUERY+htmlChart; 
+          
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'horizontalBar',
+                //type: 'bar',
+                data: {
+                    labels: arrayHoras,
+                    datasets: [{
+                        label: ' Accesos',
+                        data: arrayAccesos,
+                        //backgroundColor: "rgba(30, 99, 132, 0.2)",
+                        backgroundColor: arrayBackground,
+                        borderColor:'black',
+                       
+                        borderWidth: 0.5
+                    }]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                        
+                    }
+                }
+            }); 
+
+        //document.body.innerHTML=html_QUERY;
+
+        formatQuery();
+
+        
+
+        }
+
+       
+
+
+        async function formatQuery(){
+        $(document).ready(function() {
+        $('#table_query_analytics').removeAttr('width').DataTable( {
+            dom: 'Bfrtip',
+                "buttons": [
+                    
+                    'copy',
+                  
+                ],
+            //"ordering": false,
+            "order": [],
+            scrollY:  '40vh',
+            //"scrollY":  true,
+            scrollCollapse: true,
+            "scrollX": true,
+            paging: false,     
+            padding:"3px",
+            language: {
+                        "decimal": "",
+                        "emptyTable": "No hay información",
+                        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas (Ultimos 7 dias)",
+                        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                        "infoPostFix": "",
+                        "thousands": ",",
+                        "lengthMenu": "Mostrar _MENU_ Entradas",
+                        "loadingRecords": "Cargando...",
+                        "processing": "Procesando...",
+                        "search": "Buscar:",
+                        "zeroRecords": "Sin resultados encontrados",
+                        "paginate": {
+                            "first": "Primero",
+                            "last": "Ultimo",
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        }
+                    },
+                });
+            } );
+        } 

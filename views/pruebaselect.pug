@@ -1,0 +1,23 @@
+extends layout
+block content
+
+     script.
+
+        $( function() {
+        $( "#speed" ).selectmenu();
+            $( "#speed" ).selectmenu( "enable" );
+           // $( "#speed" ).selectmenu( "open" );
+        } );
+
+        prueba=`
+        <div id='divprueba'>
+        <select class="speed" name="speed" id="speed">
+            <option>Slower</option>
+            <option>Slow</option>
+        </select>
+        </div>
+        `;
+        console.log(document);
+
+        // var elem = document.getElementById('statistic');
+        document.body.innerHTML=prueba; 
