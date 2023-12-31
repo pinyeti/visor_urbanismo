@@ -14,29 +14,29 @@ class Sedipualb {
 
   async initialize() {
     let query=[];
-    query=await this.getExpedientes("Zt5tWfX3fhtaoI83G2iomv2yB");
+    query=await this.getExpedientes("password");
     this.query_expedientes.splice(0, this.query_expedientes.length, ...query);
     console.log(this.query_expedientes);
 
-    const documentosExp=await this.getDocumentosExpediente("Zt5tWfX3fhtaoI83G2iomv2yB","07040","170167T",-1,"43052971F");
+    const documentosExp=await this.getDocumentosExpediente("password","07040","170167T",-1,"43052971F");
     console.log(documentosExp);
 
-    const infoDocumento=await this.getInfoDocumento("07040_SIGDU","Zt5tWfX3fhtaoI83G2iomv2yB","07040","1331960");
+    const infoDocumento=await this.getInfoDocumento("07040_SIGDU","password","07040","1331960");
     console.log(infoDocumento);
 
-    const carpetasDoc=await this.getCarpetasDocumentos("07040_SIGDU","Zt5tWfX3fhtaoI83G2iomv2yB","07040","170167T",-1)
+    const carpetasDoc=await this.getCarpetasDocumentos("07040_SIGDU","password","07040","170167T",-1)
     console.log(carpetasDoc.ListarCarpetasV2Result.CarpetaItemV2);
 
-    const materias=await this.getMaterias("07040_SIGDU","Zt5tWfX3fhtaoI83G2iomv2yB","07040");
+    const materias=await this.getMaterias("07040_SIGDU","password","07040");
     console.log(materias.ListMateriasResult.MateriaInfo);
 
-    const subMaterias=await this.getSubmaterias("07040_SIGDU","Zt5tWfX3fhtaoI83G2iomv2yB","07040","33");
+    const subMaterias=await this.getSubmaterias("07040_SIGDU","password","07040","33");
     console.log(subMaterias.ListSubmateriasResult.SubmateriaInfo);
 
-    const tiposProcedimiento=await this.getTiposProcedimento("07040_SIGDU","Zt5tWfX3fhtaoI83G2iomv2yB","07040","3301");
+    const tiposProcedimiento=await this.getTiposProcedimento("07040_SIGDU","password","07040","3301");
     console.log(tiposProcedimiento.ListTiposProcedimientoResult.TipoProcedimientoInfo);
 
-    const subTiposProcedimiento=await this.getSubtiposProcedimento("07040_SIGDU","Zt5tWfX3fhtaoI83G2iomv2yB","07040",219);
+    const subTiposProcedimiento=await this.getSubtiposProcedimento("07040_SIGDU","password","07040",219);
     if(subTiposProcedimiento.ListSubtiposProcedimientoResult!=null)
       console.log(subTiposProcedimiento.ListSubtiposProcedimientoResult.SubtipoProcedimientoInfo);
     else
