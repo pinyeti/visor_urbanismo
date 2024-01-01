@@ -146,7 +146,7 @@ class NormativaDialog {
       htmTabPG2023_content = `<div style='overflow: auto;padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px' id="tabPG2023">
 				<div style='padding:3px;background-color:#fdfde0;border-style: solid;border-width:1pt;border-color:#78c4f0'>
 						<label class="icon"><i class="fa fa-search"></i></label>
-						<input id="search-art_PGOU98" class="search-art_PG2023" />   
+						<input id="search-art_PG2023" class="search-art_PG2023" />   
 						<button  style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Imprimeix norma seleccionada" OnClick="printNormaSelect()"><i class="fa fa-print"></i></button>
 				</div>
 				${this.htmTreeArticulos_normasPG2023}
@@ -282,6 +282,7 @@ class NormativaDialog {
 
       var to = false;
       $(`#search-art_${tipoNorma}`).keyup(function () {
+       
         if (to) {
           clearTimeout(to);
         }

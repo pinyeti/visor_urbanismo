@@ -59,6 +59,7 @@ class SIGDUMap {
 
     this.createQueryPG();
     this.createQueryEXP();
+    this.createQuerySEARCH();
 
     const self = this;
 
@@ -101,6 +102,13 @@ class SIGDUMap {
    */
   createQueryEXP() {
     new QueryDialogEXP(this.map, this.mapLayers, this.toc, this);
+  }
+
+  /**
+   * Crea un diálogo de busqueda por dirección/ref. catastral.
+   */
+  createQuerySEARCH() {
+    new QuerySearch(this.map, this.mapLayers, this.toc, this);
   }
 
   /**
@@ -404,10 +412,19 @@ class SIGDUMap {
       // position: 'bottom' // Alineación vertical opcional, predeterminada a 'top'
     };
 
+    const panelSearch = {
+      id: "searchDir", // UID, used to access the panel
+      tab: '<i class="fa fa-search"></i>', // content can be passed as HTML string,
+      pane: "-", // DOM elements can be passed, too
+      title: "Buscar por dirección/ref.catastral", // an optional pane header
+      // position: 'bottom'                  // optional vertical alignment, defaults to 'top'
+    };
+
     // Agrega los paneles personalizados a la barra lateral.
     sidebar.addPanel(panelContent);
     sidebar.addPanel(panelQuery);
     sidebar.addPanel(panelQueryEXP);
+    sidebar.addPanel(panelSearch);
 
     // Maneja eventos de apertura y cierre de la barra lateral.
     sidebar.on("opening", function (e) {
