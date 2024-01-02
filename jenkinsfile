@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clonar repositorio') {
+            steps {
+                // Clonar tu repositorio desde GitHub o cualquier otro sistema de control de versiones
+                checkout scm
+            }
+        }
+
+        stage('Construir imagen Docker') {
+            steps {
+                // Ejecutar el comando 'docker build' para construir la imagen
+                sh 'docker build -t jenkins_visor:1.0 .'
+            }
+        }
+
+    }
+
+    post {
+        success {
+            echo 'La construcción y ejecución del contenedor Docker se completaron exitosamente.'
+        }
+        failure {
+            echo 'Hubo un problema durante la construcción y/o ejecución del contenedor Docker.'
+        }
+    }
+}
