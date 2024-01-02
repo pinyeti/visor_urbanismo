@@ -16,6 +16,13 @@ pipeline {
             }
         }
 
+        stage('Ejecutar contenedor Docker') {
+            steps {
+                // Ejecutar el contenedor Docker, mapeando el puerto 3000 de tu contenedor al puerto 3000 de tu máquina local
+				sh 'docker run -d --name jenkins_visor_local  -e DATABASE_HOST=host.docker.internal -e DATABASE_PORT=5432 -p 3001:3000 jenkins_visor:1.0'
+            }
+        }
+
     }
 
     post {
