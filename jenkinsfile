@@ -22,14 +22,8 @@ pipeline {
 
         stage('Construir imagen Docker Visor') {
             steps {
-                // Obtener el número de compilación actual
-                // def buildNumber = currentBuild.number
-                
-                // Crear un tag de imagen Docker con el número de compilación
-                def dockerTag = "jenkins_visor:latest"
-                
                 // Ejecutar el comando 'docker build' para construir la nueva imagen con el tag incremental
-                sh "docker build -t ${dockerTag} ."
+                sh "docker build -t jenkins_visor:latest ."
             }
         }
 
