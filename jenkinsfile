@@ -9,17 +9,34 @@ pipeline {
             }
         }
 
-        stage('Construir imagen Docker Visor') {
+        stage('Eliminar contenedor y imagen anteriores') {
             steps {
-                // Ejecutar el comando 'docker build' para construir la imagen
-                sh 'docker build -t jenkins_visor:1.0 .'
+                // Detener y eliminar el contenedor antiguo (si existe)
+                sh 'docker stop jenkins_visor_local || true'
+                sh 'docker rm jenkins_visor_local || true'
+                
+                // Eliminar la imagen Docker anterior (si existe)
+                sh 'docker rmi jenkins_visor:latest || true'
             }
         }
 
-        stage('Ejecutar el contenedor Docker Visor') {
+        stage('Construir imagen Docker Visor') {
             steps {
-                // Ejecutar el contenedor Docker, mapeando el puerto 3000 de tu contenedor al puerto 3001 de tu máquina local
-				sh 'docker run -d --name jenkins_visor_local  -e DATABASE_HOST=host.docker.internal -e DATABASE_PORT=5432 -p 3001:3000 jenkins_visor:1.0'
+                // Obtener el número de compilación actual
+                // def buildNumber = currentBuild.number
+                
+                // Crear un tag de imagen Docker con el número de compilación
+                def dockerTag = "jenkins_visor:latest"
+                
+                // Ejecutar el comando 'docker build' para construir la nueva imagen con el tag incremental
+                sh "docker build -t ${dockerTag} ."
+            }
+        }
+
+        stage('Ejecutar el nuevo contenedor Docker Visor') {
+            steps {
+                // Ejecutar el nuevo contenedor Docker
+                sh 'docker run -d --name jenkins_visor_local -e DATABASE_HOST=host.docker.internal -e DATABASE_PORT=5432 -p 3001:3000 jenkins_visor:latest'
             }
         }
 
