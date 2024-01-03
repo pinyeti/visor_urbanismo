@@ -29,7 +29,7 @@ pipeline {
 
         stage('Ejecutar el nuevo contenedor Docker Visor') {
             steps {
-                // Ejecutar el nuevo contenedor Docker
+                // Ejecutar nuevo contenedor Docker
                 sh 'docker run -d --name jenkins_visor_local -e DATABASE_HOST=host.docker.internal -e DATABASE_PORT=5432 -p 3001:3000 jenkins_visor:latest'
             }
         }
