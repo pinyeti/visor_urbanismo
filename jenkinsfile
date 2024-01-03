@@ -34,6 +34,41 @@ pipeline {
             }
         }
 
+		stage('Etiquetar imagen Docker para Docker Hub') {
+			steps {
+				// Nombre del repositorio en Docker Hub
+				dockerRepository = 'pinyeti/visor_urbanismo'
+				
+				// Crear un tag de imagen Docker con el número de compilación
+				dockerTag = "${dockerRepository}:latest"
+				
+				// Utilizar el comando 'docker tag' para etiquetar la imagen local existente
+				sh "docker tag jenkins_visor:latest ${dockerTag}"
+			}
+		}
+
+		stage('Iniciar sesión en Docker Hub') {
+			steps {
+				// Tu nombre de usuario y contraseña de Docker Hub
+				dockerUsername = 'pinyeti'
+				dockerPassword = 'q1AIQYhp_9932'
+
+				// Iniciar sesión en Docker Hub
+				sh "docker login -u ${dockerUsername} -p ${dockerPassword}"
+			}
+		}
+
+		stage('Subir imagen a Docker Hub') {
+			steps {
+				// Nombre del repositorio en Docker Hub y tag de imagen
+				dockerRepository = 'pinyeti/visor_urbanismo'
+				dockerTag = "${dockerRepository}:latest"
+
+				// Subir la imagen a Docker Hub
+				sh "docker push ${dockerTag}"
+			}
+		}
+
     }
 
     post {
