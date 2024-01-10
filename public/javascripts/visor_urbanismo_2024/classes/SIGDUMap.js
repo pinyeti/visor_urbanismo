@@ -426,17 +426,19 @@ class SIGDUMap {
     sidebar.addPanel(panelQueryEXP);
     sidebar.addPanel(panelSearch);
 
+    const self=this;
     // Maneja eventos de apertura y cierre de la barra lateral.
     sidebar.on("opening", function (e) {
       // e.id contiene el ID del panel abierto
       console.log("Abriendo la barra lateral");
-      this.sidebarStatus = "abierto";
+      self.sidebarStatus = "abierto";
+      console.log(self.sidebarStatus);
     });
 
     sidebar.on("closing", function (e) {
       // e.id contiene el ID del panel abierto
       console.log("Cerrando la barra lateral");
-      this.sidebarStatus = "cerrado";
+      self.sidebarStatus = "cerrado";
     });
 
     return sidebar;

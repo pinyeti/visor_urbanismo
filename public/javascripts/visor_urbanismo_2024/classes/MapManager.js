@@ -47,6 +47,7 @@ class MapManager {
 
     var poly = L.polygon(coords);
 
+    
     this.map2.fitBounds(poly.getBounds());
 
     //if (puntos != null) this.map2.removeLayer(puntos);
@@ -62,35 +63,44 @@ class MapManager {
     this.map2.addLayer(layerGeojson);
   }
 
-   /**
+  /**
    * Crea un nuevo mapa Leaflet en el contenedor especificado.
    * Destruye el mapa existente si ya existe.
    * @async
    */
   async createMap() {
-    if (this.map2) {
+    /*if (this.map2) {
       // Si el mapa ya existe, lo destruimos antes de crear uno nuevo
       this.destroyMap();
+    }*/
+
+    try {
+     
+        this.map2 = L.map(this.container, {
+          zoomControl: false,
+          preferCanvas: true,
+        });
+      
+
+      L.tileLayer(
+        "https://cartografia.palma.cat/geoserver/gwc/service/tms/1.0.0/BTUP%3Acomplet@GoogleMapsCompatible@png/{z}/{x}/{y}.png?flipY=true",
+        {
+          //pane: 'pane_Base',
+          maxZoom: 21,
+          opacity: 1,
+          //attribution: autoria,
+        }
+      ).addTo(this.map2);
+
+      MapManager.instances[this.container] = this;
+
+      console.log("Map2 creado", this.map2);
+    } catch (e) {
+      console.log(e);
+     
     }
-
-    this.map2 = L.map(this.container, {
-      zoomControl: false,
-      preferCanvas: true,
-    });
-
-    L.tileLayer(
-      "https://cartografia.palma.cat/geoserver/gwc/service/tms/1.0.0/BTUP%3Acomplet@GoogleMapsCompatible@png/{z}/{x}/{y}.png?flipY=true",
-      {
-        //pane: 'pane_Base',
-        maxZoom: 21,
-        opacity: 1,
-        //attribution: autoria,
-      }
-    ).addTo(this.map2);
-
-    console.log("Map2 creado", this.map2);
   }
-cd
+
   /**
    * Destruye el mapa existente si lo hay.
    */

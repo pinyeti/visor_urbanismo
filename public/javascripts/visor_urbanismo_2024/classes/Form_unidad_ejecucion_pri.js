@@ -287,7 +287,7 @@ class Form_UNIDAD_EJECUCION_PRI {
       }, 500);
     } else {
       this.mapManager = new MapManager("map2");
-      this.mapManager.createElement(self.geojson, self.color, self.fillColor);
+      this.mapManager.createElement(this.geojson, this.color, this.fillColor);
     }
 
     this.sigduMap.sidebar.open("userinfo");

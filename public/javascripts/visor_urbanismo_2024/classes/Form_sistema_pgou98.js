@@ -379,18 +379,24 @@ class Form_SISTEMAS_PGOU98 {
       });
     }
 
+    
     if (this.sigduMap.sidebarStatus == "cerrado") {
       const self = this; // Almacena una referencia a 'this'
+      this.sigduMap.sidebar.open("userinfo");
       window.setTimeout(function () {
-        this.mapManager = new MapManager("map2");
-        this.mapManager.createElement(self.geojson, self.color, self.fillColor);
+        self.mapManager = new MapManager("map2");
+        self.mapManager.createElement(self.geojson, self.color, self.fillColor);
+        
       }, 500);
     } else {
       this.mapManager = new MapManager("map2");
-      this.mapManager.createElement(self.geojson, self.color, self.fillColor);
+      this.mapManager.createElement(this.geojson, this.color, this.fillColor);
+
     }
 
-    this.sigduMap.sidebar.open("userinfo");
+
+    //this.sigduMap.sidebar.open("userinfo");
     this.sigduMap.map.spin(false);
   }
+
 }

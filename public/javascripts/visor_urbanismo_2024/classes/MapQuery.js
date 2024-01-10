@@ -12,7 +12,7 @@ class MapQuery {
     this.map = sigduMap.map;
     this.i18nHandler = sigduMap.i18nHandler;
     this.languageControl = sigduMap.languageControl;
-    this.normativa=null;
+    this.normativa = null;
     this.popup = null;
     this.htmlTabsInfo = ``;
     this.htmlTableVIG = ``;
@@ -29,6 +29,8 @@ class MapQuery {
     this.ruta_exp =
       "https://urbanisme.palmademallorca.es/IMI/URBANISME/PRD/Planejament_urbanistic_pdf/Images Arxiu";
     //this.ruta_exp="http://localhost:8081/OpenKM/webdav/okm%3Aroot/expedientes";
+
+    this.eventsManagerRegistered = false;
   }
 
   /**
@@ -41,7 +43,7 @@ class MapQuery {
     // Activa un spinner de carga en el mapa.
     this.map.spin(true);
 
-     // Inicializa variables para contar el número de expedientes en diferentes categorías.
+    // Inicializa variables para contar el número de expedientes en diferentes categorías.
     this.num_exp = 0;
     this.num_exp_PA = 0;
     this.num_exp_PB = 0;
@@ -63,7 +65,7 @@ class MapQuery {
     // Obtiene las coordenadas x e y de e.latlng.utm().
     const { x, y } = e.latlng.utm();
 
-     // Define una matriz arrayTablas con nombres de tablas para las consultas.
+    // Define una matriz arrayTablas con nombres de tablas para las consultas.
     const arrayTablas = [
       "parcela_su_ru_calles",
       "pg_rustic",
@@ -202,9 +204,9 @@ class MapQuery {
       this.languageControl.options.currentLanguage
     );
 
-   /**
-   * Gestiona eventos y configuraciones adicionales.
-   */
+    /**
+     * Gestiona eventos y configuraciones adicionales.
+     */
     this.eventsManager();
 
     if (this.htmlTableVIG !== "") {
@@ -221,511 +223,539 @@ class MapQuery {
   eventsManager() {
     const self = this;
 
-    this.map.on("popupopen", async function () {
-      // Ficha SLEQ_PGOU98
-      var btFicha_SLEQ_PGOU98 = document.getElementById("btFicha_SLEQ_PGOU98");
-      if (btFicha_SLEQ_PGOU98) {
-        btFicha_SLEQ_PGOU98.addEventListener("click", async function () {
-          var fid = btFicha_SLEQ_PGOU98.getAttribute("data-fid");
-          var clase = btFicha_SLEQ_PGOU98.getAttribute("data-clase");
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formSLEQ = new Form_SISTEMAS_PGOU98(entidad, self.sigduMap);
-          formSLEQ.createForm();
-        });
-      }
-
-      // Ficha SGEQ_PGOU98
-      var btFicha_SGEQ_PGOU98 = document.getElementById("btFicha_SGEQ_PGOU98");
-      if (btFicha_SGEQ_PGOU98) {
-        btFicha_SGEQ_PGOU98.addEventListener("click", async function () {
-          var fid = btFicha_SGEQ_PGOU98.getAttribute("data-fid");
-          var clase = btFicha_SGEQ_PGOU98.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formSGEQ = new Form_SISTEMAS_PGOU98(entidad, self.sigduMap);
-          formSGEQ.createForm();
-        });
-      }
-
-      // Ficha SLEL_PGOU98
-      var btFicha_SLEL_PGOU98 = document.getElementById("btFicha_SLEL_PGOU98");
-      if (btFicha_SLEL_PGOU98) {
-        btFicha_SLEL_PGOU98.addEventListener("click", async function () {
-          var fid = btFicha_SLEL_PGOU98.getAttribute("data-fid");
-
-          var clase = btFicha_SLEL_PGOU98.getAttribute("data-clase");
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formSLEL = new Form_SISTEMAS_PGOU98(entidad, self.sigduMap);
-          formSLEL.createForm();
-        });
-      }
-
-      // Ficha SGEL_PGOU98
-      var btFicha_SGEL_PGOU98 = document.getElementById("btFicha_SGEL_PGOU98");
-      if (btFicha_SGEL_PGOU98) {
-        btFicha_SGEL_PGOU98.addEventListener("click", async function () {
-          var fid = btFicha_SGEL_PGOU98.getAttribute("data-fid");
-          var clase = btFicha_SGEL_PGOU98.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formSGEL = new Form_SISTEMAS_PGOU98(entidad, self.sigduMap);
-          formSGEL.createForm();
-        });
-      }
-
-      // Ficha SLCI_PGOU98
-      var btFicha_SLCI_PGOU98 = document.getElementById("btFicha_SLCI_PGOU98");
-      if (btFicha_SLCI_PGOU98) {
-        btFicha_SLCI_PGOU98.addEventListener("click", async function () {
-          var fid = btFicha_SLCI_PGOU98.getAttribute("data-fid");
-          var clase = btFicha_SLCI_PGOU98.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formSGEL = new Form_SISTEMAS_PGOU98(entidad, self.sigduMap);
-          formSGEL.createForm();
-        });
-      }
-
-      // Ficha SGCI_PGOU98
-      var btFicha_SGCI_PGOU98 = document.getElementById("btFicha_SGCI_PGOU98");
-      if (btFicha_SGCI_PGOU98) {
-        btFicha_SGCI_PGOU98.addEventListener("click", async function () {
-          var fid = btFicha_SGCI_PGOU98.getAttribute("data-fid");
-          var clase = btFicha_SGCI_PGOU98.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formSGEL = new Form_SISTEMAS_PGOU98(entidad, self.sigduMap);
-          formSGEL.createForm();
-        });
-      }
-
-      // Ficha SGEQ_PG2023
-      var btFicha_SGEQ_PG2023 = document.getElementById("btFicha_SGEQ_PG2023");
-      if (btFicha_SGEQ_PG2023) {
-        btFicha_SGEQ_PG2023.addEventListener("click", async function () {
-          var fid = btFicha_SGEQ_PG2023.getAttribute("data-fid");
-          var clase = btFicha_SGEQ_PG2023.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formSGEQ_PG2023 = new Form_SISTEMAS_PG2023(
-            entidad,
-            self.sigduMap
-          );
-          formSGEQ_PG2023.createForm();
-        });
-      }
-
-      // Ficha SGEL_PG2023
-      var btFicha_SGEL_PG2023 = document.getElementById("btFicha_SGEL_PG2023");
-      if (btFicha_SGEL_PG2023) {
-        btFicha_SGEL_PG2023.addEventListener("click", async function () {
-          var fid = btFicha_SGEL_PG2023.getAttribute("data-fid");
-          var clase = btFicha_SGEL_PG2023.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formSGEL_PG2023 = new Form_SISTEMAS_PG2023(
-            entidad,
-            self.sigduMap
-          );
-          formSGEL_PG2023.createForm();
-        });
-      }
-
-      // Ficha SGCM_PG2023
-      var btFicha_SGCM_PG2023 = document.getElementById("btFicha_SGCM_PG2023");
-      if (btFicha_SGCM_PG2023) {
-        btFicha_SGCM_PG2023.addEventListener("click", async function () {
-          var fid = btFicha_SGCM_PG2023.getAttribute("data-fid");
-          var clase = btFicha_SGCM_PG2023.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formSGCM_PG2023 = new Form_SISTEMAS_PG2023(
-            entidad,
-            self.sigduMap
-          );
-          formSGCM_PG2023.createForm();
-        });
-      }
-
-      // Ficha SGSU_PG2023
-      var btFicha_SGSU_PG2023 = document.getElementById("btFicha_SGSU_PG2023");
-      if (btFicha_SGSU_PG2023) {
-        btFicha_SGSU_PG2023.addEventListener("click", async function () {
-          var fid = btFicha_SGSU_PG2023.getAttribute("data-fid");
-          var clase = btFicha_SGSU_PG2023.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formSGSU_PG2023 = new Form_SISTEMAS_PG2023(
-            entidad,
-            self.sigduMap
-          );
-          formSGSU_PG2023.createForm();
-        });
-      }
-
-      // Ficha SGIF_PG2023
-      var btFicha_SGIF_PG2023 = document.getElementById("btFicha_SGIF_PG2023");
-      if (btFicha_SGIF_PG2023) {
-        btFicha_SGIF_PG2023.addEventListener("click", async function () {
-          var fid = btFicha_SGIF_PG2023.getAttribute("data-fid");
-          var clase = btFicha_SGIF_PG2023.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formSGIF_PG2023 = new Form_SISTEMAS_PG2023(
-            entidad,
-            self.sigduMap
-          );
-          formSGIF_PG2023.createForm();
-        });
-      }
-
-      // Ficha EL_PRI
-      var btFicha_EL_PRI = document.getElementById("btFicha_EL_PRI");
-      if (btFicha_EL_PRI) {
-        btFicha_EL_PRI.addEventListener("click", async function () {
-          var fid = btFicha_EL_PRI.getAttribute("data-fid");
-          var clase = btFicha_EL_PRI.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formEL_PRI = new Form_SISTEMAS_PRI(entidad, self.sigduMap);
-          formEL_PRI.createForm();
-        });
-      }
-
-      // Ficha EQ_PRI
-      var btFicha_EQ_PRI = document.getElementById("btFicha_EQ_PRI");
-      if (btFicha_EQ_PRI) {
-        btFicha_EQ_PRI.addEventListener("click", async function () {
-          var fid = btFicha_EQ_PRI.getAttribute("data-fid");
-          var clase = btFicha_EQ_PRI.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formEQ_PRI = new Form_SISTEMAS_PRI(entidad, self.sigduMap);
-          formEQ_PRI.createForm();
-        });
-      }
-
-      // Ficha RSD_PGOU98
-      var btFicha_RSD_PGOU98 = document.getElementById("btFicha_RSD_PGOU98");
-      if (btFicha_RSD_PGOU98) {
-        btFicha_RSD_PGOU98.addEventListener("click", async function () {
-          var fid = btFicha_RSD_PGOU98.getAttribute("data-fid");
-          var clase = btFicha_RSD_PGOU98.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formParamRSD = new Form_PARAMETROS_RSD_PGOU98(
-            entidad.getFeature().properties.codigo,
-            entidad.getTable(),
-            self.sigduMap
-          );
-          await formParamRSD.initialize();
-          await formParamRSD.createForm();
-        });
-      }
-
-      // Ficha SEC_PGOU98
-      var btFicha_SEC_PGOU98 = document.getElementById("btFicha_SEC_PGOU98");
-      if (btFicha_SEC_PGOU98) {
-        btFicha_SEC_PGOU98.addEventListener("click", async function () {
-          var fid = btFicha_SEC_PGOU98.getAttribute("data-fid");
-          var clase = btFicha_SEC_PGOU98.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formParamSEC_PGOU98 = new Form_PARAMETROS_SEC_PGOU98(
-            entidad.getFeature().properties.codigo,
-            entidad.getTable(),
-            self.sigduMap
-          );
-          await formParamSEC_PGOU98.initialize();
-          await formParamSEC_PGOU98.createForm();
-        });
-      }
-
-      // Ficha TER_PGOU98
-      var btFicha_TER_PGOU98 = document.getElementById("btFicha_TER_PGOU98");
-      if (btFicha_TER_PGOU98) {
-        btFicha_TER_PGOU98.addEventListener("click", async function () {
-          var fid = btFicha_TER_PGOU98.getAttribute("data-fid");
-          var clase = btFicha_TER_PGOU98.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formParamTER_PGOU98 = new Form_PARAMETROS_TER_PGOU98(
-            entidad.getFeature().properties.codigo,
-            entidad.getTable(),
-            self.sigduMap
-          );
-          await formParamTER_PGOU98.initialize();
-          await formParamTER_PGOU98.createForm();
-        });
-      }
-
-      // Ficha VE_PGOU98
-      var btFicha_VE_PGOU98 = document.getElementById("btFicha_VE_PGOU98");
-      if (btFicha_VE_PGOU98) {
-        btFicha_VE_PGOU98.addEventListener("click", async function () {
-          var fid = btFicha_VE_PGOU98.getAttribute("data-fid");
-          var clase = btFicha_VE_PGOU98.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formParamVE_PGOU98 = new Form_PARAMETROS_VE_PGOU98(
-            entidad,
-            self.sigduMap
-          );
-          await formParamVE_PGOU98.initialize();
-          await formParamVE_PGOU98.createForm();
-        });
-      }
-
-      // Ficha T_PRI
-      var btFicha_T_PRI = document.getElementById("btFicha_T_PRI");
-      if (btFicha_T_PRI) {
-        btFicha_T_PRI.addEventListener("click", async function () {
-          var fid = btFicha_T_PRI.getAttribute("data-fid");
-          var clase = btFicha_T_PRI.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formParamT_PRI = new Form_PARAMETROS_CALIFICACIONES_PRI(
-            entidad,
-            "T_PRI",
-            self.sigduMap
-          );
-          await formParamT_PRI.initialize();
-          await formParamT_PRI.createForm();
-        });
-      }
-
-      // Ficha TH_PRI
-      var btFicha_TH_PRI = document.getElementById("btFicha_TH_PRI");
-      if (btFicha_TH_PRI) {
-        btFicha_TH_PRI.addEventListener("click", async function () {
-          var fid = btFicha_TH_PRI.getAttribute("data-fid");
-          var clase = btFicha_TH_PRI.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formParamTH_PRI = new Form_PARAMETROS_CALIFICACIONES_PRI(
-            entidad,
-            "TH_PRI",
-            self.sigduMap
-          );
-          await formParamTH_PRI.initialize();
-          await formParamTH_PRI.createForm();
-        });
-      }
-
-      // Ficha S_PRI
-      var btFicha_S_PRI = document.getElementById("btFicha_S_PRI");
-      if (btFicha_S_PRI) {
-        btFicha_S_PRI.addEventListener("click", async function () {
-          var fid = btFicha_S_PRI.getAttribute("data-fid");
-          var clase = btFicha_S_PRI.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formParamS_PRI = new Form_PARAMETROS_CALIFICACIONES_PRI(
-            entidad,
-            "S_PRI",
-            self.sigduMap
-          );
-          await formParamS_PRI.initialize();
-          await formParamS_PRI.createForm();
-        });
-      }
-
-      // Ficha I_PRI
-      var btFicha_I_PRI = document.getElementById("btFicha_I_PRI");
-      if (btFicha_I_PRI) {
-        btFicha_I_PRI.addEventListener("click", async function () {
-          var fid = btFicha_I_PRI.getAttribute("data-fid");
-          var clase = btFicha_I_PRI.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formParamI_PRI = new Form_PARAMETROS_CALIFICACIONES_PRI(
-            entidad,
-            "I_PRI",
-            self.sigduMap
-          );
-          await formParamI_PRI.initialize();
-          await formParamI_PRI.createForm();
-        });
-      }
-
-      // Ficha VA_PRI
-      var btFicha_VA_PRI = document.getElementById("btFicha_VA_PRI");
-      if (btFicha_VA_PRI) {
-        btFicha_VA_PRI.addEventListener("click", async function () {
-          var fid = btFicha_VA_PRI.getAttribute("data-fid");
-          var clase = btFicha_VA_PRI.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formParamVA_PRI = new Form_PARAMETROS_CALIFICACIONES_PRI(
-            entidad,
-            "VA_PRI",
-            self.sigduMap
-          );
-          await formParamVA_PRI.initialize();
-          await formParamVA_PRI.createForm();
-        });
-      }
-
-      // Ficha VT_PRI
-      var btFicha_VT_PRI = document.getElementById("btFicha_VT_PRI");
-      if (btFicha_VT_PRI) {
-        btFicha_VT_PRI.addEventListener("click", async function () {
-          var fid = btFicha_VT_PRI.getAttribute("data-fid");
-          var clase = btFicha_VT_PRI.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formParamVT_PRI = new Form_PARAMETROS_CALIFICACIONES_PRI(
-            entidad,
-            "VT_PRI",
-            self.sigduMap
-          );
-          await formParamVT_PRI.initialize();
-          await formParamVT_PRI.createForm();
-        });
-      }
-
-      // Ficha E_PRI
-      var btFicha_E_PRI = document.getElementById("btFicha_E_PRI");
-      if (btFicha_E_PRI) {
-        btFicha_E_PRI.addEventListener("click", async function () {
-          var fid = btFicha_E_PRI.getAttribute("data-fid");
-          var clase = btFicha_E_PRI.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formParamE_PRI = new Form_PARAMETROS_CALIFICACIONES_PRI(
-            entidad,
-            "E_PRI",
-            self.sigduMap
-          );
-          await formParamE_PRI.initialize();
-          await formParamE_PRI.createForm();
-        });
-      }
-
-      // Ficha D_PRI
-      var btFicha_D_PRI = document.getElementById("btFicha_D_PRI");
-      if (btFicha_D_PRI) {
-        btFicha_D_PRI.addEventListener("click", async function () {
-          var fid = btFicha_D_PRI.getAttribute("data-fid");
-          var clase = btFicha_D_PRI.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formParamD_PRI = new Form_PARAMETROS_CALIFICACIONES_PRI(
-            entidad,
-            "D_PRI",
-            self.sigduMap
-          );
-          await formParamD_PRI.initialize();
-          await formParamD_PRI.createForm();
-        });
-      }
-
-      // Ficha UE_PGOU98
-      var btFicha_UE_PGOU98 = document.getElementById("btFicha_UE_PGOU98");
-      if (btFicha_UE_PGOU98) {
-        btFicha_UE_PGOU98.addEventListener("click", async function () {
-          var fid = btFicha_UE_PGOU98.getAttribute("data-fid");
-          var clase = btFicha_UE_PGOU98.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formParamUE_PGOU98 = new Form_UNIDAD_EJECUCION_PGOU98(
-            entidad,
-            self.sigduMap
-          );
-          await formParamUE_PGOU98.createForm();
-        });
-      }
-
-      // Ficha UA_PRI
-      var btFicha_UA_PRI = document.getElementById("btFicha_UA_PRI");
-      if (btFicha_UA_PRI) {
-        btFicha_UA_PRI.addEventListener("click", async function () {
-          var fid = btFicha_UA_PRI.getAttribute("data-fid");
-          var clase = btFicha_UA_PRI.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formParamUA_PRI = new Form_UNIDAD_EJECUCION_PRI(
-            entidad,
-            self.sigduMap
-          );
-          await formParamUA_PRI.createForm();
-        });
-      }
-
-      // Ficha UA_PRI
-      var btFicha_CAT_PGOU98 = document.getElementById("btFicha_CAT_PGOU98");
-      if (btFicha_CAT_PGOU98) {
-        btFicha_CAT_PGOU98.addEventListener("click", async function () {
-          var fid = btFicha_CAT_PGOU98.getAttribute("data-fid");
-          var clase = btFicha_CAT_PGOU98.getAttribute("data-clase");
-
-          const entidad = new FeatureUrbanistic(clase, fid);
-          await entidad.initialize();
-          const formParamCAT_PGOU98 = new Form_CATALOGO_PGOU98(
-            entidad,
-            self.sigduMap
-          );
-          await formParamCAT_PGOU98.createForm();
-        });
-      }
-
-      var elementos = document.querySelectorAll(
-        'button[data-accion="normativa"]'
-      );
-      console.log("elementos", elementos);
-
-
-      
-      for (var i = 0; i < elementos.length; i++) {
-        const btNormativa = elementos[i];
-
-        if (btNormativa) {
-          btNormativa.addEventListener("click", async function () {
-            var fid = btNormativa.getAttribute("data-fid");
-            var table = btNormativa.getAttribute("data-table");
-
-            console.log("passa");
-
-            try{
-              self.sigduMap.map.spin(true);
-              self.normativa = new NormativaDialog(table, fid, self.sigduMap);
-              await self.normativa.initialize();
-              await self.normativa.show();
-              self.sigduMap.map.spin(false);
-            }catch(e){
-              self.sigduMap.map.spin(false);
-            }
+    console.log("cuantos eventos dispara");
+    if (!this.eventsManagerRegistered) {
+      self.map.on("popupopen", async function () {
+        console.log("cuantos eventos dispara dentro");
+        // Ficha SLEQ_PGOU98
+        const btFicha_SLEQ_PGOU98 = document.getElementById(
+          "btFicha_SLEQ_PGOU98"
+        );
+        if (btFicha_SLEQ_PGOU98) {
+          btFicha_SLEQ_PGOU98.addEventListener("click", async function () {
+            var fid = btFicha_SLEQ_PGOU98.getAttribute("data-fid");
+            var clase = btFicha_SLEQ_PGOU98.getAttribute("data-clase");
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formSLEQ = new Form_SISTEMAS_PGOU98(entidad, self.sigduMap);
+            formSLEQ.createForm();
           });
         }
-      }
-    });
+
+        // Ficha SGEQ_PGOU98
+        var btFicha_SGEQ_PGOU98 = document.getElementById(
+          "btFicha_SGEQ_PGOU98"
+        );
+        if (btFicha_SGEQ_PGOU98) {
+          btFicha_SGEQ_PGOU98.addEventListener("click", async function () {
+            var fid = btFicha_SGEQ_PGOU98.getAttribute("data-fid");
+            var clase = btFicha_SGEQ_PGOU98.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formSGEQ = new Form_SISTEMAS_PGOU98(entidad, self.sigduMap);
+            formSGEQ.createForm();
+          });
+        }
+
+        // Ficha SLEL_PGOU98
+        var btFicha_SLEL_PGOU98 = document.getElementById(
+          "btFicha_SLEL_PGOU98"
+        );
+        if (btFicha_SLEL_PGOU98) {
+          btFicha_SLEL_PGOU98.addEventListener("click", async function () {
+            var fid = btFicha_SLEL_PGOU98.getAttribute("data-fid");
+
+            var clase = btFicha_SLEL_PGOU98.getAttribute("data-clase");
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formSLEL = new Form_SISTEMAS_PGOU98(entidad, self.sigduMap);
+            formSLEL.createForm();
+          });
+        }
+
+        // Ficha SGEL_PGOU98
+        var btFicha_SGEL_PGOU98 = document.getElementById(
+          "btFicha_SGEL_PGOU98"
+        );
+        if (btFicha_SGEL_PGOU98) {
+          btFicha_SGEL_PGOU98.addEventListener("click", async function () {
+            var fid = btFicha_SGEL_PGOU98.getAttribute("data-fid");
+            var clase = btFicha_SGEL_PGOU98.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formSGEL = new Form_SISTEMAS_PGOU98(entidad, self.sigduMap);
+            formSGEL.createForm();
+          });
+        }
+
+        // Ficha SLCI_PGOU98
+        var btFicha_SLCI_PGOU98 = document.getElementById(
+          "btFicha_SLCI_PGOU98"
+        );
+        if (btFicha_SLCI_PGOU98) {
+          btFicha_SLCI_PGOU98.addEventListener("click", async function () {
+            var fid = btFicha_SLCI_PGOU98.getAttribute("data-fid");
+            var clase = btFicha_SLCI_PGOU98.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formSGEL = new Form_SISTEMAS_PGOU98(entidad, self.sigduMap);
+            formSGEL.createForm();
+          });
+        }
+
+        // Ficha SGCI_PGOU98
+        var btFicha_SGCI_PGOU98 = document.getElementById(
+          "btFicha_SGCI_PGOU98"
+        );
+        if (btFicha_SGCI_PGOU98) {
+          btFicha_SGCI_PGOU98.addEventListener("click", async function () {
+            var fid = btFicha_SGCI_PGOU98.getAttribute("data-fid");
+            var clase = btFicha_SGCI_PGOU98.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formSGEL = new Form_SISTEMAS_PGOU98(entidad, self.sigduMap);
+            formSGEL.createForm();
+          });
+        }
+
+        // Ficha SGEQ_PG2023
+        var btFicha_SGEQ_PG2023 = document.getElementById(
+          "btFicha_SGEQ_PG2023"
+        );
+        if (btFicha_SGEQ_PG2023) {
+          btFicha_SGEQ_PG2023.addEventListener("click", async function () {
+            var fid = btFicha_SGEQ_PG2023.getAttribute("data-fid");
+            var clase = btFicha_SGEQ_PG2023.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formSGEQ_PG2023 = new Form_SISTEMAS_PG2023(
+              entidad,
+              self.sigduMap
+            );
+            formSGEQ_PG2023.createForm();
+          });
+        }
+
+        // Ficha SGEL_PG2023
+        var btFicha_SGEL_PG2023 = document.getElementById(
+          "btFicha_SGEL_PG2023"
+        );
+        if (btFicha_SGEL_PG2023) {
+          btFicha_SGEL_PG2023.addEventListener("click", async function () {
+            var fid = btFicha_SGEL_PG2023.getAttribute("data-fid");
+            var clase = btFicha_SGEL_PG2023.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formSGEL_PG2023 = new Form_SISTEMAS_PG2023(
+              entidad,
+              self.sigduMap
+            );
+            formSGEL_PG2023.createForm();
+          });
+        }
+
+        // Ficha SGCM_PG2023
+        var btFicha_SGCM_PG2023 = document.getElementById(
+          "btFicha_SGCM_PG2023"
+        );
+        if (btFicha_SGCM_PG2023) {
+          btFicha_SGCM_PG2023.addEventListener("click", async function () {
+            var fid = btFicha_SGCM_PG2023.getAttribute("data-fid");
+            var clase = btFicha_SGCM_PG2023.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formSGCM_PG2023 = new Form_SISTEMAS_PG2023(
+              entidad,
+              self.sigduMap
+            );
+            formSGCM_PG2023.createForm();
+          });
+        }
+
+        // Ficha SGSU_PG2023
+        var btFicha_SGSU_PG2023 = document.getElementById(
+          "btFicha_SGSU_PG2023"
+        );
+        if (btFicha_SGSU_PG2023) {
+          btFicha_SGSU_PG2023.addEventListener("click", async function () {
+            var fid = btFicha_SGSU_PG2023.getAttribute("data-fid");
+            var clase = btFicha_SGSU_PG2023.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formSGSU_PG2023 = new Form_SISTEMAS_PG2023(
+              entidad,
+              self.sigduMap
+            );
+            formSGSU_PG2023.createForm();
+          });
+        }
+
+        // Ficha SGIF_PG2023
+        var btFicha_SGIF_PG2023 = document.getElementById(
+          "btFicha_SGIF_PG2023"
+        );
+        if (btFicha_SGIF_PG2023) {
+          btFicha_SGIF_PG2023.addEventListener("click", async function () {
+            var fid = btFicha_SGIF_PG2023.getAttribute("data-fid");
+            var clase = btFicha_SGIF_PG2023.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formSGIF_PG2023 = new Form_SISTEMAS_PG2023(
+              entidad,
+              self.sigduMap
+            );
+            formSGIF_PG2023.createForm();
+          });
+        }
+
+        // Ficha EL_PRI
+        var btFicha_EL_PRI = document.getElementById("btFicha_EL_PRI");
+        if (btFicha_EL_PRI) {
+          btFicha_EL_PRI.addEventListener("click", async function () {
+            var fid = btFicha_EL_PRI.getAttribute("data-fid");
+            var clase = btFicha_EL_PRI.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formEL_PRI = new Form_SISTEMAS_PRI(entidad, self.sigduMap);
+            formEL_PRI.createForm();
+          });
+        }
+
+        // Ficha EQ_PRI
+        var btFicha_EQ_PRI = document.getElementById("btFicha_EQ_PRI");
+        if (btFicha_EQ_PRI) {
+          btFicha_EQ_PRI.addEventListener("click", async function () {
+            var fid = btFicha_EQ_PRI.getAttribute("data-fid");
+            var clase = btFicha_EQ_PRI.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formEQ_PRI = new Form_SISTEMAS_PRI(entidad, self.sigduMap);
+            formEQ_PRI.createForm();
+          });
+        }
+
+        // Ficha RSD_PGOU98
+        var btFicha_RSD_PGOU98 = document.getElementById("btFicha_RSD_PGOU98");
+        if (btFicha_RSD_PGOU98) {
+          btFicha_RSD_PGOU98.addEventListener("click", async function () {
+            var fid = btFicha_RSD_PGOU98.getAttribute("data-fid");
+            var clase = btFicha_RSD_PGOU98.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formParamRSD = new Form_PARAMETROS_RSD_PGOU98(
+              entidad.getFeature().properties.codigo,
+              entidad.getTable(),
+              self.sigduMap
+            );
+            await formParamRSD.initialize();
+            await formParamRSD.createForm();
+          });
+        }
+
+        // Ficha SEC_PGOU98
+        var btFicha_SEC_PGOU98 = document.getElementById("btFicha_SEC_PGOU98");
+        if (btFicha_SEC_PGOU98) {
+          btFicha_SEC_PGOU98.addEventListener("click", async function () {
+            var fid = btFicha_SEC_PGOU98.getAttribute("data-fid");
+            var clase = btFicha_SEC_PGOU98.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formParamSEC_PGOU98 = new Form_PARAMETROS_SEC_PGOU98(
+              entidad.getFeature().properties.codigo,
+              entidad.getTable(),
+              self.sigduMap
+            );
+            await formParamSEC_PGOU98.initialize();
+            await formParamSEC_PGOU98.createForm();
+          });
+        }
+
+        // Ficha TER_PGOU98
+        var btFicha_TER_PGOU98 = document.getElementById("btFicha_TER_PGOU98");
+        if (btFicha_TER_PGOU98) {
+          btFicha_TER_PGOU98.addEventListener("click", async function () {
+            var fid = btFicha_TER_PGOU98.getAttribute("data-fid");
+            var clase = btFicha_TER_PGOU98.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formParamTER_PGOU98 = new Form_PARAMETROS_TER_PGOU98(
+              entidad.getFeature().properties.codigo,
+              entidad.getTable(),
+              self.sigduMap
+            );
+            await formParamTER_PGOU98.initialize();
+            await formParamTER_PGOU98.createForm();
+          });
+        }
+
+        // Ficha VE_PGOU98
+        var btFicha_VE_PGOU98 = document.getElementById("btFicha_VE_PGOU98");
+        if (btFicha_VE_PGOU98) {
+          btFicha_VE_PGOU98.addEventListener("click", async function () {
+            var fid = btFicha_VE_PGOU98.getAttribute("data-fid");
+            var clase = btFicha_VE_PGOU98.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formParamVE_PGOU98 = new Form_PARAMETROS_VE_PGOU98(
+              entidad,
+              self.sigduMap
+            );
+            await formParamVE_PGOU98.initialize();
+            await formParamVE_PGOU98.createForm();
+          });
+        }
+
+        // Ficha T_PRI
+        var btFicha_T_PRI = document.getElementById("btFicha_T_PRI");
+        if (btFicha_T_PRI) {
+          btFicha_T_PRI.addEventListener("click", async function () {
+            var fid = btFicha_T_PRI.getAttribute("data-fid");
+            var clase = btFicha_T_PRI.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formParamT_PRI = new Form_PARAMETROS_CALIFICACIONES_PRI(
+              entidad,
+              "T_PRI",
+              self.sigduMap
+            );
+            await formParamT_PRI.initialize();
+            await formParamT_PRI.createForm();
+          });
+        }
+
+        // Ficha TH_PRI
+        var btFicha_TH_PRI = document.getElementById("btFicha_TH_PRI");
+        if (btFicha_TH_PRI) {
+          btFicha_TH_PRI.addEventListener("click", async function () {
+            var fid = btFicha_TH_PRI.getAttribute("data-fid");
+            var clase = btFicha_TH_PRI.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formParamTH_PRI = new Form_PARAMETROS_CALIFICACIONES_PRI(
+              entidad,
+              "TH_PRI",
+              self.sigduMap
+            );
+            await formParamTH_PRI.initialize();
+            await formParamTH_PRI.createForm();
+          });
+        }
+
+        // Ficha S_PRI
+        var btFicha_S_PRI = document.getElementById("btFicha_S_PRI");
+        if (btFicha_S_PRI) {
+          btFicha_S_PRI.addEventListener("click", async function () {
+            var fid = btFicha_S_PRI.getAttribute("data-fid");
+            var clase = btFicha_S_PRI.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formParamS_PRI = new Form_PARAMETROS_CALIFICACIONES_PRI(
+              entidad,
+              "S_PRI",
+              self.sigduMap
+            );
+            await formParamS_PRI.initialize();
+            await formParamS_PRI.createForm();
+          });
+        }
+
+        // Ficha I_PRI
+        var btFicha_I_PRI = document.getElementById("btFicha_I_PRI");
+        if (btFicha_I_PRI) {
+          btFicha_I_PRI.addEventListener("click", async function () {
+            var fid = btFicha_I_PRI.getAttribute("data-fid");
+            var clase = btFicha_I_PRI.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formParamI_PRI = new Form_PARAMETROS_CALIFICACIONES_PRI(
+              entidad,
+              "I_PRI",
+              self.sigduMap
+            );
+            await formParamI_PRI.initialize();
+            await formParamI_PRI.createForm();
+          });
+        }
+
+        // Ficha VA_PRI
+        var btFicha_VA_PRI = document.getElementById("btFicha_VA_PRI");
+        if (btFicha_VA_PRI) {
+          btFicha_VA_PRI.addEventListener("click", async function () {
+            var fid = btFicha_VA_PRI.getAttribute("data-fid");
+            var clase = btFicha_VA_PRI.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formParamVA_PRI = new Form_PARAMETROS_CALIFICACIONES_PRI(
+              entidad,
+              "VA_PRI",
+              self.sigduMap
+            );
+            await formParamVA_PRI.initialize();
+            await formParamVA_PRI.createForm();
+          });
+        }
+
+        // Ficha VT_PRI
+        var btFicha_VT_PRI = document.getElementById("btFicha_VT_PRI");
+        if (btFicha_VT_PRI) {
+          btFicha_VT_PRI.addEventListener("click", async function () {
+            var fid = btFicha_VT_PRI.getAttribute("data-fid");
+            var clase = btFicha_VT_PRI.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formParamVT_PRI = new Form_PARAMETROS_CALIFICACIONES_PRI(
+              entidad,
+              "VT_PRI",
+              self.sigduMap
+            );
+            await formParamVT_PRI.initialize();
+            await formParamVT_PRI.createForm();
+          });
+        }
+
+        // Ficha E_PRI
+        var btFicha_E_PRI = document.getElementById("btFicha_E_PRI");
+        if (btFicha_E_PRI) {
+          btFicha_E_PRI.addEventListener("click", async function () {
+            var fid = btFicha_E_PRI.getAttribute("data-fid");
+            var clase = btFicha_E_PRI.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formParamE_PRI = new Form_PARAMETROS_CALIFICACIONES_PRI(
+              entidad,
+              "E_PRI",
+              self.sigduMap
+            );
+            await formParamE_PRI.initialize();
+            await formParamE_PRI.createForm();
+          });
+        }
+
+        // Ficha D_PRI
+        var btFicha_D_PRI = document.getElementById("btFicha_D_PRI");
+        if (btFicha_D_PRI) {
+          btFicha_D_PRI.addEventListener("click", async function () {
+            var fid = btFicha_D_PRI.getAttribute("data-fid");
+            var clase = btFicha_D_PRI.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formParamD_PRI = new Form_PARAMETROS_CALIFICACIONES_PRI(
+              entidad,
+              "D_PRI",
+              self.sigduMap
+            );
+            await formParamD_PRI.initialize();
+            await formParamD_PRI.createForm();
+          });
+        }
+
+        // Ficha UE_PGOU98
+        var btFicha_UE_PGOU98 = document.getElementById("btFicha_UE_PGOU98");
+        if (btFicha_UE_PGOU98) {
+          btFicha_UE_PGOU98.addEventListener("click", async function () {
+            var fid = btFicha_UE_PGOU98.getAttribute("data-fid");
+            var clase = btFicha_UE_PGOU98.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formParamUE_PGOU98 = new Form_UNIDAD_EJECUCION_PGOU98(
+              entidad,
+              self.sigduMap
+            );
+            await formParamUE_PGOU98.createForm();
+          });
+        }
+
+        // Ficha UA_PRI
+        var btFicha_UA_PRI = document.getElementById("btFicha_UA_PRI");
+        if (btFicha_UA_PRI) {
+          btFicha_UA_PRI.addEventListener("click", async function () {
+            var fid = btFicha_UA_PRI.getAttribute("data-fid");
+            var clase = btFicha_UA_PRI.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formParamUA_PRI = new Form_UNIDAD_EJECUCION_PRI(
+              entidad,
+              self.sigduMap
+            );
+            await formParamUA_PRI.createForm();
+          });
+        }
+
+        // Ficha UA_PRI
+        var btFicha_CAT_PGOU98 = document.getElementById("btFicha_CAT_PGOU98");
+        if (btFicha_CAT_PGOU98) {
+          btFicha_CAT_PGOU98.addEventListener("click", async function () {
+            var fid = btFicha_CAT_PGOU98.getAttribute("data-fid");
+            var clase = btFicha_CAT_PGOU98.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formParamCAT_PGOU98 = new Form_CATALOGO_PGOU98(
+              entidad,
+              self.sigduMap
+            );
+            await formParamCAT_PGOU98.createForm();
+          });
+        }
+
+        console.log("cuantos pasa??");
+
+        var elementos = document.querySelectorAll(
+          'button[data-accion="normativa"]'
+        );
+        console.log("elementos", elementos);
+
+        for (var i = 0; i < elementos.length; i++) {
+          const btNormativa = elementos[i];
+
+          if (btNormativa) {
+            btNormativa.addEventListener("click", async function () {
+              var fid = btNormativa.getAttribute("data-fid");
+              var table = btNormativa.getAttribute("data-table");
+
+              console.log("passa");
+
+              try {
+                self.sigduMap.map.spin(true);
+                self.normativa = new NormativaDialog(table, fid, self.sigduMap);
+                await self.normativa.initialize();
+                await self.normativa.show();
+                self.sigduMap.map.spin(false);
+              } catch (e) {
+                self.sigduMap.map.spin(false);
+              }
+            });
+          }
+        }
+      });
+
+      this.eventsManagerRegistered = true; // Marca que el evento está registrado
+    }
   }
 
   /**
@@ -884,12 +914,12 @@ class MapQuery {
   }
 
   /**
- * Crea HTML para expedientes de una tabla específica según el tipo de tabla y los datos GeoJSON.
- *
- * @param {string} tabla - El nombre de la tabla.
- * @param {object} geojsonRES - Datos GeoJSON asociados a la tabla.
- * @returns {string} HTML generado.
- */
+   * Crea HTML para expedientes de una tabla específica según el tipo de tabla y los datos GeoJSON.
+   *
+   * @param {string} tabla - El nombre de la tabla.
+   * @param {object} geojsonRES - Datos GeoJSON asociados a la tabla.
+   * @returns {string} HTML generado.
+   */
   async createHTMLexpedientesForTabla(tabla, geojsonRES) {
     let html = "";
 
@@ -937,7 +967,7 @@ class MapQuery {
    * @returns {Promise<string>} - Una cadena HTML que representa la tabla de dotación de servicios.
    */
   async createHTML_dotacion_servicios(geojson) {
-     // Ordena las características del GeoJSON por el campo 'codigo'
+    // Ordena las características del GeoJSON por el campo 'codigo'
     geojson.features.sort((a, b) => a.properties.codigo - b.properties.codigo);
     var html = "";
     if (this.num_exp_PF == 0) {
@@ -1012,7 +1042,7 @@ class MapQuery {
     return html;
   }
 
-   /**
+  /**
    * Genera una tabla HTML que muestra información sobre parcelaciones a partir de un objeto GeoJSON.
    *
    * @async
@@ -1332,12 +1362,12 @@ class MapQuery {
     return html;
   }
 
- /**
- * Genera una tabla HTML que muestra información sobre planes especiales de reforma interior a partir de un objeto GeoJSON.
- *
- * @param {Object} geojson - Objeto GeoJSON que contiene la información de planes especiales de reforma interior.
- * @returns {Promise<string>} - Una cadena HTML que representa la tabla de planes especiales de reforma interior.
- */
+  /**
+   * Genera una tabla HTML que muestra información sobre planes especiales de reforma interior a partir de un objeto GeoJSON.
+   *
+   * @param {Object} geojson - Objeto GeoJSON que contiene la información de planes especiales de reforma interior.
+   * @returns {Promise<string>} - Una cadena HTML que representa la tabla de planes especiales de reforma interior.
+   */
   async createHTML_plan_especial_RI(geojson) {
     geojson.features.sort((a, b) => a.properties.codigo - b.properties.codigo);
 
