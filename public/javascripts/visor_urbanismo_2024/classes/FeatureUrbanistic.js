@@ -257,6 +257,14 @@ class FeatureUrbanistic {
         this.fillColor = "MAGENTA";
         this.color = "black";
         break;
+      case "CAT_ACTUALIZACION":
+        this.title = "CATALOGO";
+        this.subtitle = "-";
+        this.tipo_plan = "PGOU98";
+        this.table = "catalogos_actualizacion";
+        this.fillColor = "MAGENTA";
+        this.color = "black";
+        break;
     }
 
     console.log(
@@ -270,10 +278,13 @@ class FeatureUrbanistic {
   }
 
   async initialize() {
+    console.log("initializing");
     await this.readFeature();
+    console.log(this.geojson);
     await this.setRefcatString();
     await this.setZonaEstadisticaString();
     await this.setCallesString();
+    console.log("initializing end");
   }
 
   /**
@@ -332,6 +343,8 @@ class FeatureUrbanistic {
    */
   async readFeature() {
     const reader = new DataReader();
+    console.log(this.table);
+    console.log(this.fid);
     const info_geojson = await reader.readDataFeature(
       this.table,
       `fid=${this.fid}`

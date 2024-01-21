@@ -706,7 +706,7 @@ class MapQuery {
           });
         }
 
-        // Ficha UA_PRI
+        // Ficha CAT_PGOU98
         var btFicha_CAT_PGOU98 = document.getElementById("btFicha_CAT_PGOU98");
         if (btFicha_CAT_PGOU98) {
           btFicha_CAT_PGOU98.addEventListener("click", async function () {
@@ -720,6 +720,25 @@ class MapQuery {
               self.sigduMap
             );
             await formParamCAT_PGOU98.createForm();
+          });
+        }
+
+        // Ficha CAT_ACTUALIZACION
+        var btFicha_CAT_ACTUALIZACION = document.getElementById("btFicha_CAT_ACTUALIZACION");
+        if (btFicha_CAT_ACTUALIZACION) {
+          btFicha_CAT_ACTUALIZACION.addEventListener("click", async function () {
+            var fid = btFicha_CAT_ACTUALIZACION.getAttribute("data-fid");
+            var clase = btFicha_CAT_ACTUALIZACION.getAttribute("data-clase");
+            console.log("clase",clase);
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+           
+            const formParamCAT_ACTUALIZACION = new Form_CATALOGO_ACTUALIZACION(
+              entidad,
+              self.sigduMap
+            );
+            await formParamCAT_ACTUALIZACION.createForm();
           });
         }
 
@@ -3046,9 +3065,15 @@ class MapQuery {
         </tr>
         <tr align="center"  style='background-color:white;padding:3px;font-size:8.5pt;font-family:Arial Black;color:#660000;height:22px'>  
             <td colspan="2"> 
-                <button style="padding:3px;font-size:9pt;font-family:Arial Black" class="ui-button ui-widget ui-corner-all" title="Ficha del elemento" value=${
-                  geojson.features[r].properties.codigo
-                } OnClick="fichaCAT_ACT(this)"><i class="fa fa-info-circle"></i> Ficha</button>
+
+                <button id="btFicha_CAT_ACTUALIZACION" 
+                  style="padding:3px;font-size:9pt;font-family:Arial Black" 
+                  class="ui-button ui-widget ui-corner-all" 
+                  title="Ficha del elemento"
+                  data-fid="${geojson.features[r].properties.fid}" 
+                  data-clase="CAT_ACTUALIZACION">
+                  <i class="fa fa-info-circle"></i> Ficha
+                </button>
 
                 <button id="btNormativa_CAT_ACT_PGOU98" 
                   style="padding:3px;font-size:9pt;font-family:Arial Black" 
