@@ -518,3 +518,116 @@ img {
 .leaflet-top.leaflet-left {
   display: flex;
 } */
+
+/* Estilos forms */
+
+.div-form{
+  width: 90%;
+  height: 90%;
+  top: 10px;
+  left: 10px;
+  overflow: auto;
+  padding: 20px;
+  background-color:#f2f2f2;
+  border-style: solid;
+  border-width: 0pt;
+  border-color:black; 
+  box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);
+  position:absolute;
+}
+
+.title-form{
+  width:380px;
+  height:20px;
+  padding: 5px;
+  font-family: Arial Black;
+  font-size: 8pt;
+  background-color:#fdfde0;
+  color:#1a4d1a;
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
+  border-style: solid;border-width:0.1pt;
+  border-color:black;
+}
+
+.title-section-print{
+  width: 99%;
+  height: 14px;
+  padding: 3px;
+  font-size: 8.5pt;
+  font-family: Arial Black;
+  background-color: rgba(85, 140, 212, 1);
+  color:white;
+  border-style: solid;
+  border-width:0.1pt;
+  border-color:RGB(12,1,73);
+}
+
+.table-form {
+  width: 100%;
+  height: 10px;
+  border: 0;
+  padding: 3px;
+  background-color: #cfd7e7;
+  border-color: grey;
+  border-collapse: separate;
+  border-spacing: 1px;
+}
+
+.table-form-tr-white {
+  background-color: #ffffff;
+  
+}
+
+.table-form-tr-bluegrey {
+  background-color: #eaf5ff;  
+}
+
+.table-form-td{
+  padding: 3px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8pt;
+  color: black;
+  text-align: justify;
+}
+
+.table-form-td2{
+  padding: 4px;
+  background-color: #edf1f5;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8pt;
+  color: black;
+  text-align: left;
+}
+
+.table-form-td3{
+  padding: 4px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8pt;
+  color: black;
+  text-align: justify;
+}
+
+.table-form-label-style {
+  padding: 3px;
+  font-size: 8pt;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: white;
+  color: #000000;
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
+  border-style: solid;
+  border-width: 0.1pt;
+  border-color: black;
+  width: 120px;
+  height: 15px;
+}
+
+.button-print{
+  padding-top:4px;
+  padding-bottom:4px;
+}
+
+/* END Estilos forms */
+
+
+
+

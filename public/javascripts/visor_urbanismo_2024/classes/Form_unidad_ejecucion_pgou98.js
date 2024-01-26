@@ -63,248 +63,212 @@ class Form_UNIDAD_EJECUCION_PGOU98 {
 
   setHTML_IDENTIFICACION() {
     this.html_IDENTIFICACION = `
-      <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-  
-        <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">CODIGO</LABEL></td>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:120px;height:15px'>${this.codigo}</LABEL></td>
+      <TABLE class="table-form">
+        <tr class="table-form-tr-white">
+          <td class="table-form-td">CODIGO</td>
+          <td><LABEL class="table-form-label-style">${this.codigo}</td>
         </tr>
-       
-        <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">DENOMINACIÓN</LABEL></td>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:120px;height:15px'>${this.denominacion}</LABEL></td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td">DENOMINACIÓN</td>
+          <td><LABEL class="table-form-label-style">${this.denominacion}</td>
         </tr>
-        <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">ZONA ESTADISTICA</LABEL></td>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.cadenaZonaEst}</LABEL></td>
+        <tr class="table-form-tr-bluegrey">
+          <td class="table-form-td">ZONA ESTADISTICA</td>
+          <td class="table-form-td">${this.cadenaZonaEst}</td>
         </tr>
-        <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">REF. CATASTRAL</LABEL></td>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.cadenaParcelas}</LABEL></td>
+        <tr class="table-form-tr-bluegrey">
+          <td class="table-form-td">REF. CATASTRAL</td>
+          <td class="table-form-td">${this.cadenaParcelas}</td>
         </tr>
-        <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">CALLES</LABEL></td>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.cadenaCalles}</LABEL></td>
-        </tr>
-        
+        <tr class="table-form-tr-bluegrey">
+          <td class="table-form-td">CALLES</td>
+          <td class="table-form-td">${this.cadenaCalles}</td>
+        </tr>  
       </TABLE>`;
-
-    console.log("===============================");
   }
 
   setHTML_SISTEMAS_CESION() {
     this.html_SISTEMAS_CESION = `
-    <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:black' align="right">EXPAIS LLIURES</LABEL></td>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.totlibres}</LABEL></td>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.elibres}</LABEL></td>
+      <TABLE class="table-form">
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">ESPACIOS LIBRES</td>
+          <td class="table-form-td3">${this.feature.properties.totlibres}</td>
+          <td class="table-form-td3">${this.feature.properties.elibres}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:black' align="right">EQUIPAMENTS</LABEL></td>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.totequipam}</LABEL></td>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.equipam}</LABEL></td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">EQUIPAMIENTOS</td>
+          <td class="table-form-td3">${this.feature.properties.totequipam}</td>
+          <td class="table-form-td3">${this.feature.properties.equipam}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:black' align="right">VIALS I INF.</LABEL></td>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.totvial}</LABEL></td>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:#000000;'>-</LABEL></td>
-        </tr>
-       
-       
-    </TABLE>`;
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">VIALES I INF.</td>
+          <td class="table-form-td3">${this.feature.properties.totvial}</td>
+          <td class="table-form-td3">-</td>
+        </tr>    
+      </TABLE>`;
   }
 
   setHTML_SUPERFICIES() {
     this.html_SUPERFICIES = `
-        <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-            <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-                <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:black' align="right">SUP. SÓL NO LUCRATIU</LABEL></td>
-                <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.totcesion}</LABEL></td>
-               
-            </tr>
-            <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-                <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:black' align="right">SUP. SÓL LUCRATIU</LABEL></td>
-                <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.totlucrat}</LABEL></td>
-               
-            </tr>
-            <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-                <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:black' align="right">TOTAL</LABEL></td>
-                <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.totue}</LABEL></td>
-                 
-            </tr>       
-           
-        </TABLE>`;
+      <TABLE class="table-form">
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">SUP. SUELO NO LUCRATIVO</td>
+          <td class="table-form-td3">${this.feature.properties.totcesion}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">SUP. SUELO LUCRATIVO</td>
+          <td class="table-form-td3">${this.feature.properties.totlucrat}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">TOTAL</td>
+          <td class="table-form-td3">${this.feature.properties.totue}</td>
+        </tr>
+      </TABLE>`;
   }
 
   setHTML_ORDENACION() {
     this.html_ORDENACION = `
-      <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-              
-      <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
+      <TABLE class="table-form">           
+        <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
           <td bgcolor="grey"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:white' align="right">USOS</LABEL></td>
           <td bgcolor="grey"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:white' align="right">TIPOLOGIA</LABEL></td>
-          <td bgcolor="grey"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:white' align="right">ORDENANÇA</LABEL></td>
-          <td bgcolor="grey"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:white' align="right">COEF. EDIFICABILITAT MITJA</LABEL></td>
-          <td bgcolor="grey"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:white' align="right">SUP. SÒL</LABEL></td>
-          <td bgcolor="grey"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:white' align="right">EDIFICABILITAT</LABEL></td>
-      </tr>
-      <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-          <td rowspan=2 bgcolor="#eaf5ff"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">RESID. UNIFAMILIAR</LABEL></td>
-          <td bgcolor="#eaf5ff"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">CONTINUA</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.orden_ruc}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.edif_ruc}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.supsol_ruc}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.suptot_ruc}</LABEL></td>
-      </tr>
-      <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-        <!-- <td bgcolor="#eaf5ff"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">RESID. UNIFAMILIAR</LABEL></td> -->
-          <td bgcolor="#eaf5ff"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">AILLADA</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.orden_rua}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.edif_rua}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.supsol_rua}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.suptot_rua}</LABEL></td>
-      </tr>
-      <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-          <td rowspan=3 bgcolor="#eaf5ff"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">RESID. PLURIFAMILIAR</LABEL></td>
-          <td bgcolor="#eaf5ff"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">CONTINUA</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.orden_rpc}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.edif_rpc}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.supsol_rpc}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.suptot_rpc}</LABEL></td>
-      </tr>
-          <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>          
-          <td bgcolor="#eaf5ff"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">AILLADA</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.orden_rpa}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.edif_rpa}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.supsol_rpa}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.suptot_rpa}</LABEL></td>
-      </tr>
-      <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-          
-          <td bgcolor="#eaf5ff"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">VOL. ESP.</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.orden_vol}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.edif_vol}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.supsol_vol}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.suptot_vol}</LABEL></td>
-      </tr>
-      <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-          <td bgcolor="#eaf5ff"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">SECUNDARI</LABEL></td>
-          <td bgcolor="#eaf5ff"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">TOTES</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.orden_sec}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.edif_sec}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.supsol_sec}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.suptot_sec}</LABEL></td>
-      </tr>
-      <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-          <td bgcolor="#eaf5ff"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">TERCIARI</LABEL></td>
-          <td bgcolor="#eaf5ff"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">TOTES</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.orden_ter}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.edif_ter}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.supsol_ter}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.suptot_ter}</LABEL></td>
-      </tr>
-      <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-          <td bgcolor="#eaf5ff"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">EQUIPAMENTS</LABEL></td>
-          <td bgcolor="#eaf5ff"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">TOTES</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.orden_eqp}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.edif_eqp}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.supsol_eqp}</LABEL></td>
-          <td bgcolor="white"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.suptot_eqp}</LABEL></td>
-      </tr>
-              
-    </TABLE>`;
+          <td bgcolor="grey"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:white' align="right">ORDENANZA</LABEL></td>
+          <td bgcolor="grey"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:white' align="right">COEF. EDIFICABILITAD MITJA</LABEL></td>
+          <td bgcolor="grey"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:white' align="right">SUP. SUELO</LABEL></td>
+          <td bgcolor="grey"><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:white' align="right">EDIFICABILIDAD</LABEL></td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td rowspan=2 class="table-form-td2">RESID. UNIFAMILIAR</LABEL></td>
+          <td class="table-form-td2">CONTINUA</LABEL></td>
+          <td class="table-form-td3">${this.feature.properties.orden_ruc}</td>
+          <td class="table-form-td3">${this.feature.properties.edif_ruc}</td>
+          <td class="table-form-td3">${this.feature.properties.supsol_ruc}</td>
+          <td class="table-form-td3">${this.feature.properties.suptot_ruc}</td>
+        </tr>
+        <tr class="table-form-tr-white">   
+          <td class="table-form-td2">AISLADA</LABEL></td>
+          <td class="table-form-td3">${this.feature.properties.orden_rua}</td>
+          <td class="table-form-td3">${this.feature.properties.edif_rua}</td>
+          <td class="table-form-td3">${this.feature.properties.supsol_rua}</td>
+          <td class="table-form-td3">${this.feature.properties.suptot_rua}</td>
+        </tr>
+        <tr class="table-form-tr-white"> 
+          <td rowspan=3 class="table-form-td2">RESID. PLURIFAMILIAR</LABEL></td>
+          <td class="table-form-td2">CONTINUA</LABEL></td>
+          <td class="table-form-td3">${this.feature.properties.orden_rpc}</td>
+          <td class="table-form-td3">${this.feature.properties.edif_rpc}</td>
+          <td class="table-form-td3">${this.feature.properties.supsol_rpc}</td>
+          <td class="table-form-td3">${this.feature.properties.suptot_rpc}</td>
+        </tr>
+        <tr class="table-form-tr-white">          
+          <td class="table-form-td2">AISLADA</LABEL></td>
+          <td class="table-form-td3">${this.feature.properties.orden_rpa}</td>
+          <td class="table-form-td3">${this.feature.properties.edif_rpa}</td>
+          <td class="table-form-td3">${this.feature.properties.supsol_rpa}</td>
+          <td class="table-form-td3">${this.feature.properties.suptot_rpa}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">VOL. ESP.</LABEL></td>
+          <td class="table-form-td3">${this.feature.properties.orden_vol}</td>
+          <td class="table-form-td3">${this.feature.properties.edif_vol}</td>
+          <td class="table-form-td3">${this.feature.properties.supsol_vol}</td>
+          <td class="table-form-td3">${this.feature.properties.suptot_vol}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">SECUNDARIO</LABEL></td>
+          <td class="table-form-td2">TOTES</LABEL></td>
+          <td class="table-form-td3">${this.feature.properties.orden_sec}</td>
+          <td class="table-form-td3">${this.feature.properties.edif_sec}</td>
+          <td class="table-form-td3">${this.feature.properties.supsol_sec}</td>
+          <td class="table-form-td3">${this.feature.properties.suptot_sec}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">TERCIARIO</LABEL></td>
+          <td class="table-form-td2">TOTES</LABEL></td>
+          <td class="table-form-td3">${this.feature.properties.orden_ter}</td>
+          <td class="table-form-td3">${this.feature.properties.edif_ter}</td>
+          <td class="table-form-td3">${this.feature.properties.supsol_ter}</td>
+          <td class="table-form-td3">${this.feature.properties.suptot_ter}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">EQUIPAMIENTOS</LABEL></td>
+          <td class="table-form-td2">TOTES</LABEL></td>
+          <td class="table-form-td3">${this.feature.properties.orden_eqp}</td>
+          <td class="table-form-td3">${this.feature.properties.edif_eqp}</td>
+          <td class="table-form-td3">${this.feature.properties.supsol_eqp}</td>
+          <td class="table-form-td3">${this.feature.properties.suptot_eqp}</td>
+        </tr>            
+      </TABLE>`;
   }
 
   setHTML_SUPERFICIE_EDIF(){
     this.html_SUPERFICIE_EDIF=`
-    <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:black' align="right">EDIFICABILITAT MAX. (m2t)</LABEL></td>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.aprofitn}</LABEL></td>
-            
+      <TABLE class="table-form">
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">EDIFICABILIDAD MAX. (m2t)</td>
+          <td class="table-form-td3">${this.feature.properties.aprofitn}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:black' align="right">COEF. EDIFICABILITAT MAX. (m2t/m2)</LABEL></td>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.edifglob_1}</LABEL></td>
-            
-        </tr>
-        
-        
-    </TABLE>`; 
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">COEF. EDIFICABILIDAD MAX. (m2t/m2)</td>
+          <td class="table-form-td3">${this.feature.properties.edifglob_1}</td>
+          </tr>
+      </TABLE>`; 
   }
 
   setHTML_ESTANDARES_URBANISTICOS(){
     this.html_ESTANDARES_URBANISTICOS=`
-    <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:black' align="right">DENSITAT MAX. VIVENDES (viv/ha)</LABEL></td>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.densvivm_1}</LABEL></td>
-            
+      <TABLE class="table-form">
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">DENSIDAD MAX. VIVIENDAS (viv/ha)</td>
+          <td class="table-form-td3">${this.feature.properties.densvivm_1}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:black' align="right">DENSITAT POBLACIÓ MAX. (hab/ha)</LABEL></td>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.denspobm_1}</LABEL></td>
-            
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">DENSIDAD POBLACIÓN MAX. (hab/ha)</td>
+          <td class="table-form-td3">${this.feature.properties.denspobm_1}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:black' align="right">NUM. VIV. MAX. (viv)</LABEL></td>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.numvivn}</LABEL></td>
-            
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">NUM. VIV. MAX. (viv)</td>
+          <td class="table-form-td3">${this.feature.properties.numvivn}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:black' align="right">NUM. HAB. MAX. (hab)</LABEL></td>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.numhabmaxn}</LABEL></td>
-            
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">NUM. HAB. MAX. (hab)</td>
+          <td class="table-form-td3">${this.feature.properties.numhabmaxn}</td>
         </tr>
-        
-        
-    </TABLE>`; 
+      </TABLE>`; 
   }
 
   setHTML_GESTION(){
     this.html_GESTION=`
-    <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:black' align="right">PALNEJAMENT APROVAT</LABEL></td>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.plana_apro}</LABEL></td>
-            
+      <TABLE class="table-form">
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">PLANEAMIENTO APROVADO</td>
+          <td class="table-form-td3">${this.feature.properties.plana_apro}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:black' align="right">PLANEJAMENT A DESENVOLUPAR</LABEL></td>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.plana_a_d}</LABEL></td>
-            
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">PLANEAMIENTO A DESARROLLAR</td>
+          <td class="table-form-td3">${this.feature.properties.plana_a_d}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:black' align="right">SISTEMA D' ACTUACIÓ</LABEL></td>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.sistema_ac}</LABEL></td>
-            
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">SISTEMA DE ACTUACIÓN</td>
+          <td class="table-form-td3">${this.feature.properties.sistema_ac}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:black' align="right">PLA D' ETAPES</LABEL></td>
-            <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.plan_etapa}</LABEL></td>
-            
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">PLAN DE ETAPAS</td>
+          <td class="table-form-td3">${this.feature.properties.plan_etapa}</td>
         </tr>
-        
-        
     </TABLE>`; 
   }
 
   setHTML_OBSERVACIONES(){
-    this.html_OBSERVACIONES=`
-        <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-            <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-               
-                <td style='text-align: justify;padding:10px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.observacio.replace(
-                  /\n/g,
-                  "<br>"
-                )}</LABEL></td>
-               
-            </tr>
-           
-           
-           
-        </TABLE>`; 
+    this.html_OBSERVACIONES = `
+      <TABLE class="table-form">
+        <tr class="table-form-tr-white">
+          <td class="table-form-td3">${this.feature.properties.observacio.replace(
+            /\n/g,
+            "<br>"
+          )}</td>
+        </tr>       
+      </TABLE>`;
   }
 
   setHTML_BUTTONS() {
@@ -371,6 +335,9 @@ class Form_UNIDAD_EJECUCION_PGOU98 {
     ventana.document.write(
       `<title>sistemas_${this.clase}_${this.codigo}</title>`
     );
+    ventana.document.write(
+      `<link rel="stylesheet" type="text/css" href="../stylesheets/style.css">`
+    );
     ventana.document.innerHTML = "";
 
     // identificacion=`<DIV style="padding:50px">${html_IDENTIFICACION}</DIV>`
@@ -378,7 +345,7 @@ class Form_UNIDAD_EJECUCION_PGOU98 {
     ventana.document.write("<BR>");
     ventana.document.write(this.html_TITULO);
     ventana.document.write("<BR><BR>");
-    const tit_identificacion = `<DIV style='padding:3px;font-size:8.5pt;font-family:Arial Black;background-color:rgba(85, 140, 212, 1);color:white;border-style: solid;border-width:0.1pt;border-color:RGB(12,1,73);width:99%;height:14px;'>1. IDENTIFICACIÓN</DIV>`;
+    const tit_identificacion = `<DIV class="title-section-print">1. IDENTIFICACIÓN</DIV>`;
     ventana.document.write(tit_identificacion);
     ventana.document.write(this.html_IDENTIFICACION);
 
@@ -386,13 +353,27 @@ class Form_UNIDAD_EJECUCION_PGOU98 {
       '<div  id="image" style="width:100%;text-align: center"> </div>'
     );
 
-    const tit_caracteristicas = `<DIV style='padding:3px;font-size:8.5pt;font-family:Arial Black;background-color:rgba(85, 140, 212, 1);color:white;border-style: solid;border-width:0.1pt;border-color:RGB(12,1,73);width:99%;height:14px;'>2. SISTEMAS LOCALES DE CESIÓN</DIV>`;
+    const tit_sistemas_cesion = `<DIV class="title-section-print">2. SISTEMAS LOCALES DE CESIÓN</DIV>`;
     ventana.document.write(tit_sistemas_cesion);
     ventana.document.write(this.html_SISTEMAS_CESION);
-
-    const tit_superficies = `<DIV style='padding:3px;font-size:8.5pt;font-family:Arial Black;background-color:rgba(85, 140, 212, 1);color:white;border-style: solid;border-width:0.1pt;border-color:RGB(12,1,73);width:99%;height:14px;'>3. SUPERFICIES</DIV>`;
+    const tit_superficies = `<DIV class="title-section-print">3. SUPERFICIES</DIV>`;
     ventana.document.write(tit_superficies);
     ventana.document.write(this.html_SUPERFICIES);
+    const tit_ordenacion = `<DIV class="title-section-print">4. ORDENACIÓN</DIV>`;
+    ventana.document.write(tit_ordenacion);
+    ventana.document.write(this.html_ORDENACION);
+    const tit_superficIe_edif = `<DIV class="title-section-print">5. SUPERFICIE EDIFICABLE</DIV>`;
+    ventana.document.write(tit_superficIe_edif);
+    ventana.document.write(this.html_SUPERFICIE_EDIF);
+    const tit_estandares = `<DIV class="title-section-print">6. ESTANDARES URBANISTICOS</DIV>`;
+    ventana.document.write(tit_estandares);
+    ventana.document.write(this.html_ESTANDARES_URBANISTICOS);
+    const tit_gestion = `<DIV class="title-section-print">7. GESTION</DIV>`;
+    ventana.document.write(tit_gestion);
+    ventana.document.write(this.html_GESTION);
+    const tit_observaciones = `<DIV class="title-section-print">8. OBSERVACIONES</DIV>`;
+    ventana.document.write(tit_observaciones);
+    ventana.document.write(this.html_OBSERVACIONES);
 
     await leafletImage(this.mapManager.map2, async function (err, canvas) {
       // Convierte el canvas en un blob
@@ -421,7 +402,7 @@ class Form_UNIDAD_EJECUCION_PGOU98 {
   }
 
   setHTML_TITLE() {
-    this.html_TITULO = ` <LABEL style='padding:5px;font-size:8.5pt;font-family:Arial Black;background-color:#fdfde0;color:#1a4d1a;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:380px;height:20px;'>FICHA DE ${this.title}  (${this.tipoPlan})</LABEL>`;
+    this.html_TITULO = `<LABEL class="title-form">FICHA DE ${this.title}  (${this.tipoPlan})</LABEL>`;
   }
 
   async createForm() {
@@ -439,16 +420,16 @@ class Form_UNIDAD_EJECUCION_PGOU98 {
 
     let html = "";
     html =
-      html +
-      `<div style='overflow: auto;padding:20px;background-color:#f2f2f2;border-style: solid;border-width:0pt;border-color:black;box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);position:absolute;width:90%;height:90%;top:10px;left:10px'>
-        ${this.html_TITULO}
-        <button  id="printFichaUE" style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Imprimir Ficha"><i class="fa fa-print"></i></button> 
-        <a target="_blank" title="Ir a Street view" href="${urlG}}"><img src="${window.location.protocol}//${window.location.host}/opg/images/streetview.png"></a>
-        <BR>
-        <BR>
-        ${this.html_buttons}
-        <BR>   
-      </div>`;
+    html +
+    `<div class="div-form">
+      ${this.html_TITULO}
+      <button  id="printFichaUE" class="ui-button ui-widget ui-corner-all button-print" title="Imprimir Ficha"><i class="fa fa-print"></i></button> 
+      <a target="_blank" title="Ir a Street view" href="${urlG}}"><img src="${window.location.protocol}//${window.location.host}/opg/images/streetview.png"></a>
+      <BR>
+      <BR>
+      ${this.html_buttons}
+      <BR>   
+    </div>`;
 
     const elem = document.getElementById("userinfo");
     elem.innerHTML = html;

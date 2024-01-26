@@ -51,96 +51,89 @@ class Form_UNIDAD_EJECUCION_PRI {
 
   setHTML_IDENTIFICACION() {
     this.html_IDENTIFICACION = `
-      <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-  
-        <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">CODIGO</LABEL></td>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:120px;height:15px'>${this.codigo}</LABEL></td>
+      <TABLE class="table-form">
+        <tr class="table-form-tr-white">
+          <td class="table-form-td">CODIGO</td>
+          <td><LABEL class="table-form-label-style">${this.codigo}</td>
         </tr>
-       
-        <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">DENOMINACIÓN</LABEL></td>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:120px;height:15px'>${this.denominacion}</LABEL></td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td">DENOMINACIÓN</td>
+          <td><LABEL class="table-form-label-style">${this.denominacion}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-        <td><LABEL style='padding:10px;font-size:8pt;font-family:Arial;color:black' align="right">DESCRIPCIÓ</LABEL></td>
-            <td style='text-align: justify;padding:10px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.descripcion.replace(
-              /\n/g,
-              "<br>"
-            )}}</td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td">DESCRIPCIÓN</td>
+          <td class="table-form-td3">${this.feature.properties.descripcion.replace(
+            /\n/g,
+            "<br>"
+          )}</td>
         </tr>
-        <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">ZONA ESTADISTICA</td>
-            <td style='text-align: justify;padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.cadenaZonaEst}</td>
+        <tr class="table-form-tr-bluegrey">
+          <td class="table-form-td">ZONA ESTADISTICA</td>
+          <td class="table-form-td">${this.cadenaZonaEst}</td>
         </tr>
-        <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">REF. CATASTRAL</td>
-            <td style='text-align: justify;padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.cadenaParcelas}</td>
+        <tr class="table-form-tr-bluegrey">
+          <td class="table-form-td">REF. CATASTRAL</td>
+          <td class="table-form-td">${this.cadenaParcelas}</td>
         </tr>
-        <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">CALLES</td>
-            <td style='text-align: justify;padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.cadenaCalles}</td>
-        </tr>
-        
+        <tr class="table-form-tr-bluegrey">
+          <td class="table-form-td">CALLES</td>
+          <td class="table-form-td">${this.cadenaCalles}</td>
+        </tr>        
       </TABLE>`;
-
-    console.log("===============================");
   }
 
   setHTML_PARAMETROS() {
     this.html_PARAMETROS=`
-    <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">SUPERFICIE TOTAL</td>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.superficie_total}</td>
+      <TABLE class="table-form">
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">SUPERFICIE TOTAL</td>
+          <td class="table-form-td3">${this.feature.properties.superficie_total}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">SUPERFICIE APROFITAMENT PRIVAT</td>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.superficie_aprofitament_privat}</td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">SUPERFICIE APROVECHAMIENTO PRIVADO</td>
+          <td class="table-form-td3">${this.feature.properties.superficie_aprofitament_privat}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">SUPERFICIE CESSIÓ E. LLIURES</td>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.superficie_cesion_elibres}</LABEL></td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">SUPERFICIE CESIÓN E. LIBRES</td>
+          <td class="table-form-td3">${this.feature.properties.superficie_cesion_elibres}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">SUPERFICIE CESSIÓ EQUIPAMENTS</td>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.superficie_cesion_equipaments}</td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">SUPERFICIE CESIÓN EQUIPAMIENTOS</td>
+          <td class="table-form-td3">${this.feature.properties.superficie_cesion_equipaments}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">SUPERFICIE CESSIÓ VIALS</td>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.superficie_cesion_vials}</td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">SUPERFICIE CESIÓN VIALES</td>
+          <td class="table-form-td3">${this.feature.properties.superficie_cesion_vials}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">COMENTARIS CESSIÓ </td>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.comentaris_cesion}</td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">COMENTARIOS CESIÓN</td>
+          <td class="table-form-td3">${this.feature.properties.comentaris_cesion}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">EDIFICABILITAT ÙS RESIDENCIAL</td>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.superficie_edificabilitat_residencial}</td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">EDIFICABILIDAD USO RESIDENCIAL</td>
+          <td class="table-form-td3">${this.feature.properties.superficie_edificabilitat_residencial}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">EDIFICABILITAT PER APARCAMENTS</td>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.superficie_edificabilitat_aparcament}</td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">EDIFICABILIDAD PARA APARCAMIENTOS</td>
+          <td class="table-form-td3">${this.feature.properties.superficie_edificabilitat_aparcament}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">EDIFICABILITAT TOTAL</td>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.edificabilitat_total}</td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">EDIFICABILIDAD TOTAL</td>
+          <td class="table-form-td3">${this.feature.properties.edificabilitat_total}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">USOS</td>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.usos}</td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">USOS</td>
+          <td class="table-form-td3">${this.feature.properties.usos}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">OBLIGACIONS</td>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.obligacions}</td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">OBLIGACIONES</td>
+          <td class="table-form-td3">${this.feature.properties.obligacions}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">SISTEMES D'ACTUACIÓ I PROGRAMACIÓ</td>
-            <td style='text-align: justify;padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.sistema_actuacio_programacio}</td>
-        </tr>
-       
-       
-    </TABLE>`;
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">SISTEMAS DE ACTUACIÓN Y PROGRAMACIÓN</td>
+          <td class="table-form-td3">${this.feature.properties.sistema_actuacio_programacio}</td>
+        </tr>     
+      </TABLE>`;
   }
 
  
@@ -173,6 +166,9 @@ class Form_UNIDAD_EJECUCION_PRI {
     ventana.document.write(
       `<title>sistemas_${this.clase}_${this.codigo}</title>`
     );
+    ventana.document.write(
+      `<link rel="stylesheet" type="text/css" href="../stylesheets/style.css">`
+    );
     ventana.document.innerHTML = "";
 
     // identificacion=`<DIV style="padding:50px">${html_IDENTIFICACION}</DIV>`
@@ -180,7 +176,7 @@ class Form_UNIDAD_EJECUCION_PRI {
     ventana.document.write("<BR>");
     ventana.document.write(this.html_TITULO);
     ventana.document.write("<BR><BR>");
-    const tit_identificacion = `<DIV style='padding:3px;font-size:8.5pt;font-family:Arial Black;background-color:rgba(85, 140, 212, 1);color:white;border-style: solid;border-width:0.1pt;border-color:RGB(12,1,73);width:99%;height:14px;'>1. IDENTIFICACIÓN</DIV>`;
+    const tit_identificacion = `<DIV class="title-section-print">1. IDENTIFICACIÓN</DIV>`;
     ventana.document.write(tit_identificacion);
     ventana.document.write(this.html_IDENTIFICACION);
 
@@ -188,7 +184,7 @@ class Form_UNIDAD_EJECUCION_PRI {
       '<div  id="image" style="width:100%;text-align: center"> </div>'
     );
 
-    const tit_parametros= `<DIV style='padding:3px;font-size:8.5pt;font-family:Arial Black;background-color:rgba(85, 140, 212, 1);color:white;border-style: solid;border-width:0.1pt;border-color:RGB(12,1,73);width:99%;height:14px;'>2. PARAMETROS DE EDIFICACIÓN</DIV>`;
+    const tit_parametros= `<DIV class="title-section-print">2. PARAMETROS DE EDIFICACIÓN</DIV>`;
     ventana.document.write(tit_parametros);
     ventana.document.write(this.html_PARAMETROS);
 
@@ -220,7 +216,7 @@ class Form_UNIDAD_EJECUCION_PRI {
   }
 
   setHTML_TITLE() {
-    this.html_TITULO = ` <LABEL style='padding:5px;font-size:8.5pt;font-family:Arial Black;background-color:#fdfde0;color:#1a4d1a;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:380px;height:20px;'>FICHA DE ${this.title}  (${this.tipoPlan})</LABEL>`;
+    this.html_TITULO = `<LABEL class="title-form">FICHA DE ${this.title}  (${this.tipoPlan})</LABEL>`;
   }
 
   async createForm() {
@@ -238,16 +234,16 @@ class Form_UNIDAD_EJECUCION_PRI {
 
     let html = "";
     html =
-      html +
-      `<div style='overflow: auto;padding:20px;background-color:#f2f2f2;border-style: solid;border-width:0pt;border-color:black;box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);position:absolute;width:90%;height:90%;top:10px;left:10px'>
-        ${this.html_TITULO}
-        <button  id="printFichaUE" style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Imprimir Ficha"><i class="fa fa-print"></i></button> 
-        <a target="_blank" title="Ir a Street view" href="${urlG}}"><img src="${window.location.protocol}//${window.location.host}/opg/images/streetview.png"></a>
-        <BR>
-        <BR>
-        ${this.html_buttons}
-        <BR>   
-      </div>`;
+    html +
+    `<div class="div-form">
+      ${this.html_TITULO}
+      <button  id="printFichaUE_PRI" class="ui-button ui-widget ui-corner-all button-print" title="Imprimir Ficha"><i class="fa fa-print"></i></button> 
+      <a target="_blank" title="Ir a Street view" href="${urlG}}"><img src="${window.location.protocol}//${window.location.host}/opg/images/streetview.png"></a>
+      <BR>
+      <BR>
+      ${this.html_buttons}
+      <BR>   
+    </div>`;
 
     const elem = document.getElementById("userinfo");
     elem.innerHTML = html;
@@ -255,7 +251,7 @@ class Form_UNIDAD_EJECUCION_PRI {
     const self = this; // Almacena una referencia a 'this'
 
     document
-      .getElementById("printFichaUE")
+      .getElementById("printFichaUE_PRI")
       .addEventListener("click", function () {
         self.printForm();
       });

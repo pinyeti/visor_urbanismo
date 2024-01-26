@@ -52,50 +52,47 @@ class Form_CATALOGO_PGOU98 {
    */
   setHTML_IDENTIFICACION() {
     this.html_IDENTIFICACION = `
-      <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-  
-        <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">CODIGO</LABEL></td>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:120px;height:15px'>${this.codigo}</LABEL></td>
+      <table class="table-form">
+        <tr class="table-form-tr-white">
+          <td class="table-form-td">CODIGO</td>
+          <td><LABEL class="table-form-label-style">${this.codigo}</td>
         </tr>
-       
-        <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">DENOMINACIÓN</LABEL></td>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:120px;height:15px'>${this.denominacion}</LABEL></td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td">DENOMINACIÓN</td>
+          <td><LABEL class="table-form-label-style">${this.denominacion}</td>
+        </tr> 
+        <tr class="table-form-tr-white">
+          <td class="table-form-td">PROTECCIÓN</td>
+          <td><LABEL class="table-form-label-style">${this.feature.properties.proteccion}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-        <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black'>PROTECCIÓ</LABEL></td>
-        <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:120px;height:15px'>${this.feature.properties.proteccion}</LABEL></td>
-      </tr>
-      <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-          <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black'>DECLARACIÓ</LABEL></td>
-          <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:120px;height:15px'>${this.feature.properties.declaracion}</LABEL></td>
-      </tr>
-      <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-          <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black'>CATEGORIA</LABEL></td>
-          <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:120px;height:15px'>${this.feature.properties.categoria}</LABEL></td>
-      </tr>
-      <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-          <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black'>TIPOLOGÍA</LABEL></td>
-          <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:120px;height:15px'>${this.feature.properties.tipologia}</LABEL></td>
-      </tr>
-      <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-          <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black'>CLASSIFICACIÓ</LABEL></td>
-          <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:120px;height:15px'>${this.feature.properties.clasificacion}</LABEL></td>
-      </tr>
-        <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">ZONA ESTADISTICA</td>
-            <td style='text-align: justify;padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.cadenaZonaEst}</td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td">DECLARACIÓN</td>
+          <td><LABEL class="table-form-label-style">${this.feature.properties.declaracion}</td>
         </tr>
-        <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">REF. CATASTRAL</td>
-            <td style='text-align: justify;padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.cadenaParcelas}</td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td">CATEGORIA</td>
+          <td><LABEL class="table-form-label-style">${this.feature.properties.categoria}</td>
         </tr>
-        <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">CALLES</td>
-            <td style='text-align: justify;padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.cadenaCalles}</td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td">TIPOLOGÍA</td>
+          <td><LABEL class="table-form-label-style">${this.feature.properties.tipologia}</td>
         </tr>
-        
+        <tr class="table-form-tr-white">
+          <td class="table-form-td">CLASIFICACIÓN</td>
+          <td><LABEL class="table-form-label-style">${this.feature.properties.clasificacion}</td>
+        </tr>
+        <tr class="table-form-tr-bluegrey">
+          <td class="table-form-td">ZONA ESTADISTICA</td>
+          <td class="table-form-td">${this.cadenaZonaEst}</td>
+        </tr>
+        <tr class="table-form-tr-bluegrey">
+          <td class="table-form-td">REF. CATASTRAL</td>
+          <td class="table-form-td">${this.cadenaParcelas}</td>
+        </tr>
+        <tr class="table-form-tr-bluegrey">
+          <td class="table-form-td">CALLES</td>
+          <td class="table-form-td">${this.cadenaCalles}</td>
+        </tr>           
       </TABLE>`;
   }
 
@@ -105,57 +102,56 @@ class Form_CATALOGO_PGOU98 {
    */
   setHTML_DESCRIPCION() {
     this.html_DESCRIPCION = `
-        <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-            <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:black' align="right">DESCRIPCIÓ</td>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.descripcion}</td>
-            </tr>
-            <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:black' align="right">ENTORN O CONTEXT</td>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.contexto}</td>
-            </tr>
-            <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:black' align="right">CRONOLOGÍA</td>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.cronologia}</td>
-            </tr>
-            <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:black' align="right">AUTORÍA</td>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.autoria}</td>
-            </tr>
-            <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:black' align="right">ADSCRIPCIÓ CULTURAL / ESTILISTICA</td>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.estilitica}</td>
-            </tr>
-            <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:black' align="right">INTERVENCIÓ  Reformes / Restauració</td>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.intervencion}</td>
-            </tr>
-            <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:black' align="right">ESTAT DE CONSERVACIÓ</td>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.conservacion}</td>
-            </tr>
-            <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:black' align="right">USOS</td>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.usos}</td>
-            </tr>
-            <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:black' align="right">REGIMEN JURIDIC I DE PROPIETAT</td>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.regimen}</td>
-            </tr>
-            <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:black' align="right">PROTECCIÓ EXISTENT</td>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.proteccion_existente}</td>
-            </tr>
-            <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:black' align="right">BIBLIOGRAFÍA I DOCUMENTACIÓ</td>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.biblio}</td>
-            </tr>
-            <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:black' align="right">OBSERVACIONS</td>
-                <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.observaciones}</td>
-            </tr>
-            
-        </TABLE>`;
+      <table class="table-form">
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">DESCRIPCIÓN</td>
+          <td class="table-form-td3">${this.feature.properties.descripcion}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">ENTORNO O CONTEXTO</td>
+          <td class="table-form-td3">${this.feature.properties.contexto}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">CRONOLOGÍA</td>
+          <td class="table-form-td3">${this.feature.properties.cronologia}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">AUTORÍA</td>
+          <td class="table-form-td3">${this.feature.properties.autoria}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">ADSCRIPCIÓN CULTURAL / ESTILÍSTICA</td>
+          <td class="table-form-td3">${this.feature.properties.estilitica}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">INTERVENCIÓN  Reformas / Restauración</td>
+          <td class="table-form-td3">${this.feature.properties.intervencion}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">ESTADO DE CONSERVACIÓN</td>
+          <td class="table-form-td3">${this.feature.properties.conservacion}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">USOS</td>
+          <td class="table-form-td3">${this.feature.properties.usos}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">REGIMEN JURIDICO Y DE PROPIEDAD</td>
+          <td class="table-form-td3">${this.feature.properties.regimen}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">PROTECCIÓN EXISTENTE</td>
+          <td class="table-form-td3">${this.feature.properties.proteccion_existente}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">BIBLIOGRAFÍA I DOCUMENTACIÓN</td>
+          <td class="table-form-td3">${this.feature.properties.biblio}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">OBSERVACIONS</td>
+          <td class="table-form-td3">${this.feature.properties.observaciones}</td>
+        </tr>   
+      </TABLE>`;
   }
 
   /**
@@ -164,49 +160,47 @@ class Form_CATALOGO_PGOU98 {
    */
   setHTML_PROTECCION_INTERVENCION() {
     this.html_PROTECCION_INTERVENCION = `
-    <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:black' align="right">VALORACIÓ GLOBAL</td>
-            <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.valoracion}</td>
+      <table class="table-form">
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">VALORACIÓN GLOBAL</td>
+          <td class="table-form-td3">${this.feature.properties.valoracion}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:black' align="right">CONJUNT</td>
-            <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.conjunto}</td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">CONJUNTO</td>
+          <td class="table-form-td3">${this.feature.properties.conjunto}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:black' align="right">COMPOSICIÓ VOLUMETRICA</td>
-            <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.volumetria}</td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">COMPOSICIÓN VOLUMETRICA</td>
+          <td class="table-form-td3">${this.feature.properties.volumetria}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:black' align="right">ESTRUCTURA</td>
-            <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.estructura}</td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">ESTRUCTURA</td>
+          <td class="table-form-td3">${this.feature.properties.estructura}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:black' align="right">FAÇANES</td>
-            <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.fachadas}</td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">FACHADAS</td>
+          <td class="table-form-td3">${this.feature.properties.fachadas}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:black' align="right">COBERTES</td>
-            <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.cubiertas}</td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">CUBIERTAS</td>
+          <td class="table-form-td3">${this.feature.properties.cubiertas}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:black' align="right">INTERIORS</td>
-            <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.interiores}</td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">INTERIORES</td>
+          <td class="table-form-td3">${this.feature.properties.interiores}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:black' align="right">ESPAIS COMUNS</td>
-            <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.espacios}</td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">ESPACIOS COMUNES</td>
+          <td class="table-form-td3">${this.feature.properties.espacios}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:black' align="right">ALTRES ELEMENTS</td>
-            <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.otras}</td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">OTROS ELEMENTOS</td>
+          <td class="table-form-td3">${this.feature.properties.otras}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:black' align="right">ORDENACÇES D' APLICACIÓ </td>
-            <td style='text-align: justify;padding:8px;font-size:8pt;font-family:Arial;color:#000000;'>${this.feature.properties.ordenanzas}</td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">ORDENANZAS DE APLICACIÓN</td>
+          <td class="table-form-td3">${this.feature.properties.ordenanzas}</td>
         </tr>
-        
-        
     </TABLE>`;
   }
 
@@ -233,9 +227,7 @@ class Form_CATALOGO_PGOU98 {
         <BR>
         ${this.html_PROTECCION_INTERVENCION}
         <BR>      
-      </div>
-      
-      
+      </div>  
       `;
   }
 
@@ -255,6 +247,7 @@ class Form_CATALOGO_PGOU98 {
     ventana.document.write(
       `<title>sistemas_${this.clase}_${this.codigo}</title>`
     );
+    ventana.document.write(`<link rel="stylesheet" type="text/css" href="../stylesheets/style.css">`);
     ventana.document.innerHTML = "";
 
     // identificacion=`<DIV style="padding:50px">${html_IDENTIFICACION}</DIV>`
@@ -262,13 +255,19 @@ class Form_CATALOGO_PGOU98 {
     ventana.document.write("<BR>");
     ventana.document.write(this.html_TITULO);
     ventana.document.write("<BR><BR>");
-    const tit_identificacion = `<DIV style='padding:3px;font-size:8.5pt;font-family:Arial Black;background-color:rgba(85, 140, 212, 1);color:white;border-style: solid;border-width:0.1pt;border-color:RGB(12,1,73);width:99%;height:14px;'>1. IDENTIFICACIÓN</DIV>`;
+    const tit_identificacion = `<DIV class="title-section-print>1. IDENTIFICACIÓN</DIV>`;
     ventana.document.write(tit_identificacion);
     ventana.document.write(this.html_IDENTIFICACION);
 
     ventana.document.write(
       '<div  id="image" style="width:100%;text-align: center"> </div>'
     );
+    const tit_descripcion = `<DIV class="title-section-print">2. DESCRIPCIÓN</DIV>`;
+    ventana.document.write(tit_descripcion);
+    ventana.document.write(this.html_DESCRIPCION);
+    const tit_prot = `<DIV class="title-section-print">3. PROTECCIÓN Y DIRECTRICES DE INTERVENCIÓN</DIV>`;
+    ventana.document.write(tit_prot);
+    ventana.document.write(this.html_PROTECCION_INTERVENCION);
 
     await leafletImage(this.mapManager.map2, async function (err, canvas) {
       // Convierte el canvas en un blob
@@ -301,7 +300,7 @@ class Form_CATALOGO_PGOU98 {
    *  @returns {void}
    */
   setHTML_TITLE() {
-    this.html_TITULO = ` <LABEL style='padding:5px;font-size:8.5pt;font-family:Arial Black;background-color:#fdfde0;color:#1a4d1a;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:380px;height:20px;'>FICHA DE ${this.title}  (${this.tipoPlan})</LABEL>`;
+    this.html_TITULO = `<LABEL class="title-form">FICHA DE ${this.title}  (${this.tipoPlan})</LABEL>` 
   }
 
   /**
@@ -325,9 +324,9 @@ class Form_CATALOGO_PGOU98 {
     let html = "";
     html =
       html +
-      `<div style='overflow: auto;padding:20px;background-color:#f2f2f2;border-style: solid;border-width:0pt;border-color:black;box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);position:absolute;width:90%;height:90%;top:10px;left:10px'>
+      `<div class="div-form">
         ${this.html_TITULO}
-        <button  id="printFichaUE" style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Imprimir Ficha"><i class="fa fa-print"></i></button> 
+        <button  id="printFichaCAT" class="ui-button ui-widget ui-corner-all button-print" title="Imprimir Ficha"><i class="fa fa-print"></i></button> 
         <a target="_blank" title="Ir a Street view" href="${urlG}}"><img src="${window.location.protocol}//${window.location.host}/opg/images/streetview.png"></a>
         <BR>
         <BR>
@@ -341,7 +340,7 @@ class Form_CATALOGO_PGOU98 {
     const self = this; // Almacena una referencia a 'this'
 
     document
-      .getElementById("printFichaUE")
+      .getElementById("printFichaCAT")
       .addEventListener("click", function () {
         self.printForm();
       });

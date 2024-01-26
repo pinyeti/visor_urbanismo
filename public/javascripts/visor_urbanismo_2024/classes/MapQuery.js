@@ -707,20 +707,24 @@ class MapQuery {
         }
 
         // Ficha CAT_PGOU98
-        var btFicha_CAT_PGOU98 = document.getElementById("btFicha_CAT_PGOU98");
-        if (btFicha_CAT_PGOU98) {
-          btFicha_CAT_PGOU98.addEventListener("click", async function () {
-            var fid = btFicha_CAT_PGOU98.getAttribute("data-fid");
-            var clase = btFicha_CAT_PGOU98.getAttribute("data-clase");
 
-            const entidad = new FeatureUrbanistic(clase, fid);
-            await entidad.initialize();
-            const formParamCAT_PGOU98 = new Form_CATALOGO_PGOU98(
-              entidad,
-              self.sigduMap
-            );
-            await formParamCAT_PGOU98.createForm();
-          });
+        //var btFicha_CAT_PGOU98 = document.getElementById("btFicha_CAT_PGOU98");
+        const btFicha_CAT_PGOU98 = document.getElementsByClassName("btFicha_CAT_PGOU98");
+        for(let i = 0; i < btFicha_CAT_PGOU98.length;i++){
+          if (btFicha_CAT_PGOU98[i]) {
+            btFicha_CAT_PGOU98[i].addEventListener("click", async function () {
+              var fid = btFicha_CAT_PGOU98[i].getAttribute("data-fid");
+              var clase = btFicha_CAT_PGOU98[i].getAttribute("data-clase");
+
+              const entidad = new FeatureUrbanistic(clase, fid);
+              await entidad.initialize();
+              const formParamCAT_PGOU98 = new Form_CATALOGO_PGOU98(
+                entidad,
+                self.sigduMap
+              );
+              await formParamCAT_PGOU98.createForm();
+            });
+          }
         }
 
         // Ficha CAT_ACTUALIZACION
@@ -3133,9 +3137,9 @@ class MapQuery {
         </tr>
         <tr align="center"  style='background-color:white;padding:3px;font-size:8.5pt;font-family:Arial Black;color:#660000;height:22px'>  
             <td colspan="2"> 
-              <button id="btFicha_CAT_PGOU98" 
+              <button id="btFicha_CAT_PGOU98_"${r} 
                 style="padding:3px;font-size:9pt;font-family:Arial Black" 
-                class="ui-button ui-widget ui-corner-all" 
+                class="ui-button ui-widget ui-corner-all btFicha_CAT_PGOU98" 
                 title="Ficha del elemento"
                 data-fid="${geojson.features[r].properties.fid}" 
                 data-clase="CAT_PGOU98">

@@ -10,7 +10,7 @@ class Form_SISTEMAS_PGOU98 {
    * @param {object} sigduMap - El mapa SIGDU.
    */
   constructor(entity, sigduMap) {
-    this.sigduMap=sigduMap;
+    this.sigduMap = sigduMap;
     this.geojson = entity.getGeojson();
     this.feature = entity.getFeature();
     this.codigo = entity.getFeature().properties.codigo;
@@ -47,8 +47,8 @@ class Form_SISTEMAS_PGOU98 {
     this.latlng = L.latLng(this.coord[1], this.coord[0]);
     this.bbox = turf.bbox(entity.getFeature().geometry);
 
-    this.fillColor =entity.fillColor;
-    this.color =entity.color;
+    this.fillColor = entity.fillColor;
+    this.color = entity.color;
 
     this.html_IDENTIFICACION = ``;
     this.html_CARACTERISTICAS = ``;
@@ -71,55 +71,53 @@ class Form_SISTEMAS_PGOU98 {
 
   setHTML_IDENTIFICACION() {
     this.html_IDENTIFICACION = `
-      <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-  
-        <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">CODIGO</LABEL></td>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:120px;height:15px'>${this.codigo}</LABEL></td>
+      <TABLE class="table-form">
+        <tr class="table-form-tr-white">
+          <td class="table-form-td">CODIGO</td>
+          <td><LABEL class="table-form-label-style">${this.codigo}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">IDENTIFICANTE</LABEL></td>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:120px;height:15px'>${this.identif}</LABEL></td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td">IDENTIFICANTE</td>
+          <td><LABEL class="table-form-label-style">${this.identif}</td>
         </tr>
-        <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">DENOMINACIÓN</LABEL></td>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:120px;height:15px'>${this.denominacion}</LABEL></td>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td">DENOMINACIÓN</td>
+          <td><LABEL class="table-form-label-style">${this.denominacion}</td>
         </tr>
-        <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">ZONA ESTADISTICA</LABEL></td>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.cadenaZonaEst}</LABEL></td>
+        <tr class="table-form-tr-bluegrey">
+          <td class="table-form-td">ZONA ESTADISTICA</td>
+          <td class="table-form-td">${this.cadenaZonaEst}</td>
         </tr>
-        <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">REF. CATASTRAL</LABEL></td>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.cadenaParcelas}</LABEL></td>
+        <tr class="table-form-tr-bluegrey">
+          <td class="table-form-td">REF. CATASTRAL</td>
+          <td class="table-form-td">${this.cadenaParcelas}</td>
         </tr>
-        <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">CALLES</LABEL></td>
-            <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.cadenaCalles}</LABEL></td>
-        </tr>
-        
+        <tr class="table-form-tr-bluegrey">
+          <td class="table-form-td">CALLES</td>
+          <td class="table-form-td">${this.cadenaCalles}</td>
+        </tr>  
       </TABLE>`;
   }
 
   setHTML_CARACTERISTICAS() {
     this.html_CARACTERISTICAS = `
-      <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-          <tr align="left" bgcolor="white" style='padding:5px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-              <td bgcolor="#edf1f5"><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">SUPERFICIE</LABEL></td>
-              <td><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.area}</LABEL></td>
-          </tr>
-          <tr align="left" bgcolor="white" style='padding:5px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-              <td bgcolor="#edf1f5"><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">NUM. INVENTARIO</LABEL></td>
-              <td><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.num_inventario}</LABEL></td>
-          </tr>
-          <tr align="left" bgcolor="white" style='padding:5px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-              <td bgcolor="#edf1f5"><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">DOMINIO</LABEL></td>
-              <td><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.dominio}</LABEL></td>
-          </tr>
-          <tr align="left" bgcolor="white" style='padding:5px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-              <td bgcolor="#edf1f5"><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">USO</LABEL></td>
-              <td><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.uso}</LABEL></td>
-          </tr>           
+      <TABLE class="table-form">
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">SUPERFICIE</td>
+          <td class="table-form-td3">${this.area}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">NUM. INVENTARIO</td>
+          <td class="table-form-td3">${this.num_inventario}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">DOMINIO</td>
+          <td class="table-form-td3">${this.dominio}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">USO</td>
+          <td class="table-form-td3">${this.uso}</td>
+        </tr>        
       </TABLE>`;
   }
 
@@ -129,68 +127,62 @@ class Form_SISTEMAS_PGOU98 {
       //buttonORD = `<input type="button" name="Boton1" value=${this.ordenacion} OnClick="this.fichaEDIFICACION_EQ_PG(this)">`;
       buttonORD = `<input type="button" value=${this.ordenacion} name="buttonSistemaOrdenacion" id="buttonSistemaOrdenacion">`;
     this.html_NORMATIVA = `
-      <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-          <tr align="left" bgcolor="white" style='padding:5px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-              <td bgcolor="#edf1f5"><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">ORDENACION</LABEL></td>
-              <td><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:#000000;'> ${buttonORD}</LABEL></td>
-          </tr>
-          <tr align="left" bgcolor="white" style='padding:5px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-              <td bgcolor="#edf1f5"><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">PLAN. APROV.</LABEL></td>
-              <td><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.plan_aprov}</LABEL></td>
-          </tr>
-          <tr align="left" bgcolor="white" style='padding:5px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-              <td bgcolor="#edf1f5"><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">PLANEAMIENTO</LABEL></td>
-              <td><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.planejam}</LABEL></td>
-          </tr> 
-          <tr align="left" bgcolor="white" style='padding:5px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-              <td bgcolor="#edf1f5"><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">OTROS</LABEL></td>
-              <td><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.otros}</LABEL></td>
-          </tr>
-          <tr align="left" bgcolor="white" style='padding:5px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-              <td bgcolor="#edf1f5"><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">CLASIF. SUELO</LABEL></td>
-              <td><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.clas_suelo}</LABEL></td>
-          </tr>
-          <tr align="left" bgcolor="white" style='padding:5px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-              <td bgcolor="#edf1f5"><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">CATALOGOS</LABEL></td>
-              <td><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.cadenaCatalogos}</LABEL></td>
-          </tr>
+      <TABLE class="table-form">
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">ORDENACION</td>
+          <td class="table-form-td3">${buttonORD}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">PLAN. APROV.</td>
+          <td class="table-form-td3">${this.plan_aprov}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">PLANEAMIENTO</td>
+          <td class="table-form-td3">${this.planejam}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">OTROS</td>
+          <td class="table-form-td3">${this.otros}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">CLASIF. SUELO</td>
+          <td class="table-form-td3">${this.clas_suelo}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">CATALOGOS</td>
+          <td class="table-form-td3">${this.cadenaCatalogos}</td>
+        </tr>
       </TABLE>`;
   }
 
   setHTML_GESTION() {
     this.html_GESTION = `
-      <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-         
-          <tr align="left" bgcolor="white" style='padding:5px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-              <td bgcolor="#edf1f5"><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">ASSIGNACIÓN</LABEL></td>
-              <td><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.asignacion}</LABEL></td>
-          </tr> 
-          <tr align="left" bgcolor="white" style='padding:5px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-              <td bgcolor="#edf1f5"><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">AMBITO</LABEL></td>
-              <td><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.ambit} ${this.codigo_ue}</LABEL></td>
-          </tr> 
-          <tr align="left" bgcolor="white" style='padding:5px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-              <td bgcolor="#edf1f5"><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">SISTEMA</LABEL></td>
-              <td><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.sistema}</LABEL></td>
-          </tr>
-          <tr align="left" bgcolor="white" style='padding:5px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-              <td bgcolor="#edf1f5"><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">ETAPAS</LABEL></td>
-              <td><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.etapes}</LABEL></td>
-          </tr>
-         
+      <TABLE class="table-form">
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">ASIGNACIÓN</td>
+          <td class="table-form-td3">${this.asignacion}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">AMBITO</td>
+          <td class="table-form-td3">${this.ambit} ${this.codigo_ue}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">SISTEMA</td>
+          <td class="table-form-td3">${this.sistema}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">ETAPAS</td>
+          <td class="table-form-td3">${this.etapes}</td>
+        </tr>    
       </TABLE>`;
   }
 
   setHTML_OBSERVACIONES() {
     this.html_OBSERVACIONES = `
-      <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-          
-          <tr align="left" bgcolor="white" style='padding:10px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-        
-          <td><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.observaciones}</LABEL></td>
-          </tr> 
-          
-          
+      <TABLE class="table-form">
+        <tr class="table-form-tr-white">
+          <td class="table-form-td3">${this.observaciones}</td>
+        </tr>       
       </TABLE>`;
   }
 
@@ -241,78 +233,61 @@ class Form_SISTEMAS_PGOU98 {
     ventana.document.write(
       `<title>sistemas_${this.clase}_${this.codigo}</title>`
     );
+    ventana.document.write(
+      `<link rel="stylesheet" type="text/css" href="../stylesheets/style.css">`
+    );
     ventana.document.innerHTML = "";
-
-    // identificacion=`<DIV style="padding:50px">${html_IDENTIFICACION}</DIV>`
 
     ventana.document.write("<BR>");
     ventana.document.write(this.html_TITULO);
     ventana.document.write("<BR><BR>");
-    const tit_identificacion=`<DIV style='padding:3px;font-size:8.5pt;font-family:Arial Black;background-color:rgba(85, 140, 212, 1);color:white;border-style: solid;border-width:0.1pt;border-color:RGB(12,1,73);width:99%;height:14px;'>1. IDENTIFICACIÓN</DIV>`;
-    ventana.document.write(tit_identificacion)  
+    const tit_identificacion = `<DIV class="title-section-print">1. IDENTIFICACIÓN</DIV>`;
+    ventana.document.write(tit_identificacion);
     ventana.document.write(this.html_IDENTIFICACION);
-    //ventana.document.write("<BR>");
-    //ventana.document.write('<img src="blob:http://localhost/115e5ee6-a3d2-47e9-9d21-4fe34b70ab75">' );
-    ventana.document.write('<div  id="image" style="width:100%;text-align: center"> </div>');
-    //ventana.document.write("<BR>");
-    const tit_caracteristicas=`<DIV style='padding:3px;font-size:8.5pt;font-family:Arial Black;background-color:rgba(85, 140, 212, 1);color:white;border-style: solid;border-width:0.1pt;border-color:RGB(12,1,73);width:99%;height:14px;'>2. CARACTERITICAS FUNCIONALES</DIV>`;
-    ventana.document.write(tit_caracteristicas) 
+    ventana.document.write(
+      '<div  id="image" style="width:100%;text-align: center"> </div>'
+    );
+    const tit_caracteristicas = `<DIV class="title-section-print">2. CARACTERITICAS FUNCIONALES</DIV>`;
+    ventana.document.write(tit_caracteristicas);
     ventana.document.write(this.html_CARACTERISTICAS);
-    //ventana.document.write("<BR>");
-    const tit_normativa=`<DIV style='padding:3px;font-size:8.5pt;font-family:Arial Black;background-color:rgba(85, 140, 212, 1);color:white;border-style: solid;border-width:0.1pt;border-color:RGB(12,1,73);width:99%;height:14px;'>3. NORMATIVA DE APLICACIÓN</DIV>`;
-    ventana.document.write(tit_normativa) 
+    const tit_normativa = `<DIV class="title-section-print">3. NORMATIVA DE APLICACIÓN</DIV>`;
+    ventana.document.write(tit_normativa);
     ventana.document.write(this.html_NORMATIVA);
-    //ventana.document.write("<BR>");
-    const tit_gestion=`<DIV style='padding:3px;font-size:8.5pt;font-family:Arial Black;background-color:rgba(85, 140, 212, 1);color:white;border-style: solid;border-width:0.1pt;border-color:RGB(12,1,73);width:99%;height:14px;'>4. GESTÓN DEL SUELO</DIV>`;
-    ventana.document.write(tit_gestion) 
+    const tit_gestion = `<DIV class="title-section-print">4. GESTÓN DEL SUELO</DIV>`;
+    ventana.document.write(tit_gestion);
     ventana.document.write(this.html_GESTION);
-    //ventana.document.write("<BR>");
-    const tit_observaciones=`<DIV style='padding:3px;font-size:8.5pt;font-family:Arial Black;background-color:rgba(85, 140, 212, 1);color:white;border-style: solid;border-width:0.1pt;border-color:RGB(12,1,73);width:99%;height:14px;'>5. OBSERVACIONES</DIV>`;
-    ventana.document.write(tit_observaciones) 
+    const tit_observaciones = `<DIV class="title-section-print">5. OBSERVACIONES</DIV>`;
+    ventana.document.write(tit_observaciones);
     ventana.document.write(this.html_OBSERVACIONES);
-    //ventana.document.write("<BR>");
-
-    //const mapManager = new MapManager("map3");
-    //await mapManager.createMap(this.latlng, this.geojson, 17);
-
-    //console.log(mapManager.map2);
-
-    //ventana.print();
 
     await leafletImage(this.mapManager.map2, async function (err, canvas) {
       // Convierte el canvas en un blob
-    
+
       canvas.toBlob(function (blob) {
         // 'blob' contiene la imagen en formato Blob
         // Puedes manipularlo o mostrarlo como desees
         var image = new Image();
         image.src = URL.createObjectURL(blob);
-        
+
         var imageContainer = ventana.document.getElementById("image");
         image.width = 700;
         image.height = 400;
 
-
         // Agrega la imagen al contenedor en el DOM
         imageContainer.appendChild(canvas);
 
-         
-
-         ventana.print();
+        ventana.print();
 
         // Ahora puedes acceder a la imagen a través de 'image.src'
         // Puedes agregar 'image' al DOM o hacer cualquier otra cosa que desees
       });
 
-      
       //ventana.close();
     });
   }
 
-  
-
   setHTML_TITLE() {
-    this.html_TITULO = ` <LABEL style='padding:5px;font-size:8.5pt;font-family:Arial Black;background-color:#fdfde0;color:#1a4d1a;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:380px;height:20px;'>FICHA DE ${this.title} (${this.subtitle}) (${this.tipoPlan})</LABEL>`;
+    this.html_TITULO = `<LABEL class="title-form">FICHA DE ${this.title} (${this.subtitle}) (${this.tipoPlan})</LABEL>`;
   }
 
   async createForm() {
@@ -328,9 +303,9 @@ class Form_SISTEMAS_PGOU98 {
     let html = "";
     html =
       html +
-      `<div style='overflow: auto;padding:20px;background-color:#f2f2f2;border-style: solid;border-width:0pt;border-color:black;box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);position:absolute;width:90%;height:90%;top:10px;left:10px'>
+      `<div class="div-form">
         ${this.html_TITULO}
-        <button  id="printFichaSistema" style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Imprimir Ficha"><i class="fa fa-print"></i></button> 
+        <button  id="printFichaSistemaPGOU98" class="ui-button ui-widget ui-corner-all button-print" title="Imprimir Ficha"><i class="fa fa-print"></i></button> 
         <a target="_blank" title="Ir a Street view" href="${urlG}}"><img src="${window.location.protocol}//${window.location.host}/opg/images/streetview.png"></a>
         <BR>
         <BR>
@@ -347,15 +322,17 @@ class Form_SISTEMAS_PGOU98 {
       document
         .getElementById("buttonSistemaOrdenacion")
         .addEventListener("click", async function () {
-          const formParam = new Form_PARAMETROS_EQ_PGOU98(self.ordenacion, self.sigduMap);
+          const formParam = new Form_PARAMETROS_EQ_PGOU98(
+            self.ordenacion,
+            self.sigduMap
+          );
           await formParam.initialize();
           await formParam.createForm();
-       
         });
     }
 
     document
-      .getElementById("printFichaSistema")
+      .getElementById("printFichaSistemaPGOU98")
       .addEventListener("click", function () {
         self.printForm();
       });
@@ -379,24 +356,19 @@ class Form_SISTEMAS_PGOU98 {
       });
     }
 
-    
     if (this.sigduMap.sidebarStatus == "cerrado") {
       const self = this; // Almacena una referencia a 'this'
       this.sigduMap.sidebar.open("userinfo");
       window.setTimeout(function () {
         self.mapManager = new MapManager("map2");
         self.mapManager.createElement(self.geojson, self.color, self.fillColor);
-        
       }, 500);
     } else {
       this.mapManager = new MapManager("map2");
       this.mapManager.createElement(this.geojson, this.color, this.fillColor);
-
     }
-
 
     //this.sigduMap.sidebar.open("userinfo");
     this.sigduMap.map.spin(false);
   }
-
 }

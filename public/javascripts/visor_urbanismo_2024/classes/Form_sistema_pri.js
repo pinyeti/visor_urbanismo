@@ -66,69 +66,66 @@ class Form_SISTEMAS_PRI {
 
   setHTML_IDENTIFICACION() {
     this.html_IDENTIFICACION = `
-        <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-    
-          <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-              <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">CODIGO</LABEL></td>
-              <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:120px;height:15px'>${this.codigo}</LABEL></td>
-          </tr>
-          <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-              <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">DENOMINACIÓN</LABEL></td>
-              <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:120px;height:15px'>${this.denominacion}</LABEL></td>
-          </tr>
-          <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-              <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">TIPO DE SISTEMA</LABEL></td>
-              <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:120px;height:15px'>${this.tipo_sistema}</LABEL></td>
-          </tr>
-					<tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-              <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">USO DOTACIONAL</LABEL></td>
-              <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;background-color:white;color:#000000;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:120px;height:15px'>${this.uso_dotacional}</LABEL></td>
-          </tr>
-          <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-              <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">ZONA ESTADISTICA</LABEL></td>
-              <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.cadenaZonaEst}</LABEL></td>
-          </tr>
-          <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-              <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">REF. CATASTRAL</LABEL></td>
-              <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.cadenaParcelas}</LABEL></td>
-          </tr>
-          <tr align="left" bgcolor="#eaf5ff" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-              <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">CALLES</LABEL></td>
-              <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>${this.cadenaCalles}</LABEL></td>
-          </tr>
-          
-        </TABLE>`;
+      <TABLE class="table-form">
+        <tr class="table-form-tr-white">
+          <td class="table-form-td">CODIGO</td>
+          <td><LABEL class="table-form-label-style">${this.codigo}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td">DENOMINACIÓN</td>
+          <td><LABEL class="table-form-label-style">${this.denominacion}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td">TIPO DE SISTEMA</td>
+          <td><LABEL class="table-form-label-style">${this.tipo_sistema}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td">USO DOTACIONAL</td>
+          <td><LABEL class="table-form-label-style">${this.uso_dotacional}</td>
+        </tr>
+        <tr class="table-form-tr-bluegrey">
+          <td class="table-form-td">ZONA ESTADISTICA</td>
+          <td class="table-form-td">${this.cadenaZonaEst}</td>
+        </tr>
+        <tr class="table-form-tr-bluegrey">
+          <td class="table-form-td">REF. CATASTRAL</td>
+          <td class="table-form-td">${this.cadenaParcelas}</td>
+        </tr>
+        <tr class="table-form-tr-bluegrey">
+          <td class="table-form-td">CALLES</td>
+          <td class="table-form-td">${this.cadenaCalles}</td>
+        </tr>  
+      </TABLE>`;
   }
 
   setHTML_CARACTERISTICAS() {
     this.html_CARACTERISTICAS = `
-		<TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-				<tr align="left" bgcolor="white" style='padding:5px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-						<td bgcolor="#edf1f5"><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">SUPERFICIE</LABEL></td>
-						<td><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.area}</LABEL></td>
-				</tr>
-				<tr align="left" bgcolor="white" style='padding:5px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-						<td bgcolor="#edf1f5"><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">CLASIFICACION SUELO</LABEL></td>
-						<td><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.clas_suelo}</LABEL></td>
-				</tr>
-				<tr align="left" bgcolor="white" style='padding:5px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-						<td bgcolor="#edf1f5"><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">DOMINIO</LABEL></td>
-						<td><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.dominio}</LABEL></td>
-				</tr>
-				<tr align="left" bgcolor="white" style='padding:5px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-						<td bgcolor="#edf1f5"><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">ESTADO ACTUAL</LABEL></td>
-						<td><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.estado_actual}</LABEL></td>
-				</tr>
-				<tr align="left" bgcolor="white" style='padding:5px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-						<td bgcolor="#edf1f5"><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">AMBITO GESTIÓN</LABEL></td>
-						<td><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.ambito_gestion}</LABEL></td>
-				</tr>
-				<tr align="left" bgcolor="white" style='padding:5px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-						<td bgcolor="#edf1f5"><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:black' align="right">CATALOGOS</LABEL></td>
-						<td><LABEL style='padding:5px;font-size:8pt;font-family:Arial;color:#000000;'>${this.cadenaCatalogos}</LABEL></td>
-				</tr>
-			
-		</TABLE>`;
+		  <TABLE class="table-form">
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">SUPERFICIE</td>
+          <td class="table-form-td3">${this.area}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">CLASIFICACION SUELO</td>
+          <td class="table-form-td3">${this.clas_suelo}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">DOMINIO</td>
+          <td class="table-form-td3">${this.dominio}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">ESTADO ACTUAL</td>
+          <td class="table-form-td3">${this.estado_actual}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">AMBITO GESTIÓN</td>
+          <td class="table-form-td3">${this.ambito_gestion}</td>
+        </tr>
+        <tr class="table-form-tr-white">
+          <td class="table-form-td2">CATALOGOS</td>
+          <td class="table-form-td3">${this.cadenaCatalogos}</td>
+        </tr>	
+		  </TABLE>`;
   }
 
   setHTML_BUTTONS() {
@@ -160,6 +157,9 @@ class Form_SISTEMAS_PRI {
     ventana.document.write(
       `<title>sistemas_${this.clase}_${this.codigo}</title>`
     );
+    ventana.document.write(
+      `<link rel="stylesheet" type="text/css" href="../stylesheets/style.css">`
+    );
     ventana.document.innerHTML = "";
 
     // identificacion=`<DIV style="padding:50px">${html_IDENTIFICACION}</DIV>`
@@ -167,7 +167,7 @@ class Form_SISTEMAS_PRI {
     ventana.document.write("<BR>");
     ventana.document.write(this.html_TITULO);
     ventana.document.write("<BR><BR>");
-    const tit_identificacion = `<DIV style='padding:3px;font-size:8.5pt;font-family:Arial Black;background-color:rgba(85, 140, 212, 1);color:white;border-style: solid;border-width:0.1pt;border-color:RGB(12,1,73);width:99%;height:14px;'>1. IDENTIFICACIÓN</DIV>`;
+    const tit_identificacion = `<DIV class="title-section-print">1. IDENTIFICACIÓN</DIV>`;
     ventana.document.write(tit_identificacion);
     ventana.document.write(this.html_IDENTIFICACION);
 
@@ -175,7 +175,7 @@ class Form_SISTEMAS_PRI {
       '<div  id="image" style="width:100%;text-align: center"> </div>'
     );
 
-    const tit_caracteristicas = `<DIV style='padding:3px;font-size:8.5pt;font-family:Arial Black;background-color:rgba(85, 140, 212, 1);color:white;border-style: solid;border-width:0.1pt;border-color:RGB(12,1,73);width:99%;height:14px;'>2. CARACTERITICAS FUNCIONALES</DIV>`;
+    const tit_caracteristicas = `<DIV class="title-section-print">2. CARACTERITICAS FUNCIONALES</DIV>`;
     ventana.document.write(tit_caracteristicas);
     ventana.document.write(this.html_CARACTERISTICAS);
 
@@ -206,7 +206,7 @@ class Form_SISTEMAS_PRI {
   }
 
   setHTML_TITLE() {
-    this.html_TITULO = ` <LABEL style='padding:5px;font-size:8.5pt;font-family:Arial Black;background-color:#fdfde0;color:#1a4d1a;box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);border-style: solid;border-width:0.1pt;border-color:black;width:380px;height:20px;'>FICHA DE ${this.title} (${this.subtitle}) (${this.tipoPlan})</LABEL>`;
+    this.html_TITULO = `<LABEL class="title-form">FICHA DE ${this.title} (${this.subtitle}) (${this.tipoPlan})</LABEL>`;
   }
 
   async createForm() {
@@ -222,15 +222,15 @@ class Form_SISTEMAS_PRI {
     let html = "";
     html =
       html +
-      `<div style='overflow: auto;padding:20px;background-color:#f2f2f2;border-style: solid;border-width:0pt;border-color:black;box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);position:absolute;width:90%;height:90%;top:10px;left:10px'>
-          ${this.html_TITULO}
-          <button  id="printFichaSistema" style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Imprimir Ficha"><i class="fa fa-print"></i></button> 
-          <a target="_blank" title="Ir a Street view" href="${urlG}}"><img src="${window.location.protocol}//${window.location.host}/opg/images/streetview.png"></a>
-          <BR>
-          <BR>
-          ${this.html_buttons}
-          <BR>   
-        </div>`;
+      `<div class="div-form">
+        ${this.html_TITULO}
+        <button  id="printFichaSistemaPRI" class="ui-button ui-widget ui-corner-all button-print" title="Imprimir Ficha"><i class="fa fa-print"></i></button> 
+        <a target="_blank" title="Ir a Street view" href="${urlG}}"><img src="${window.location.protocol}//${window.location.host}/opg/images/streetview.png"></a>
+        <BR>
+        <BR>
+        ${this.html_buttons}
+        <BR>   
+      </div>`;
 
     const elem = document.getElementById("userinfo");
     elem.innerHTML = html;
@@ -238,7 +238,7 @@ class Form_SISTEMAS_PRI {
     const self = this; // Almacena una referencia a 'this'
 
     document
-      .getElementById("printFichaSistema")
+      .getElementById("printFichaSistemaPRI")
       .addEventListener("click", function () {
         self.printForm();
       });
