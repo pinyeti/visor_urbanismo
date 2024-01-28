@@ -188,30 +188,30 @@ class Form_UNIDAD_EJECUCION_PRI {
     ventana.document.write(tit_parametros);
     ventana.document.write(this.html_PARAMETROS);
 
-
     await leafletImage(this.mapManager.map2, async function (err, canvas) {
       // Convierte el canvas en un blob
 
-      canvas.toBlob(function (blob) {
+      // Redimensiona el canvas antes de convertirlo en un blob
+      const resizedCanvas = document.createElement('canvas');
+      const ctx = resizedCanvas.getContext('2d');
+      resizedCanvas.width = 800; // Establece la nueva anchura
+      resizedCanvas.height = 450; // Establece la nueva altura
+      ctx.drawImage(canvas, 0, 0, 800, 450); // Dibuja el canvas original en el canvas redimensionado
+
+      resizedCanvas.toBlob(function (blob) {
         // 'blob' contiene la imagen en formato Blob
         // Puedes manipularlo o mostrarlo como desees
         var image = new Image();
         image.src = URL.createObjectURL(blob);
 
         var imageContainer = ventana.document.getElementById("image");
-        image.width = 700;
-        image.height = 400;
 
         // Agrega la imagen al contenedor en el DOM
-        imageContainer.appendChild(canvas);
+        imageContainer.appendChild(resizedCanvas);
 
         ventana.print();
-
-        // Ahora puedes acceder a la imagen a través de 'image.src'
-        // Puedes agregar 'image' al DOM o hacer cualquier otra cosa que desees
+        ventana.close();
       });
-
-      //ventana.close();
     });
   }
 
@@ -278,8 +278,8 @@ class Form_UNIDAD_EJECUCION_PRI {
     if (this.sigduMap.sidebarStatus == "cerrado") {
       const self = this; // Almacena una referencia a 'this'
       window.setTimeout(function () {
-        this.mapManager = new MapManager("map2");
-        this.mapManager.createElement(self.geojson, self.color, self.fillColor);
+        self.mapManager = new MapManager("map2");
+        self.mapManager.createElement(self.geojson, self.color, self.fillColor);
       }, 500);
     } else {
       this.mapManager = new MapManager("map2");

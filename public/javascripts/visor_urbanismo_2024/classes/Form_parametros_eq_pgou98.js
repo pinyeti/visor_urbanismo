@@ -150,6 +150,7 @@ class Form_PARAMETROS_EQ_PGOU98 {
 
     linkElement.onload = () => {
       ventana.print();
+      ventana.close();
     };
     
     ventana.document.head.appendChild(linkElement);

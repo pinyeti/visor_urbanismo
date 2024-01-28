@@ -425,6 +425,7 @@ class Form_PARAMETROS_CALIFICACIONES_PRI {
 
     linkElement.onload = () => {
       ventana.print();
+      ventana.close();
     };
     
     ventana.document.head.appendChild(linkElement);

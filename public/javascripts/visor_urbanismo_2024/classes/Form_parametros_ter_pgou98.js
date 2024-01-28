@@ -208,6 +208,7 @@ class Form_PARAMETROS_TER_PGOU98 {
 
     linkElement.onload = () => {
       ventana.print();
+      ventana.close();
     };
     
     ventana.document.head.appendChild(linkElement);

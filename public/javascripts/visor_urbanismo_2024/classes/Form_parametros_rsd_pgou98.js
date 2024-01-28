@@ -306,6 +306,7 @@ class Form_PARAMETROS_RSD_PGOU98 {
 
     linkElement.onload = () => {
       ventana.print();
+      ventana.close();
     };
     
     ventana.document.head.appendChild(linkElement);
