@@ -255,7 +255,7 @@ class Form_CATALOGO_PGOU98 {
     ventana.document.write("<BR>");
     ventana.document.write(this.html_TITULO);
     ventana.document.write("<BR><BR>");
-    const tit_identificacion = `<DIV class="title-section-print>1. IDENTIFICACIÓN</DIV>`;
+    const tit_identificacion = `<DIV class="title-section-print">1. IDENTIFICACIÓN</DIV>`;
     ventana.document.write(tit_identificacion);
     ventana.document.write(this.html_IDENTIFICACION);
 
