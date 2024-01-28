@@ -69,6 +69,10 @@ class Form_SISTEMAS_PGOU98 {
     this.setHTML_TITLE();
   }
 
+  
+  /**
+   * Establece el contenido HTML para la sección de identificación.
+   */
   setHTML_IDENTIFICACION() {
     this.html_IDENTIFICACION = `
       <TABLE class="table-form">

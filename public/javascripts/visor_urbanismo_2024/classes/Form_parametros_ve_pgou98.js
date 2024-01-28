@@ -155,6 +155,7 @@ class Form_PARAMETROS_VE_PGOU98 {
     this.html_TITULO = `<LABEL class="title-form">${this.titulo_edif} (${this.ordenacion})</LABEL>`;
   }
 
+
   setHTML_BUTTONS() {
     let buttonVolumetrias = "";
     if (
@@ -278,3 +279,5 @@ class Form_PARAMETROS_VE_PGOU98 {
     this.sigduMap.map.spin(false);
   }
 }
+
+

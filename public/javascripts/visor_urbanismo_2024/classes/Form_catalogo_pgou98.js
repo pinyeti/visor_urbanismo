@@ -6,6 +6,7 @@ class Form_CATALOGO_PGOU98 {
   /**
    * Constructor de la clase.
    * @param {object} entity - La entidad geoespacial.
+   * @param {object} sigduMap - El mapa SIGDU.
    */
   constructor(entity, sigduMap) {
     this.sigduMap = sigduMap;
@@ -210,20 +211,20 @@ class Form_CATALOGO_PGOU98 {
    */
   setHTML_BUTTONS() {
     this.html_buttons = `<button id="buttons" class="accordion">IDENTIFICACIÓN</button>
-      <div class="panelIDENTIF id="panelIDENTIF">
+      <div class="panelIDENTIF" id="panelIDENTIF">
         <BR>
         ${this.html_IDENTIFICACION}
         <div id='map2'></div>
         <BR>      
       </div>
       <button id="buttons" class="accordion">DESCRIPCIÓN</button>
-      <div class="panelDESCRIPCION id="panelDESCRIPCION">
+      <div class="panelDESCRIPCION" id="panelDESCRIPCION">
         <BR>
         ${this.html_DESCRIPCION}
         <BR>      
       </div>
       <button id="buttons" class="accordion">PROTECCIÓN Y DIRECTRICES DE INTERVENCIÓN</button>
-      <div class="panelPROTECCION id="panelPROTECCION">
+      <div class="panelPROTECCION" id="panelPROTECCION">
         <BR>
         ${this.html_PROTECCION_INTERVENCION}
         <BR>      

@@ -265,6 +265,14 @@ class FeatureUrbanistic {
         this.fillColor = "MAGENTA";
         this.color = "black";
         break;
+      case "CAT_PRI":
+        this.title = "CATALOGO";
+        this.subtitle = "-";
+        this.tipo_plan = "PRI";
+        this.table = "pri_catalogos";
+        this.fillColor = "MAGENTA";
+        this.color = "black";
+        break;
     }
 
     console.log(

@@ -746,6 +746,24 @@ class MapQuery {
           });
         }
 
+         // Ficha CAT_PRI
+         var btFicha_CAT_PRI = document.getElementById("btFicha_CAT_PRI");
+         if (btFicha_CAT_PRI) {
+           btFicha_CAT_PRI.addEventListener("click", async function () {
+             var fid = btFicha_CAT_PRI.getAttribute("data-fid");
+             var clase = btFicha_CAT_PRI.getAttribute("data-clase");
+          
+             const entidad = new FeatureUrbanistic(clase, fid);
+             await entidad.initialize();
+            
+             const formParamCAT_PRI = new Form_CATALOGO_PRI(
+               entidad,
+               self.sigduMap
+             );
+             await formParamCAT_PRI.createForm();
+           });
+         }
+
         console.log("cuantos pasa??");
 
         var elementos = document.querySelectorAll(
@@ -2072,18 +2090,23 @@ class MapQuery {
           </tr>
           <tr align="center"  style='background-color:white;padding:3px;font-size:8.5pt;font-family:Arial Black;color:#660000;height:22px'>  
               <td colspan="2"> 
-                  <button style="padding:3px;font-size:9pt;font-family:Arial Black" class="ui-button ui-widget ui-corner-all" title="Ficha del elemento" value=${
-                    geojson.features[r].properties.codigo
-                  } OnClick="fichaCAT_PRI(this)"><i class="fa fa-info-circle"></i> Ficha</button> 
-                  <button id="btNormativa_CAT_PRI" 
-                    style="padding:3px;font-size:9pt;font-family:Arial Black" 
-                    class="ui-button ui-widget ui-corner-all" 
-                    title="Información normativa asociada"
-                    data-fid="${geojson.features[r].properties.fid}" 
-                    data-table="pri_catalogos"
-                    data-accion="normativa">
-                    <i class="fa fa-info-circle"></i> Normativa
-                  </button>
+                <button id="btFicha_CAT_PRI" 
+                  style="padding:3px;font-size:9pt;font-family:Arial Black" 
+                  class="ui-button ui-widget ui-corner-all" 
+                  title="Ficha del elemento"
+                  data-fid="${geojson.features[r].properties.fid}" 
+                  data-clase="CAT_PRI">
+                  <i class="fa fa-info-circle"></i> Ficha
+                </button>
+                <button id="btNormativa_CAT_PRI" 
+                  style="padding:3px;font-size:9pt;font-family:Arial Black" 
+                  class="ui-button ui-widget ui-corner-all" 
+                  title="Información normativa asociada"
+                  data-fid="${geojson.features[r].properties.fid}" 
+                  data-table="pri_catalogos"
+                  data-accion="normativa">
+                  <i class="fa fa-info-circle"></i> Normativa
+                </button>
               </td>      
           </tr>
       `;
