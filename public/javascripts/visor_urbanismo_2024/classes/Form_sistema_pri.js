@@ -183,8 +183,8 @@ class Form_SISTEMAS_PRI {
       // Convierte el canvas en un blob
 
       // Redimensiona el canvas antes de convertirlo en un blob
-      const resizedCanvas = document.createElement('canvas');
-      const ctx = resizedCanvas.getContext('2d');
+      const resizedCanvas = document.createElement("canvas");
+      const ctx = resizedCanvas.getContext("2d");
       resizedCanvas.width = 800; // Establece la nueva anchura
       resizedCanvas.height = 450; // Establece la nueva altura
       ctx.drawImage(canvas, 0, 0, 800, 450); // Dibuja el canvas original en el canvas redimensionado
@@ -202,7 +202,6 @@ class Form_SISTEMAS_PRI {
 
         ventana.print();
         ventana.close();
-        
       });
     });
   }

@@ -16,6 +16,16 @@ body {
   border: 1px solid #fcf9f9; /* Borde de 1 píxel sólido de color negro */
 }
 
+.text-label-sedipualba {
+  padding: 3px; /* Ajusta el padding según sea necesario */
+  background-color: rgba(161, 156, 85, 0.808);
+  color: rgb(0, 0, 0);
+  font-family: "Arial Black", sans-serif; /* Fuente Arial Black */
+  font-size: 12px; /* Tamaño de la fuente */
+  text-align: center; /* Centro del texto */
+  border: 1px solid #fcf9f9; /* Borde de 1 píxel sólido de color negro */
+}
+
 .custom-control-paix {
   position: absolute;
   top: 0;
@@ -649,6 +659,34 @@ img {
 }
 
 /* END Estilos forms */
+
+#table_queryEXP_Sedipualba tbody tr:hover {
+  background-color: #f9faed;
+  color: #000000;
+  font-weight: bold; 
+  cursor: pointer;
+}
+
+/*#table_queryEXP_Sedipualba tr:hover td.sorting_1 {
+  background-color: #b0d6ba;
+  color: #000000;
+  font-weight: bold;
+  cursor: pointer;
+}*/
+
+#table_queryEXP_Sedipualba tr td.sorting_1 {
+  background-color: #fcfcfc;
+  color: #000000;
+  cursor: pointer;
+}
+
+.selected-row {
+  background-color: #d2ddeb !important; /* Cambia el color de fondo según tu preferencia */
+  border-color: #113058 !important;;
+  
+  font-weight: bold; /* Cambia el estilo de fuente según tu preferencia */
+}
+
 
 
 

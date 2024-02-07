@@ -14,33 +14,41 @@ class Sedipualb {
 
   async initialize() {
     let query=[];
-    query=await this.getExpedientes("Zt5tWfX3fhtaoI83G2iomv2yB");
-    this.query_expedientes.splice(0, this.query_expedientes.length, ...query);
-    console.log(this.query_expedientes);
 
-    const documentosExp=await this.getDocumentosExpediente("Zt5tWfX3fhtaoI83G2iomv2yB","07040","170167T",-1,"43052971F");
+    const reader = new DataReaderSedipualb();
+    const info_json = await reader.listExpedientes("","TODAS","TODAS","TODAS","TODAS","Borrador");
+    for(let j=0;j<info_json.length;j++)
+      console.log(j+") "+info_json[j].CodigoExpediente+", "+info_json[j].DescripcionTramitador+", "+info_json[j].DescripcionIniciador);
+    console.log(info_json);
+    
+    /*query=await this.getExpedientes("Zt5tWfX3fhtaoI83G2iomv2yB");
+    this.query_expedientes.splice(0, this.query_expedientes.length, ...query);
+    console.log(this.query_expedientes);*/
+
+    /*const documentosExp=await this.getDocumentosExpediente("Zt5tWfX3fhtaoI83G2iomv2yB","07040","170167T",-1,"43052971F");
     console.log(documentosExp);
 
     const infoDocumento=await this.getInfoDocumento("07040_SIGDU","Zt5tWfX3fhtaoI83G2iomv2yB","07040","1331960");
     console.log(infoDocumento);
 
     const carpetasDoc=await this.getCarpetasDocumentos("07040_SIGDU","Zt5tWfX3fhtaoI83G2iomv2yB","07040","170167T",-1)
-    console.log(carpetasDoc.ListarCarpetasV2Result.CarpetaItemV2);
+    console.log(carpetasDoc.ListarCarpetasV2Result.CarpetaItemV2); */
 
-    const materias=await this.getMaterias("07040_SIGDU","Zt5tWfX3fhtaoI83G2iomv2yB","07040");
+    
+    /*const materias=await this.getMaterias("07040_SIGDU","Zt5tWfX3fhtaoI83G2iomv2yB","07040");
     console.log(materias.ListMateriasResult.MateriaInfo);
 
-    const subMaterias=await this.getSubmaterias("07040_SIGDU","Zt5tWfX3fhtaoI83G2iomv2yB","07040","33");
+    const subMaterias=await this.getSubmaterias("07040_SIGDU","Zt5tWfX3fhtaoI83G2iomv2yB","07040",33);
     console.log(subMaterias.ListSubmateriasResult.SubmateriaInfo);
 
-    const tiposProcedimiento=await this.getTiposProcedimento("07040_SIGDU","Zt5tWfX3fhtaoI83G2iomv2yB","07040","3301");
+    const tiposProcedimiento=await this.getTiposProcedimento("07040_SIGDU","Zt5tWfX3fhtaoI83G2iomv2yB","07040","4103");
     console.log(tiposProcedimiento.ListTiposProcedimientoResult.TipoProcedimientoInfo);
 
-    const subTiposProcedimiento=await this.getSubtiposProcedimento("07040_SIGDU","Zt5tWfX3fhtaoI83G2iomv2yB","07040",219);
+    const subTiposProcedimiento=await this.getSubtiposProcedimento("07040_SIGDU","Zt5tWfX3fhtaoI83G2iomv2yB","07040",589);
     if(subTiposProcedimiento.ListSubtiposProcedimientoResult!=null)
       console.log(subTiposProcedimiento.ListSubtiposProcedimientoResult.SubtipoProcedimientoInfo);
     else
-      console.log(subTiposProcedimiento);
+      console.log(subTiposProcedimiento);*/
 
 
   }
@@ -87,6 +95,33 @@ class Sedipualb {
     return info_json;
   } 
 
+  /*async getExpedientes(clearPassword) {
+    const reader = new DataReaderSedipualb();
+
+    let expedientes = [];
+    let i = 0;
+
+    while (true) {
+      const info_json = await reader.listExpedientes(clearPassword, i);
+
+      if (
+        info_json.ListExpedientesResult &&
+        info_json.ListExpedientesResult.InfoExpedienteV2.length > 0
+      ) {
+        //console.log(info_json.ListExpedientesResult.InfoExpedienteV2[0].CodigoSubmateria);
+        
+        expedientes = expedientes.concat(
+          info_json.ListExpedientesResult.InfoExpedienteV2
+        );
+        i++;
+      } else {
+        break; 
+      }
+    }
+
+    return expedientes;
+  }*/
+
   async getExpedientes(clearPassword) {
     const reader = new DataReaderSedipualb();
 
@@ -100,9 +135,14 @@ class Sedipualb {
         info_json.ListExpedientesResult &&
         info_json.ListExpedientesResult.InfoExpedienteV2.length > 0
       ) {
-        expedientes = expedientes.concat(
+        //console.log(info_json.ListExpedientesResult.InfoExpedienteV2[0].CodigoSubmateria);
+        for(let j=0;j<info_json.ListExpedientesResult.InfoExpedienteV2.length;j++) {
+          if(info_json.ListExpedientesResult.InfoExpedienteV2[j].CodigoSubmateria=="3302")
+            expedientes = expedientes.concat(info_json.ListExpedientesResult.InfoExpedienteV2[j]);
+        }
+        /*expedientes = expedientes.concat(
           info_json.ListExpedientesResult.InfoExpedienteV2
-        );
+        );*/
         i++;
       } else {
         break; 

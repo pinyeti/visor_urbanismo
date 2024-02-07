@@ -47,6 +47,8 @@ const {
   getListarDocumentosV2,
   getListarCarpetasV2,
   getInfoDocumento,
+  getUrlDetalleExpediente,
+  setEntorno,
 } = require("../controllers/sedipualb.controller");
 
 /**
@@ -62,6 +64,8 @@ router.get("/opg/listExpedientes", getListExpedientes);
 router.get("/opg/listarDocumentosV2", getListarDocumentosV2);
 router.get("/opg/listarCarpetasV2", getListarCarpetasV2);
 router.get("/opg/obtenerInfoDocumento", getInfoDocumento);
+router.get("/opg/getUrlDetalleExpediente", getUrlDetalleExpediente);
+router.post("/opg/setEntorno", setEntorno);
 
 /**
  * Rutas para los endpoints del Visor.

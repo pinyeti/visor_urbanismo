@@ -59,6 +59,7 @@ class SIGDUMap {
 
     this.createQueryPG();
     this.createQueryEXP();
+    this.createQueryEXP_Sedipualba();
     this.createQuerySEARCH();
 
     const self = this;
@@ -102,6 +103,13 @@ class SIGDUMap {
    */
   createQueryEXP() {
     new QueryDialogEXP(this.map, this.mapLayers, this.toc, this);
+  }
+
+  /**
+   * Crea un diálogo de consulta de Expedientes Sedipualba para el mapa.
+   */
+  createQueryEXP_Sedipualba() {
+    new QueryDialogEXP_Sedipualba(this.map, this.mapLayers, this.toc, this);
   }
 
   /**
@@ -412,6 +420,14 @@ class SIGDUMap {
       // position: 'bottom' // Alineación vertical opcional, predeterminada a 'top'
     };
 
+    const panelQuerySedipualba = {
+      id: "queryTablesSedipualba", // Identificador único para acceder al panel
+      tab: '<i class="fa-solid fa-file-shield"></i>', // Contenido del botón de pestaña como cadena HTML
+      pane: "-", // Elementos DOM que se pueden pasar
+      title: "Consulta expedientes Sedipualba", // Título opcional del panel
+      // position: 'bottom' // Alineación vertical opcional, predeterminada a 'top'
+    };
+
     const panelSearch = {
       id: "searchDir", // UID, used to access the panel
       tab: '<i class="fa fa-search"></i>', // content can be passed as HTML string,
@@ -424,6 +440,7 @@ class SIGDUMap {
     sidebar.addPanel(panelContent);
     sidebar.addPanel(panelQuery);
     sidebar.addPanel(panelQueryEXP);
+    sidebar.addPanel(panelQuerySedipualba);
     sidebar.addPanel(panelSearch);
 
     const self=this;

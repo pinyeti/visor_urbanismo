@@ -4,6 +4,28 @@
  */
 class DataReaderSedipualb {
 
+
+  /**
+   * configura entorno (prueba/producción)
+   * @param {string} entorno - entorno (DEV/PROD).
+   */
+  async setEntorno(entorno) {
+    const baseUrl = `${window.location.protocol}//${window.location.host}/opg/setEntorno`;
+    const params = new URLSearchParams({
+      entorno: entorno,
+    });
+    const url = new URL(baseUrl);
+    url.search = params.toString();
+    const dataRequest = { method: "POST" };
+    try {
+      await fetch(url, dataRequest);
+      
+      
+    } catch (error) {
+      console.error("Error al leer la característica:", error);
+    }
+  }
+
   /**
    * Lista las materias disponibles.
    * @param {string} wsseg_user - Nombre de usuario.
@@ -136,11 +158,16 @@ class DataReaderSedipualb {
    * @returns {Promise<object>} - Objeto JSON con información de los expedientes.
    * @throws {Error} - Lanza un error si hay problemas en la solicitud o procesamiento.
    */
-  async listExpedientes(clearPassword, numPage) {
+  async listExpedientes(idNodoContenedorTramitador, materia, submateria, tipoProcedimiento, subtipoProcedimiento,estado) {
     const baseUrl = `${window.location.protocol}//${window.location.host}/opg/listExpedientes`;
     const params = new URLSearchParams({
-      clearPassword: clearPassword,
-      numPage: numPage,
+      //clearPassword: clearPassword,
+      idNodoContenedorTramitador: idNodoContenedorTramitador,
+      materia: materia,
+      submateria: submateria,
+      tipoProcedimiento: tipoProcedimiento,
+      subtipoProcedimiento: subtipoProcedimiento,
+      estado: estado,
     });
     const url = new URL(baseUrl);
     url.search = params.toString();
@@ -217,6 +244,41 @@ class DataReaderSedipualb {
       pkEntidad: pkEntidad,
       codigoExpediente: codigoExpediente,
       pkCarpetaPadre: pkCarpetaPadre,
+    });
+    const url = new URL(baseUrl);
+    url.search = params.toString();
+    const dataRequest = { method: "GET" };
+    try {
+      const response = await fetch(url, dataRequest);
+      const info_geojson = await response.json();
+      return info_geojson;
+    } catch (error) {
+      console.error("Error al leer la característica:", error);
+    }
+  }
+
+  /**
+   * Obtiene url de expediente como usuario segec
+   *
+   * @param {string} wsseg_user - Usuario de seguridad.
+   * @param {string} clearPassword - Contraseña.
+   * @param {string} pk_entidad - Clave primaria de la entidad.
+   * @param {string} codigoExpediente - Clave primaria del documento.
+   * @returns {Promise<object>} - Objeto JSON con información del documento.
+   * @throws {Error} - Lanza un error si hay problemas en la solicitud o procesamiento.
+   */
+  async getUrlDetalleExpediente(
+    wsseg_user,
+    clearPassword,
+    pk_entidad,
+    codigoExpediente,
+  ) {
+    const baseUrl = `${window.location.protocol}//${window.location.host}/opg/getUrlDetalleExpediente`;
+    const params = new URLSearchParams({
+      wsseg_user: wsseg_user,
+      clearPassword: clearPassword,
+      pk_entidad: pk_entidad,
+      codigoExpediente: codigoExpediente,
     });
     const url = new URL(baseUrl);
     url.search = params.toString();

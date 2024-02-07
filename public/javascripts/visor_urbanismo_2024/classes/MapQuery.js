@@ -1664,7 +1664,9 @@ class MapQuery {
       }
 
       const reader = new DataReader();
+      
       let isResource = await reader.checkURLAvailability(ruta);
+      console.log(isResource, ruta);
 
       let isDoc = `<td align="center"><a href="${ruta}"  target="_blank" title="Informació del expedient" style='color:blue;font-family:Arial;font-size:8.5pt'>${geojson.features[r].properties.codigo}</a></td>`;
       if (isResource === false) {

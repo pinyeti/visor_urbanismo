@@ -22,5 +22,5 @@ function mainApp() {
 	// Crea una instancia del mapa SIGDU en el contenedor HTML con ID "map" y opciones de control de zoom en la esquina superior izquierda
   const sigduMap = new SIGDUMap("map", { zoomControl: "topleft" }); 
 
-  //new Sedipualb();
+  new Sedipualb();
 }

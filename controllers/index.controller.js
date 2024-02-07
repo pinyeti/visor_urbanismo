@@ -10,6 +10,7 @@ const xml2js = require("xml2js");
 const crypto = require("crypto");
 const soap = require("soap");
 
+
 const https = require('https');
 
 console.log("fetch=" + fetch);
@@ -25,25 +26,42 @@ const pool = new Pool({
 });
 
 
-const checkURLAvailability = async (req,res) => {
+const checkURLAvailability = async (req, res) => {
+  const maxRetries = 3 // Número máximo de intentos
+  let retryCount = 0;
   let url = req.query.url;
 
-  https.get(url, (res2) => {
-    const { statusCode } = res2;
-    if (statusCode === 200) {
-      console.log('El recurso está disponible.');
-      res.send("true");   
-    } else {
-      console.log(`El recurso no está disponible. Código de estado: ${statusCode}`);
-      res.send("false"); 
-      // Aquí podrías manejar el intento con otra URL, etc.
-    }
-   
-  }).on('error', (err) => {
-    console.error('Error al intentar acceder al recurso:', err.message);
-   
-    // Aquí podrías manejar el intento con otra URL, etc.
-  });
+  const tryRequest = () => {
+    https.get(url, (res2) => {
+      const { statusCode } = res2;
+      if (statusCode != 404) {
+        console.log('El recurso está disponible.');
+        res.send("true");
+      } else {
+        console.log(`El recurso no está disponible. Código de estado: ${statusCode}`);
+        if (retryCount < maxRetries) {
+          retryCount++;
+          console.log(`Reintentando (${retryCount}/${maxRetries})...`);
+          tryRequest(); // Intentar nuevamente
+        } else {
+          console.log(`Se alcanzó el número máximo de intentos (${maxRetries}).`);
+          res.send("false");
+        }
+      }
+    }).on('error', (err) => {
+      console.error('Error al intentar acceder al recurso:', err.message);
+      if (retryCount < maxRetries) {
+        retryCount++;
+        console.log(`Reintentando (${retryCount}/${maxRetries})...`);
+        tryRequest(); // Intentar nuevamente
+      } else {
+        console.log(`Se alcanzó el número máximo de intentos (${maxRetries}).`);
+        res.send("false");
+      }
+    });
+  };
+
+  tryRequest(); // Iniciar el primer intento
 };
 
 

@@ -139,12 +139,14 @@ class DataReader {
       const dataRequest = { method: "GET" };
 
       const response = await fetch(url, dataRequest);
+      console.log(response);
 
       if (!response.ok) {
         throw new Error(`Error de red: ${response.status}`);
       }
 
       const info_geojson = await response.json();
+      console.log(info_geojson);
 
       return info_geojson;
     } catch (error) {

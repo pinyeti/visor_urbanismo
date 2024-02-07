@@ -5,22 +5,61 @@
 
 const crypto = require("crypto");
 const soap = require("soap");
+const { Pool } = require("pg");
+const con = require("./connectionString.js");
+const { clear } = require("console");
 
+const pool = new Pool({
+  user: con.username,
+  password: con.password,
+  host: con.host,
+  database: con.database,
+  port: con.port,
+});
+
+let entorno="DEV";
+let idEntidad="";
+let wsseg_user="";
+let clearPassword="";
+let url_sedipualba="";
 let clientSoap = null;
 
-soap.createClient(
-  "https://pre-07040.sedipualba.es/segex/wssegex.asmx?wsdl",
-  (err, client) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
+(async () => {
+  try {
+    const select = `select * from pass_sedipualba where entorno='${entorno}'`;
+    const response = await pool.query(select);
+   
+    wsseg_user=response.rows[0].user;
+    clearPassword=response.rows[0].clear_password;
+    url_sedipualba=response.rows[0].url;
+    idEntidad=response.rows[0].id_entidad;
+    console.log(idEntidad);
 
-    clientSoap = client;
+    
+
+    soap.createClient(
+      url_sedipualba,
+      (err, client) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+    
+        clientSoap = client;
+      }
+    );
+    
+  } catch (error) {
+    console.error("Error en servicio postgis_select:", error);
+    res.status(500).send("Error en el servidor");
   }
-);
+})();
+
+
 
 console.log(clientSoap);
+
+
 
 const getHashedPassword = async (clearPassword) => {
   const timestamp = new Date()
@@ -39,11 +78,95 @@ const getHashedPassword = async (clearPassword) => {
   return timestamp + hash;
 };
 
+const setEntorno = async (req, res) => {
+
+  console.log("entorno="+req.query.entorno);
+
+  const entorno = req.query.entorno;
+  try {
+    const select = `select * from pass_sedipualba where entorno='${entorno}'`;
+    const response = await pool.query(select);
+   
+    wsseg_user=response.rows[0].user;
+    clearPassword=response.rows[0].clear_password;
+    url_sedipualba=response.rows[0].url;
+    idEntidad=response.rows[0].id_entidad;
+    console.log(idEntidad);
+
+    soap.createClient(
+      url_sedipualba,
+      (err, client) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+    
+        clientSoap = client;
+        res.send(200);
+      }
+    );
+    
+  } catch (error) {
+    console.error("Error en servicio postgis_select:", error);
+    res.status(500).send("Error en el servidor");
+  }
+}
+
+/**
+ * Obtiene url del expediente como usuario segex utilizando un servicio SOAP.<br>
+ *
+ * Endpoint: <strong>https://nombre_dominio/opg/obtenerInfoDocumento</strong>
+ *
+ * @memberof SedipualbaController
+ * @param {object} req - Objeto de solicitud HTTP.
+ * @param {string} req.query.wsseg_user - Usuario del servicio web.
+ * @param {string} req.query.clearPassword - Contraseña sin cifrar.
+ * @param {string} req.query.pk_entidad - Clave primaria de la entidad.
+ * @param {string} req.query.codigoExpediente - Clave primaria del documento.
+ * @param {object} res - Objeto de respuesta HTTP.
+ * @returns {Promise} La respuesta se envía al cliente HTTP.
+ * @throws {Error} Si hay un error en la solicitud SOAP, se registra y se devuelve un mensaje de error.
+ */
+const getUrlDetalleExpediente = async (req, res) => {
+  try {
+    // Obtiene los parámetros de la solicitud
+    //const wsseg_user = req.query.wsseg_user;
+    //const clearPassword = req.query.clearPassword;
+    //const pk_entidad = req.query.pk_entidad;
+    const codigoExpediente = req.query.codigoExpediente;
+
+    // Obtiene la contraseña encriptada
+    const hashedPassword = await getHashedPassword(clearPassword);
+
+    const args1 = {
+      wsseg_user: wsseg_user,
+      wsseg_pass: hashedPassword,
+      pk_entidad: idEntidad,
+      codigoExpediente: codigoExpediente,
+    };
+
+    // Llama al servicio SOAP para obtener la información del expediente
+    clientSoap.ObtenerUrlDetalleExpedienteComoUsuarioSegexConCertificado(args1, async (err, result) => {
+      if (err) {
+        // Manejo de errores: registra el error y envía un mensaje de error al cliente
+        console.error(err);
+        return;
+      }
+      // Envía la información del documento como respuesta al cliente
+      res.send(result);
+    });
+  } catch (error) {
+    // Manejo de errores: registra el error y envía un mensaje de error al cliente
+    console.error("Error en la solicitud SOAP:", error);
+    res.status(500).send("Error en el servidor");
+  }
+};
+
 /**
  * Obtiene información del documento utilizando un servicio SOAP.<br>
- * 
+ *
  * Endpoint: <strong>https://nombre_dominio/opg/obtenerInfoDocumento</strong>
- * 
+ *
  * @memberof SedipualbaController
  * @param {object} req - Objeto de solicitud HTTP.
  * @param {string} req.query.wsseg_user - Usuario del servicio web.
@@ -176,7 +299,7 @@ const getListarDocumentosV2 = async (req, res) => {
   });
 };
 
-const getListExpedientes = async (req, res) => {
+/*const getListExpedientes = async (req, res) => {
   const clearPassword = req.query.clearPassword;
   const numPage = req.query.numPage;
   const estado = req.query.estado;
@@ -205,12 +328,92 @@ const getListExpedientes = async (req, res) => {
     }
     res.send(result);
   });
+};*/
+
+const getListExpedientes = async (req, res) => {
+  //console.log(clearPassword);
+  //const clearPassword = req.query.clearPassword;
+
+  let estado = req.query.estado || null;
+  const cdiInteresado = req.query.cdiInteresado;
+  const nombreInteresado = req.query.nombreInteresado;
+  const materia = req.query.materia;
+  const submateria = req.query.submateria;
+  const tipoProcedimiento = req.query.tipoProcedimiento;
+  const subtipoProcedimiento = req.query.subtipoProcedimiento;
+  let idNodoContenedorTramitador = req.query.idNodoContenedorTramitador || null;
+
+  console.log("nodo=" + req.query.idNodoContenedorTramitador);
+  console.log("clearPassword=" + clearPassword);
+
+  const hashedPassword = await getHashedPassword(clearPassword);
+  console.log(hashedPassword);
+
+  let expedientes = [];
+  let numPage = 0; // Se cambió a let para permitir reasignaciones
+  let morePages = true;
+
+  const fetchPage = async (page) => {
+    return new Promise((resolve, reject) => {
+      const args = {
+        idEntidad: idEntidad,
+        wsSegUser: wsseg_user,
+        wsSegPass: hashedPassword,
+        numPagina: page,
+        estado: estado,
+        cdiInteresado: cdiInteresado,
+        nombreInteresado: nombreInteresado,
+        idNodoContenedorTramitador: idNodoContenedorTramitador,
+        //idNodoContenedorTramitador: "44689", // CONTENEDOR URBANISMO???
+      };
+
+      clientSoap.ListExpedientes(args, (err, result) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(result);
+      });
+    });
+  };
+
+  try {
+    while (morePages) {
+      const result = await fetchPage(numPage);
+
+      if (
+        result.ListExpedientesResult &&
+        result.ListExpedientesResult.InfoExpedienteV2.length > 0
+      ) {
+        result.ListExpedientesResult.InfoExpedienteV2.forEach((expediente) => {
+          console.log(materia,submateria,tipoProcedimiento,subtipoProcedimiento);
+          if (
+            (expediente.CodigoSubmateria.substring(0, 2) == materia || materia == "TODAS") &&
+            (expediente.CodigoSubmateria== submateria || submateria == "TODAS") &&
+            (expediente.CodigoProcedimiento == tipoProcedimiento || tipoProcedimiento == "TODAS") &&
+            (expediente.CodigoSubprocedimiento == subtipoProcedimiento || subtipoProcedimiento == "TODAS")
+          ) {
+            expedientes.push(expediente);
+          }
+        });
+        //console.log(result.ListExpedientesResult.InfoExpedienteV2);
+        console.log(`Página ${numPage} procesada`);
+        numPage++;
+      } else {
+        morePages = false;
+      }
+    }
+    res.send(expedientes);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error al obtener los expedientes");
+  }
 };
 
 const getListMaterias = async (req, res) => {
-  const clearPassword = req.query.clearPassword;
-  const idEntidad = req.query.idEntidad;
-  const wsseg_user = req.query.wsseg_user;
+  //const clearPassword = req.query.clearPassword;
+  //const idEntidad = req.query.idEntidad;
+  //const wsseg_user = req.query.wsseg_user;
 
   const hashedPassword = await getHashedPassword(clearPassword);
   console.log(hashedPassword);
@@ -231,9 +434,9 @@ const getListMaterias = async (req, res) => {
 };
 
 const getListSubmaterias = async (req, res) => {
-  const clearPassword = req.query.clearPassword;
-  const idEntidad = req.query.idEntidad;
-  const wsseg_user = req.query.wsseg_user;
+  //const clearPassword = req.query.clearPassword;
+  //const idEntidad = req.query.idEntidad;
+  //const wsseg_user = req.query.wsseg_user;
   const idMateria = req.query.idMateria;
 
   const hashedPassword = await getHashedPassword(clearPassword);
@@ -256,9 +459,9 @@ const getListSubmaterias = async (req, res) => {
 };
 
 const getListTiposProcedimiento = async (req, res) => {
-  const clearPassword = req.query.clearPassword;
-  const idEntidad = req.query.idEntidad;
-  const wsseg_user = req.query.wsseg_user;
+  //const clearPassword = req.query.clearPassword;
+  //const idEntidad = req.query.idEntidad;
+  //const wsseg_user = req.query.wsseg_user;
   const idSubmateria = req.query.idSubmateria;
 
   const hashedPassword = await getHashedPassword(clearPassword);
@@ -281,9 +484,9 @@ const getListTiposProcedimiento = async (req, res) => {
 };
 
 const getListSubtiposProcedimiento = async (req, res) => {
-  const clearPassword = req.query.clearPassword;
-  const idEntidad = req.query.idEntidad;
-  const wsseg_user = req.query.wsseg_user;
+  //const clearPassword = req.query.clearPassword;
+  //const idEntidad = req.query.idEntidad;
+  //const wsseg_user = req.query.wsseg_user;
   const idProcedimiento = req.query.idProcedimiento;
 
   const hashedPassword = await getHashedPassword(clearPassword);
@@ -314,4 +517,6 @@ module.exports = {
   getListarDocumentosV2,
   getListarCarpetasV2,
   getInfoDocumento,
+  getUrlDetalleExpediente,
+  setEntorno,
 };

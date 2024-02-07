@@ -2591,7 +2591,7 @@ class QueryDialogPG2023 {
 
     console.log("pasa final option quer SLEQ");
 
-    var elemOptions = document.getElementById("divOptionsQUERY_PG2023");
+    var elemOptions = document.getElementById("divOptionsQUERY_PG2023"); 
     elemOptions.innerHTML = html;
 
     const self = this;
