@@ -33,9 +33,6 @@ let clientSoap = null;
     clearPassword=response.rows[0].clear_password;
     url_sedipualba=response.rows[0].url;
     idEntidad=response.rows[0].id_entidad;
-    console.log(idEntidad);
-
-    
 
     soap.createClient(
       url_sedipualba,
@@ -50,15 +47,10 @@ let clientSoap = null;
     );
     
   } catch (error) {
-    console.error("Error en servicio postgis_select:", error);
+    console.error("Error en servicio postgis/soap:", error);
     res.status(500).send("Error en el servidor");
   }
 })();
-
-
-
-console.log(clientSoap);
-
 
 
 const getHashedPassword = async (clearPassword) => {
@@ -80,8 +72,6 @@ const getHashedPassword = async (clearPassword) => {
 
 const setEntorno = async (req, res) => {
 
-  console.log("entorno="+req.query.entorno);
-
   const entorno = req.query.entorno;
   try {
     const select = `select * from pass_sedipualba where entorno='${entorno}'`;
@@ -91,7 +81,6 @@ const setEntorno = async (req, res) => {
     clearPassword=response.rows[0].clear_password;
     url_sedipualba=response.rows[0].url;
     idEntidad=response.rows[0].id_entidad;
-    console.log(idEntidad);
 
     soap.createClient(
       url_sedipualba,
@@ -107,10 +96,32 @@ const setEntorno = async (req, res) => {
     );
     
   } catch (error) {
-    console.error("Error en servicio postgis_select:", error);
+    console.error("Error en servicio SetEntono:", error);
     res.status(500).send("Error en el servidor");
   }
 }
+
+const ListGeorreferenciasExpediente = async (req, res) => {
+ 
+  const codigoExpediente = req.query.codigoExpediente;
+
+  const hashedPassword = await getHashedPassword(clearPassword);
+
+  const args1 = {
+    idEntidad: idEntidad,
+    wsSegUser: wsseg_user,
+    wsSegPass: hashedPassword,
+    codigoExpediente: codigoExpediente,
+  };
+
+  clientSoap.ListGeorreferenciasExpediente(args1, async (err, result) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    res.send(result);
+  });
+};
 
 /**
  * Obtiene url del expediente como usuario segex utilizando un servicio SOAP.<br>
@@ -275,12 +286,6 @@ const getListarDocumentosV2 = async (req, res) => {
 
   const hashedPassword = await getHashedPassword(clearPassword);
 
-  console.log(hashedPassword);
-  console.log(pkEntidad);
-  console.log(codigoExpediente);
-  console.log(pkCarpetaPadre);
-  console.log(nifUsuario);
-
   const args1 = {
     wsseg_user: "07040_SIGDU",
     wsseg_pass: hashedPassword,
@@ -343,9 +348,6 @@ const getListExpedientes = async (req, res) => {
   const subtipoProcedimiento = req.query.subtipoProcedimiento;
   let idNodoContenedorTramitador = req.query.idNodoContenedorTramitador || null;
 
-  console.log("nodo=" + req.query.idNodoContenedorTramitador);
-  console.log("clearPassword=" + clearPassword);
-
   const hashedPassword = await getHashedPassword(clearPassword);
   console.log(hashedPassword);
 
@@ -386,7 +388,7 @@ const getListExpedientes = async (req, res) => {
         result.ListExpedientesResult.InfoExpedienteV2.length > 0
       ) {
         result.ListExpedientesResult.InfoExpedienteV2.forEach((expediente) => {
-          console.log(materia,submateria,tipoProcedimiento,subtipoProcedimiento);
+          
           if (
             (expediente.CodigoSubmateria.substring(0, 2) == materia || materia == "TODAS") &&
             (expediente.CodigoSubmateria== submateria || submateria == "TODAS") &&
@@ -396,7 +398,7 @@ const getListExpedientes = async (req, res) => {
             expedientes.push(expediente);
           }
         });
-        //console.log(result.ListExpedientesResult.InfoExpedienteV2);
+       
         console.log(`Página ${numPage} procesada`);
         numPage++;
       } else {
@@ -411,9 +413,6 @@ const getListExpedientes = async (req, res) => {
 };
 
 const getListMaterias = async (req, res) => {
-  //const clearPassword = req.query.clearPassword;
-  //const idEntidad = req.query.idEntidad;
-  //const wsseg_user = req.query.wsseg_user;
 
   const hashedPassword = await getHashedPassword(clearPassword);
   console.log(hashedPassword);
@@ -434,9 +433,7 @@ const getListMaterias = async (req, res) => {
 };
 
 const getListSubmaterias = async (req, res) => {
-  //const clearPassword = req.query.clearPassword;
-  //const idEntidad = req.query.idEntidad;
-  //const wsseg_user = req.query.wsseg_user;
+
   const idMateria = req.query.idMateria;
 
   const hashedPassword = await getHashedPassword(clearPassword);
@@ -459,9 +456,7 @@ const getListSubmaterias = async (req, res) => {
 };
 
 const getListTiposProcedimiento = async (req, res) => {
-  //const clearPassword = req.query.clearPassword;
-  //const idEntidad = req.query.idEntidad;
-  //const wsseg_user = req.query.wsseg_user;
+ 
   const idSubmateria = req.query.idSubmateria;
 
   const hashedPassword = await getHashedPassword(clearPassword);
@@ -484,9 +479,7 @@ const getListTiposProcedimiento = async (req, res) => {
 };
 
 const getListSubtiposProcedimiento = async (req, res) => {
-  //const clearPassword = req.query.clearPassword;
-  //const idEntidad = req.query.idEntidad;
-  //const wsseg_user = req.query.wsseg_user;
+ 
   const idProcedimiento = req.query.idProcedimiento;
 
   const hashedPassword = await getHashedPassword(clearPassword);
@@ -519,4 +512,5 @@ module.exports = {
   getInfoDocumento,
   getUrlDetalleExpediente,
   setEntorno,
+  ListGeorreferenciasExpediente,
 };

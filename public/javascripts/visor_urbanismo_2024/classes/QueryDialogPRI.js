@@ -119,6 +119,15 @@ class QueryDialogPRI {
   }
 
   async queryCP(name, table, filter) {
+
+    let urlA = new URL(window.location.protocol+'//'+window.location.host+"/opg/write_data_user");
+    const paramsA = {accion:"consulta:"+table+":"+filter};
+    Object.keys(paramsA).forEach(key => urlA.searchParams.append(key, paramsA[key]));
+    const dataRequestA = {
+        method: 'POST'
+    }; 
+    await fetch(urlA,dataRequestA);
+
     const reader = new DataReader();
     const info_geojson = await reader.readDataFeature(table, filter);
 
@@ -197,6 +206,15 @@ class QueryDialogPRI {
 
 
   async queryUE(name, table, filter) {
+
+    let urlA = new URL(window.location.protocol+'//'+window.location.host+"/opg/write_data_user");
+    const paramsA = {accion:"consulta:"+table+":"+filter};
+    Object.keys(paramsA).forEach(key => urlA.searchParams.append(key, paramsA[key]));
+    const dataRequestA = {
+        method: 'POST'
+    }; 
+    await fetch(urlA,dataRequestA);
+
     const reader = new DataReader();
     const info_geojson = await reader.readDataFeature(table, filter);
 
@@ -274,6 +292,15 @@ class QueryDialogPRI {
   }
 
   async queryCAT(name, table, filter) {
+
+    let urlA = new URL(window.location.protocol+'//'+window.location.host+"/opg/write_data_user");
+    const paramsA = {accion:"consulta:"+table+":"+filter};
+    Object.keys(paramsA).forEach(key => urlA.searchParams.append(key, paramsA[key]));
+    const dataRequestA = {
+        method: 'POST'
+    }; 
+    await fetch(urlA,dataRequestA);
+
     const reader = new DataReader();
     const info_geojson = await reader.readDataFeature(table, filter);
 
@@ -364,6 +391,15 @@ class QueryDialogPRI {
   }
 
   async queryEL(name, table, filter) {
+
+    let urlA = new URL(window.location.protocol+'//'+window.location.host+"/opg/write_data_user");
+    const paramsA = {accion:"consulta:"+table+":"+filter};
+    Object.keys(paramsA).forEach(key => urlA.searchParams.append(key, paramsA[key]));
+    const dataRequestA = {
+        method: 'POST'
+    }; 
+    await fetch(urlA,dataRequestA);
+
     const reader = new DataReader();
     const info_geojson = await reader.readDataFeature(table, filter);
 
@@ -447,6 +483,15 @@ class QueryDialogPRI {
   }
 
   async queryEQ(name, table, filter) {
+
+    let urlA = new URL(window.location.protocol+'//'+window.location.host+"/opg/write_data_user");
+    const paramsA = {accion:"consulta:"+table+":"+filter};
+    Object.keys(paramsA).forEach(key => urlA.searchParams.append(key, paramsA[key]));
+    const dataRequestA = {
+        method: 'POST'
+    }; 
+    await fetch(urlA,dataRequestA);
+
     const reader = new DataReader();
     const info_geojson = await reader.readDataFeature(table, filter);
 
@@ -541,6 +586,15 @@ class QueryDialogPRI {
   }
 
   async queryZO_SU(name, table, filter) {
+
+    let urlA = new URL(window.location.protocol+'//'+window.location.host+"/opg/write_data_user");
+    const paramsA = {accion:"consulta:"+table+":"+filter};
+    Object.keys(paramsA).forEach(key => urlA.searchParams.append(key, paramsA[key]));
+    const dataRequestA = {
+        method: 'POST'
+    }; 
+    await fetch(urlA,dataRequestA);
+
     const reader = new DataReader();
     const info_geojson = await reader.readDataFeature(table, filter);
 

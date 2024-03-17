@@ -144,6 +144,15 @@ class QueryDialogPG2023 {
    * @returns {Promise<void>} Promesa que se resuelve cuando la consulta y la presentación de resultados están completas.
    */
   async queryURBANIZABLE(name, table, filter) {
+
+    let urlA = new URL(window.location.protocol+'//'+window.location.host+"/opg/write_data_user");
+    const paramsA = {accion:"consulta:"+table+":"+filter};
+    Object.keys(paramsA).forEach(key => urlA.searchParams.append(key, paramsA[key]));
+    const dataRequestA = {
+        method: 'POST'
+    }; 
+    await fetch(urlA,dataRequestA);
+
     const reader = new DataReader();
     const info_geojson = await reader.readDataFeature(table, filter);
 
@@ -245,6 +254,15 @@ class QueryDialogPG2023 {
    * @returns {Promise<void>} Promesa que se resuelve cuando la consulta y la presentación de resultados están completas.
    */
   async queryNUCLEO_RURAL(name, table, filter) {
+
+    let urlA = new URL(window.location.protocol+'//'+window.location.host+"/opg/write_data_user");
+    const paramsA = {accion:"consulta:"+table+":"+filter};
+    Object.keys(paramsA).forEach(key => urlA.searchParams.append(key, paramsA[key]));
+    const dataRequestA = {
+        method: 'POST'
+    }; 
+    await fetch(urlA,dataRequestA);
+
     const reader = new DataReader();
     const info_geojson = await reader.readDataFeature(table, filter);
 
@@ -344,6 +362,15 @@ class QueryDialogPG2023 {
    * @returns {Promise<void>} Una promesa que se resuelve cuando la consulta y la presentación de resultados están completas.
    */
   async queryRUSTICO_COMUN(name, table, filter) {
+
+    let urlA = new URL(window.location.protocol+'//'+window.location.host+"/opg/write_data_user");
+    const paramsA = {accion:"consulta:"+table+":"+filter};
+    Object.keys(paramsA).forEach(key => urlA.searchParams.append(key, paramsA[key]));
+    const dataRequestA = {
+        method: 'POST'
+    }; 
+    await fetch(urlA,dataRequestA);
+
     const reader = new DataReader();
     const info_geojson = await reader.readDataFeature(table, filter);
 
@@ -441,6 +468,15 @@ class QueryDialogPG2023 {
    * @returns {Promise<void>} Una promesa que se resuelve cuando la consulta y la presentación de resultados están completas.
    */
   async queryRUSTICO(name, table, filter) {
+
+    let urlA = new URL(window.location.protocol+'//'+window.location.host+"/opg/write_data_user");
+    const paramsA = {accion:"consulta:"+table+":"+filter};
+    Object.keys(paramsA).forEach(key => urlA.searchParams.append(key, paramsA[key]));
+    const dataRequestA = {
+        method: 'POST'
+    }; 
+    await fetch(urlA,dataRequestA);
+
     const reader = new DataReader();
     const info_geojson = await reader.readDataFeature(table, filter);
 
@@ -550,6 +586,15 @@ class QueryDialogPG2023 {
    * @returns {Promise<void>} Una promesa que se resuelve cuando la consulta y la presentación de resultados están completas.
    */
   async querySGSU(name, table, filter) {
+
+    let urlA = new URL(window.location.protocol+'//'+window.location.host+"/opg/write_data_user");
+    const paramsA = {accion:"consulta:"+table+":"+filter};
+    Object.keys(paramsA).forEach(key => urlA.searchParams.append(key, paramsA[key]));
+    const dataRequestA = {
+        method: 'POST'
+    }; 
+    await fetch(urlA,dataRequestA);
+
     const reader = new DataReader();
     const info_geojson = await reader.readDataFeature(table, filter);
 
@@ -658,6 +703,15 @@ class QueryDialogPG2023 {
    * @returns {Promise<void>} Una promesa que se resuelve cuando la consulta y la presentación de resultados están completas.
    */
   async querySGIF(name, table, filter) {
+
+    let urlA = new URL(window.location.protocol+'//'+window.location.host+"/opg/write_data_user");
+    const paramsA = {accion:"consulta:"+table+":"+filter};
+    Object.keys(paramsA).forEach(key => urlA.searchParams.append(key, paramsA[key]));
+    const dataRequestA = {
+        method: 'POST'
+    }; 
+    await fetch(urlA,dataRequestA);
+
     const reader = new DataReader();
     const info_geojson = await reader.readDataFeature(
       table,
@@ -761,6 +815,15 @@ class QueryDialogPG2023 {
   }
 
   async querySGCM(name, table, filter) {
+
+    let urlA = new URL(window.location.protocol+'//'+window.location.host+"/opg/write_data_user");
+    const paramsA = {accion:"consulta:"+table+":"+filter};
+    Object.keys(paramsA).forEach(key => urlA.searchParams.append(key, paramsA[key]));
+    const dataRequestA = {
+        method: 'POST'
+    }; 
+    await fetch(urlA,dataRequestA);
+
     const reader = new DataReader();
     const info_geojson = await reader.readDataFeature(table, filter);
 
@@ -869,6 +932,15 @@ class QueryDialogPG2023 {
    * @returns {Promise<void>} Una promesa que se resuelve cuando la consulta y la presentación de resultados están completas.
    */
   async querySGEL(name, table, filter) {
+
+    let urlA = new URL(window.location.protocol+'//'+window.location.host+"/opg/write_data_user");
+    const paramsA = {accion:"consulta:"+table+":"+filter};
+    Object.keys(paramsA).forEach(key => urlA.searchParams.append(key, paramsA[key]));
+    const dataRequestA = {
+        method: 'POST'
+    }; 
+    await fetch(urlA,dataRequestA);
+
     const reader = new DataReader();
     const info_geojson = await reader.readDataFeature(
       table,
@@ -980,6 +1052,15 @@ class QueryDialogPG2023 {
    * @returns {Promise<void>} Una promesa que se resuelve cuando la consulta y la presentación de resultados están completas.
    */
   async querySGEQ(name, table, filter) {
+
+    let urlA = new URL(window.location.protocol+'//'+window.location.host+"/opg/write_data_user");
+    const paramsA = {accion:"consulta:"+table+":"+filter};
+    Object.keys(paramsA).forEach(key => urlA.searchParams.append(key, paramsA[key]));
+    const dataRequestA = {
+        method: 'POST'
+    }; 
+    await fetch(urlA,dataRequestA);
+
     const reader = new DataReader();
     const info_geojson = await reader.readDataFeature(table, filter);
 
@@ -1486,7 +1567,7 @@ class QueryDialogPG2023 {
 
       this.queryURBANIZABLE(
         "Urbanizables (PG2023)",
-        "pg_suelo_urbanizable",
+        "pg_urbanitzable",
         filter
       );
     }

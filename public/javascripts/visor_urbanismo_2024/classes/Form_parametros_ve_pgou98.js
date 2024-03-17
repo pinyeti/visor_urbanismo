@@ -59,12 +59,13 @@ class Form_PARAMETROS_VE_PGOU98 {
   }
 
   setHTML_VOLUMETRIAS() {
+    
     this.html_VOLUMETRIAS = 
       `<TABLE class="table-form">
         <tr align="left" bgcolor="#e5f1fc" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
           <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">PLANTA</LABEL></td>
           <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">SUPERFICIE M2</LABEL></td>       
-          <td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">EDIFICABILIDAD M2</LABEL></td>          
+          <!--<td><LABEL style='padding:3px;font-size:8pt;font-family:Arial;color:black' align="right">EDIFICABILIDAD M2</LABEL></td>-->          
         </tr>`;
 
     if (this.info_volumetrias.features)
@@ -85,14 +86,20 @@ class Form_PARAMETROS_VE_PGOU98 {
               `<tr class="table-form-tr-white">
                 <td class="table-form-td">${this.info_volumetrias.features[n].properties.plantas}</td>
                 <td class="table-form-td">${superficie}</td>
-                <td class="table-form-td">${superficie * this.info_volumetrias.features[n].properties.altura}</td>        
+                <!--<td class="table-form-td">${superficie * this.info_volumetrias.features[n].properties.altura}</td>-->        
             </tr>`;
       }
     this.html_VOLUMETRIAS = this.html_VOLUMETRIAS + `</TABLE>`;
 
     this.edificabilidad = this.edificabilidad.toFixed(2);
 
-    this.num_viv = Math.round(this.edificabilidad / 90);
+    if(this.ordenacion=="F0a")
+      this.num_viv = Math.round(this.edificabilidad / 90);
+    else if(this.ordenacion=="F0b")
+      this.num_viv = Math.round(this.edificabilidad / 80);
+   
+      
+    
   }
 
   setHTML_CONDICIONES_EDIFICACION() {
@@ -102,6 +109,7 @@ class Form_PARAMETROS_VE_PGOU98 {
 
     if (
       this.ordenacion == "F0a" ||
+      this.ordenacion == "F0b" ||
       this.ordenacion == "F0pb" ||
       this.ordenacion == "F0pc"
     ) {
@@ -124,14 +132,10 @@ class Form_PARAMETROS_VE_PGOU98 {
           <td class="table-form-td">CALIFICACIÓ PLAN</td>
           <td><LABEL class="table-form-label-style">${calificacion_plan}</td>
         </tr>
-        <tr class="table-form-tr-white">
+        <!--<tr class="table-form-tr-white">
           <td class="table-form-td">EDIFICABILIDAD M2</td>
           <td><LABEL class="table-form-label-style">${this.edificabilidad}</td>
-        </tr>
-        <tr class="table-form-tr-white">
-          <td class="table-form-td">Nº VIVIENDAS</td>
-          <td><LABEL class="table-form-label-style">${this.num_viv}</td>
-        </tr>
+        </tr>-->
         <tr class="table-form-tr-white">
           <td class="table-form-td">Nº VIVIENDAS</td>
           <td><LABEL class="table-form-label-style">${this.num_viv}</td>
@@ -160,6 +164,7 @@ class Form_PARAMETROS_VE_PGOU98 {
     let buttonVolumetrias = "";
     if (
       this.ordenacion == "F0a" ||
+      this.ordenacion == "F0b" ||
       this.ordenacion == "F0pb" ||
       this.ordenacion == "F0pc"
     )

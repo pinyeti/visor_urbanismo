@@ -59,6 +59,14 @@ class Form_UNIDAD_EJECUCION_PGOU98 {
     this.setHTML_ESTANDARES_URBANISTICOS();
     this.setHTML_TITLE();
     this.setHTML_BUTTONS();
+
+    let urlA = new URL(window.location.protocol+'//'+window.location.host+"/opg/write_data_user");
+    const paramsA = {accion:"ficha_"+this.clase+":"+this.codigo};
+        Object.keys(paramsA).forEach(key => urlA.searchParams.append(key, paramsA[key]));
+        const dataRequestA = {
+            method: 'POST'
+        }; 
+    fetch(urlA,dataRequestA);
   }
 
   setHTML_IDENTIFICACION() {

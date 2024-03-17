@@ -318,7 +318,7 @@ class NormativaDialog {
 							let tit=``;
 
 							if(feature.properties.tipo == "Article")
-              	tit = `Art. ${feature.properties.articulo} ${feature.properties.titulo}`;
+              	tit = `Articulo ${feature.properties.articulo} ${feature.properties.titulo}`;
 							else if(feature.properties.tipo == "Paragraph" || feature.properties.tipo == "SArticle")
               	tit = feature.properties.titulo;
 
@@ -332,8 +332,8 @@ class NormativaDialog {
                 text: tit,
                 data: feature.properties.contenido,
                 icon: `images/documentmanager/${
-                  feature.properties.tipo === "Article"
-                    ? "Article"
+                  feature.properties.tipo === "Article" || "SArticle"
+                    ? "Article" 
                     : "Paragraph"
                 }16.png`,
               };

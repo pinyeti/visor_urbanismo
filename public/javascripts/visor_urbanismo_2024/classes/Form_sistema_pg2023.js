@@ -67,6 +67,14 @@ class Form_SISTEMAS_PG2023 {
     this.setHTML_MEDIDAS_AMBIENTALES();
     this.setHTML_BUTTONS();
     this.setHTML_TITLE();
+
+    let urlA = new URL(window.location.protocol+'//'+window.location.host+"/opg/write_data_user");
+    const paramsA = {accion:"ficha_"+this.clase+":"+this.codigo};
+        Object.keys(paramsA).forEach(key => urlA.searchParams.append(key, paramsA[key]));
+        const dataRequestA = {
+            method: 'POST'
+        }; 
+    fetch(urlA,dataRequestA);
   }
 
   setHTML_IDENTIFICACION() {

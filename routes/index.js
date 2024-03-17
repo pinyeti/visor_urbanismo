@@ -36,6 +36,7 @@ const {
   getIntersection,
   getSelect,
   checkURLAvailability,
+  write_data_user
 } = require("../controllers/index.controller");
 
 const {
@@ -49,6 +50,7 @@ const {
   getInfoDocumento,
   getUrlDetalleExpediente,
   setEntorno,
+  ListGeorreferenciasExpediente,
 } = require("../controllers/sedipualb.controller");
 
 /**
@@ -66,6 +68,7 @@ router.get("/opg/listarCarpetasV2", getListarCarpetasV2);
 router.get("/opg/obtenerInfoDocumento", getInfoDocumento);
 router.get("/opg/getUrlDetalleExpediente", getUrlDetalleExpediente);
 router.post("/opg/setEntorno", setEntorno);
+router.get("/opg/ListGeorreferenciasExpediente", ListGeorreferenciasExpediente);
 
 /**
  * Rutas para los endpoints del Visor.
@@ -77,6 +80,7 @@ router.get("/opg/postgis_query_geojson", getGeojson);
 router.get("/opg/postgis_select", getSelect);
 router.get("/opg/postgis_intersection_query", getIntersection);
 router.get("/opg/checkURLAvailability", checkURLAvailability);
+router.post("/opg/write_data_user", write_data_user);
 
 /**
  * Ruta para renderizar la vista Visor Urbanismo.<br><br>
@@ -100,5 +104,18 @@ router.get("/opg/visor_urbanismo", function (req, res) {
     return res.status(500).send("Internal Server Occured");
   });
 });
+
+router.get("/opg/analytics_browser", function (req, res) {
+  res.render("analytics_browser", {
+    title: "Analytics Browser",
+  });
+
+  router.use(function (err, req, res, next) {
+    console.log(err.stack); // Por ejemplo, nombre no válido
+    return res.status(500).send("Internal Server Occured");
+  });
+});
+
+
 
 module.exports = router;

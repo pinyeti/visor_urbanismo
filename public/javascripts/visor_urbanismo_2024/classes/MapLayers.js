@@ -233,7 +233,7 @@ class MapLayersVisor extends MapLayers {
 
         // Crear un texto
         const text = L.divIcon({
-          className: "text-label",
+          className: "text-label-sedipualba",
           html: `<div style="padding:3px">${feature.properties.expediente}</div>`,
         });
 
@@ -246,7 +246,7 @@ class MapLayersVisor extends MapLayers {
             direction: "center",
             opacity: 0.8,
             offset: [0, -30],
-            className: "text-label",
+            className: "text-label-sedipualba",
           }
         );
 
@@ -256,7 +256,8 @@ class MapLayersVisor extends MapLayers {
     });
   
 
-    const layerPA_ai = L.layerGroup([polyLayer,pointsLayer]);
+    const layerPA_ai = L.layerGroup([pointsLayer]);
+    //const layerPA_ai = L.layerGroup([polyLayer,pointsLayer]);
 
     console.log("añadiendo......layer=", layerPA_ai);
   
@@ -751,7 +752,7 @@ class MapLayersVisor extends MapLayers {
    * @returns {void}
    */
   setLayer_pgou98_calificaciones() {
-    const pgou98_calificaciones = L.tileLayer.wms(
+    /*const pgou98_calificaciones = L.tileLayer.wms(
       "https://geoportal.palma.cat/geoserver/ows?authkey=null&",
       {
         layers:
@@ -782,6 +783,50 @@ class MapLayersVisor extends MapLayers {
         maxZoom: 22,
         tileSize: 1024,
       }
+    );*/
+    /*const pgou98_calificaciones = L.tileLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        layers:
+          "SIGDU:pgou98_zona_residencial," +
+          "SIGDU:pgou98_zona_residencial_no_edificable," +
+          "SIGDU:pgou98_zona_secundaria," +
+          "SIGDU:pgou98_zona_terciaria," +
+          "SIGDU:pgou98_volumetria_especifica," +
+          "SIGDU:pgou98_volumetrias," +
+          "SIGDU:pgou98_espacios_libres_privados," +
+          "SIGDU:pgou98_lineas_separacion_calificaciones," +
+          "SIGDU:pgou98_lineas_profundidad_edificable," +
+          "SIGDU:pgou98_texto_profundidad_edificable," +
+          "SIGDU:pgou98_preservacion_arquitectonica_ambiental_nr," +
+          "SIGDU:pgou98_sistema_local_equipamientos," +
+          "SIGDU:pgou98_sistema_general_equipamientos," +
+          "SIGDU:pgou98_sistema_local_espacios_libres," +
+          "SIGDU:pgou98_sistema_general_espacios_libres," +
+          "SIGDU:pgou98_sistema_local_comunicaciones_infraestructuras," +
+          "SIGDU:pgou98_sistema_general_comunicaciones_infraestructuras," +
+          "SIGDU:pgou98_catalogos," +
+          "SIGDU:pgou98_catalogos_actualizacion," +
+          "SIGDU:pgou98_preservacion_r," +
+          "SIGDU:pgou98_manzana_urbanistica",
+        format: "image/png",
+        transparent: true,
+        minZoom: 10,
+        maxZoom: 22,
+        tileSize: 1024,
+      }
+    );*/
+    const pgou98_calificaciones = L.tileLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        layers:
+          "SIGDU:calificaciones_pgou98", 
+        format: "image/png",
+        transparent: true,
+        minZoom: 10,
+        maxZoom: 22,
+        tileSize: 1024,
+      }
     );
     this.pushMapLayer("pgou98_calificaciones", pgou98_calificaciones);
   }
@@ -792,7 +837,7 @@ class MapLayersVisor extends MapLayers {
    */
   setLayer_pgou98_ambitos() {
     //const pgou98_ambitos = L.WMS.tileLayer(
-    const pgou98_ambitos = L.tileLayer.wms(
+    /*const pgou98_ambitos = L.tileLayer.wms(
       "https://geoportal.palma.cat/geoserver/ows?authkey=null&",
       {
         layers:
@@ -801,6 +846,34 @@ class MapLayersVisor extends MapLayers {
           "urbanismo:pgou98_manzana_urbanistica," +
           "urbanismo:pgou98_unidad_ejecucion," +
           "urbanismo:pgou98_suelo_urbano_por_ejecucion",
+        format: "image/png",
+        transparent: true,
+        minZoom: 10,
+        maxZoom: 22,
+        tileSize: 1024,
+      }
+    );*/
+    /*const pgou98_ambitos = L.tileLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        layers:
+          "SIGDU:pgou98_area_planeamiento_incorporado," +
+          "SIGDU:pgou98_area_regimen_especial," +
+          "SIGDU:pgou98_manzana_urbanistica," +
+          "SIGDU:pgou98_unidad_ejecucion," +
+          "SIGDU:pgou98_suelo_urbano_por_ejecucion",
+        format: "image/png",
+        transparent: true,
+        minZoom: 10,
+        maxZoom: 22,
+        tileSize: 1024,
+      }
+    );*/
+    const pgou98_ambitos = L.tileLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        layers:
+          "SIGDU:pgou98_ambitos",
         format: "image/png",
         transparent: true,
         minZoom: 10,
@@ -816,7 +889,7 @@ class MapLayersVisor extends MapLayers {
    * @returns {void}
    */
   setLayer_pri_calificaciones() {
-    const pri_calificaciones = L.tileLayer.wms(
+    /*const pri_calificaciones = L.tileLayer.wms(
       "https://geoportal.palma.cat/geoserver/ows?authkey=null&",
       {
         layers:
@@ -841,6 +914,43 @@ class MapLayersVisor extends MapLayers {
         maxZoom: 22,
         tileSize: 1024,
       }
+    );*/
+    /*const pri_calificaciones = L.tileLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        layers:
+          "SIGDU:pri_vivienda_edificacion_abierta," +
+          "SIGDU:pri_zona_vivienda_unifamiliar_aislada," +
+          "SIGDU:pri_zona_residencial_entre_mitgeres," +
+          "SIGDU:pri_zona_residencial_entre_medianeras_edificacion," +
+          "SIGDU:pri_zona_vivienda_tradicional," +
+          "SIGDU:pri_zona_vivienda_tradicional_edificacion," +
+          "SIGDU:pri_zona_viviendas_adosadas," +
+          "SIGDU:pri_zona_comercial_servicios," +
+          "SIGDU:pri_zona_comercial_servei_pe," +
+          "SIGDU:pri_zona_turistica," +
+          "SIGDU:pri_zona_turistica_hotelera," +
+          "SIGDU:pri_equipamientos," +
+          "SIGDU:pri_espacios_libres_publicos," +
+          "SIGDU:pri_espacios_libres_privados," +
+          "SIGDU:pri_catalogos",
+        format: "image/png",
+        transparent: true,
+        minZoom: 10,
+        maxZoom: 22,
+        tileSize: 1024,
+      }*/
+      const pri_calificaciones = L.tileLayer.wms(
+        "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+        {
+          layers:
+            "SIGDU:pri_calificaciones",
+          format: "image/png",
+          transparent: true,
+          minZoom: 10,
+          maxZoom: 22,
+          tileSize: 1024,
+        }
     );
     this.pushMapLayer("pri_calificaciones", pri_calificaciones);
   }
@@ -850,12 +960,37 @@ class MapLayersVisor extends MapLayers {
    * @returns {void}
    */
   setLayer_pri_ambitos() {
-    const pri_ambitos = L.tileLayer.wms(
+    /*const pri_ambitos = L.tileLayer.wms(
       "https://geoportal.palma.cat/geoserver/ows?authkey=null&",
       {
         layers:
           "urbanismo:pri_unidad_actuacion," +
           "urbanismo:pri_corredor_paisajistico",
+        format: "image/png",
+        transparent: true,
+        minZoom: 10,
+        maxZoom: 22,
+        tileSize: 1024,
+      }
+    );*/
+    /*const pri_ambitos = L.tileLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        layers:
+          "SIGDU:pri_unidad_actuacion," +
+          "SIGDU:pri_corredor_paisajistico",
+        format: "image/png",
+        transparent: true,
+        minZoom: 10,
+        maxZoom: 22,
+        tileSize: 1024,
+      }
+    );*/
+    const pri_ambitos = L.tileLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        layers:
+          "SIGDU:pri_ambitos",
         format: "image/png",
         transparent: true,
         minZoom: 10,
@@ -871,7 +1006,7 @@ class MapLayersVisor extends MapLayers {
    * @returns {void}
    */
   setLayer_pg2023_calificaciones() {
-    const pg2023_calificaciones = L.tileLayer.wms(
+    /*const pg2023_calificaciones = L.tileLayer.wms(
       "https://geoportal.palma.cat/geoserver/ows?authkey=null&",
       {
         layers:
@@ -880,6 +1015,34 @@ class MapLayersVisor extends MapLayers {
           "urbanismo:pg2023_sistema_general_comunicaciones," +
           "urbanismo:pg2023_sistema_general_infraestructuras," +
           "urbanismo:pg2023_sistema_general_servicios_urbanos",
+        format: "image/png",
+        transparent: true,
+        minZoom: 10,
+        maxZoom: 22,
+        tileSize: 1024,
+      }
+    );*/
+    /*const pg2023_calificaciones = L.tileLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        layers:
+          "SIGDU:pg2023_sistema_general_equipamientos," +
+          "SIGDU:pg2023_sistema_general_espacios_libres," +
+          "SIGDU:pg2023_sistema_general_comunicaciones," +
+          "SIGDU:pg2023_sistema_general_infraestructuras," +
+          "SIGDU:pg2023_sistema_general_servicios_urbanos",
+        format: "image/png",
+        transparent: true,
+        minZoom: 10,
+        maxZoom: 22,
+        tileSize: 1024,
+      }
+    );*/
+    const pg2023_calificaciones = L.tileLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        layers:
+          "SIGDU:pg2023_calificaciones",
         format: "image/png",
         transparent: true,
         minZoom: 10,
@@ -895,10 +1058,21 @@ class MapLayersVisor extends MapLayers {
    * @returns {void}
    */
   setLayer_pg2023_categorias_rustico() {
-    const pg2023_categorias_rustico = L.tileLayer.wms(
+    /*const pg2023_categorias_rustico = L.tileLayer.wms(
       "https://geoportal.palma.cat/geoserver/ows?authkey=null&",
       {
         layers: "urbanismo:pg2023_categorias_suelo_rustico",
+        format: "image/png",
+        transparent: true,
+        minZoom: 10,
+        maxZoom: 22,
+        tileSize: 1024,
+      }
+    );*/
+    const pg2023_categorias_rustico = L.tileLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        layers: "SIGDU:pg2023_categorias_suelo_rustico",
         format: "image/png",
         transparent: true,
         minZoom: 10,
@@ -914,7 +1088,7 @@ class MapLayersVisor extends MapLayers {
    * @returns {void}
    */
   setLayer_pg2023_ambitos() {
-    const pg2023_ambitos = L.tileLayer.wms(
+    /*const pg2023_ambitos = L.tileLayer.wms(
       "https://geoportal.palma.cat/geoserver/ows?authkey=null&",
       {
         layers:
@@ -928,7 +1102,35 @@ class MapLayersVisor extends MapLayers {
         maxZoom: 22,
         tileSize: 1024,
       }
+    );*/
+    /*const pg2023_ambitos = L.tileLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        layers:
+          "SIGDU:pg2023_suelo_urbano," +
+          "SIGDU:pg2023_suelo_urbanizable," +
+          "SIGDU:pg2023_actuaciones_aisladas," +
+          "SIGDU:pg2023_actuaciones_suelo_urbano",
+        format: "image/png",
+        transparent: true,
+        minZoom: 10,
+        maxZoom: 22,
+        tileSize: 1024,
+      }
+    );*/
+    const pg2023_ambitos = L.tileLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        layers:
+          "SIGDU:pg2023_ambitos",
+        format: "image/png",
+        transparent: true,
+        minZoom: 10,
+        maxZoom: 22,
+        tileSize: 1024,
+      }
     );
     this.pushMapLayer("pg2023_ambitos", pg2023_ambitos);
+   
   }
 }

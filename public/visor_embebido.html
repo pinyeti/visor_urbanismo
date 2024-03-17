@@ -1,62 +1,148 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Visor Urbanismo</title>
-  <style>
-    /* Estilos para el mensaje de carga */
-    #cargando {
-      display: none;
-      position: absolute;
-      top: 50%;
-      left: 20%;
-      transform: translate(-50%, -50%);
-      background-color: rgba(255, 255, 255, 0.8);
-      padding: 20px;
-      border-radius: 5px;
-      z-index: 9999;
-    }
-    #mensaje {
-      text-align: left;
-      margin-top: 20px;
-    }
-  </style>
-</head>
-<body>
-  <h1>Visor Urbanismo</h1>
-  <h3>SIGDU (Servicio de Innovación y gestión de datos urbanísticos).</h3>
-  <h4>Urbanismo. Ajuntament de Palma</h4>
-  <!-- Mensaje de carga -->
-  <div id="cargando">Cargando...</div>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Visor Urbanismo</title>
+    <style>
+      body {
+        background-color: #121212;
+        color: #ffffff;
+        transition: background-color 0.3s, color 0.3s;
+      }
+      /* Estilos para el mensaje de carga */
+      #cargando {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 20%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 5px;
+        z-index: 9999;
+      }
+      #mensaje {
+        text-align: left;
+        margin-top: 20px;
+      }
+      .contenedor {
+        display: flex;
+        justify-content: space-between; /* Asegura espacio entre el primer iframe y el contenedor secundario */
+        align-items: flex-start;
+        border: 2px solid rgb(252, 252, 252);
+        padding: 10px; /* Añade espacio a la derecha del primer iframe */
+      }
 
-  <!-- Iframe -->
-  <iframe id="iframeVisor" width="50%" height="600" title="Visor Urbanismo"></iframe>
+      .contenedor-secundario {
+        display: flex;
+        flex-direction: column;
+        gap: 20px; /* Espacio entre el segundo y tercer iframe */
+        border-color: #ffffff;
+      }
 
-  <!-- Mensaje debajo del iframe -->
-  <div id="mensaje">
-    <p>Visor urbanístico del Plan General de 2023 y del POD de 1998.</p>
-    <!-- Corrige la dirección URL del enlace -->
-    <p>Para ir a la aplicación del visor: <a href="http://localhost:3000/opg/visor_urbanismo">Visor Urbanismo de Palma</a></p>
-  </div>
+      iframe {
+        border: 2px solid rgb(253, 253, 253);
+      }
 
-  <!-- Script para mostrar/ocultar el mensaje de carga -->
-  <script>
-    const iframe = document.getElementById('iframeVisor');
-    const cargando = document.getElementById('cargando');
+      #iframeVisor {
+        width: 100%;
+        height: 600px;
+        margin-right: 20px; /* Añade espacio a la derecha del primer iframe */
+      }
 
-    iframe.onload = function() {
-      // Cuando el iframe termina de cargar, oculta el mensaje de carga
-      cargando.style.display = 'none';
-    };
+      #iframeVisor2,
+      #iframeVisor3 {
+        width: 400pt;
+        height: 287px;
+      }
+      .centrado-texto {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="centrado-texto">
+      <h1>Visor Urbanismo</h1>
+      <h3>SIGDU (Servicio de Innovación y gestión de datos urbanísticos).</h3>
+      <h4>Urbanismo. Ajuntament de Palma</h4>
+    </div>
+    <!-- Mensaje de carga -->
+    <div id="cargando">Cargando...</div>
 
-    iframe.onerror = function() {
-      // En caso de error al cargar el iframe, también oculta el mensaje de carga
-      cargando.style.display = 'none';
-    };
+    <!-- Iframe -->
 
-    // Muestra el mensaje de carga al iniciar la carga del iframe
-    iframe.src = 'http://localhost:3000/opg/visor_urbanismo';
-    cargando.style.display = 'block';
-  </script>
-</body>
+    <div class="contenedor">
+      <iframe id="iframeVisor" title="Visor Urbanismo"></iframe>
+      <div class="contenedor-secundario">
+        <iframe id="iframeVisor2" title="Visor Urbanismo 2"></iframe>
+        <iframe id="iframeVisor3" title="Visor Urbanismo 3"></iframe>
+      </div>
+    </div>
+
+    <!-- Mensaje debajo del iframe -->
+    <div id="mensaje">
+      <p>Visor urbanístico del Plan General de 2023 y del POD de 1998.</p>
+      <!-- Corrige la dirección URL del enlace -->
+      <p>
+        Para ir a la aplicación del visor:
+        <a href="https://sigdu-urbanismo.net/opg/visor_urbanismo"
+          >Visor Urbanismo de Palma</a
+        >
+      </p>
+    </div>
+
+    <!-- Script para mostrar/ocultar el mensaje de carga -->
+    <script>
+      const iframe = document.getElementById("iframeVisor");
+      const cargando = document.getElementById("cargando");
+
+      iframe.onload = function () {
+        // Cuando el iframe termina de cargar, oculta el mensaje de carga
+        cargando.style.display = "none";
+      };
+
+      iframe.onerror = function () {
+        // En caso de error al cargar el iframe, también oculta el mensaje de carga
+        cargando.style.display = "none";
+      };
+
+      // Muestra el mensaje de carga al iniciar la carga del iframe
+      iframe.src = `${window.location.protocol}//${window.location.host}/opg/visor_urbanismo`;
+      cargando.style.display = "block";
+
+      const iframe2 = document.getElementById("iframeVisor2");
+      const cargando2 = document.getElementById("cargando");
+
+      iframe2.onload = function () {
+        // Cuando el iframe termina de cargar, oculta el mensaje de carga
+        cargando2.style.display = "none";
+      };
+
+      iframe2.onerror = function () {
+        // En caso de error al cargar el iframe, también oculta el mensaje de carga
+        cargando2.style.display = "none";
+      };
+
+      // Muestra el mensaje de carga al iniciar la carga del iframe
+      iframe2.src = `${window.location.protocol}//${window.location.host}/opg/visor_urbanismo`;
+      cargando2.style.display = "block";
+
+      const iframe3 = document.getElementById("iframeVisor3");
+      const cargando3 = document.getElementById("cargando");
+
+      iframe3.onload = function () {
+        // Cuando el iframe termina de cargar, oculta el mensaje de carga
+        cargando3.style.display = "none";
+      };
+
+      iframe3.onerror = function () {
+        // En caso de error al cargar el iframe, también oculta el mensaje de carga
+        cargando3.style.display = "none";
+      };
+
+      // Muestra el mensaje de carga al iniciar la carga del iframe
+      iframe3.src = `${window.location.protocol}//${window.location.host}/opg/visor_urbanismo`;
+      cargando3.style.display = "block";
+    </script>
+  </body>
 </html>

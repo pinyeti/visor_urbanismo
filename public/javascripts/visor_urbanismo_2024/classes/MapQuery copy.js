@@ -27,9 +27,8 @@ class MapQuery {
     this.num_exp_PH = 0;
     this.num_exp_PJ = 0;
     this.ruta_exp =
-      //  "https://urbanisme.palmademallorca.es/IMI/URBANISME/PRD/Planejament_urbanistic_pdf/Images Arxiu";
-      //this.ruta_exp="http://localhost:8081/OpenKM/webdav/okm%3Aroot/expedientes";
-      "https://sigdu-urbanismo.net/opg/archivo";
+      "https://urbanisme.palmademallorca.es/IMI/URBANISME/PRD/Planejament_urbanistic_pdf/Images Arxiu";
+    //this.ruta_exp="http://localhost:8081/OpenKM/webdav/okm%3Aroot/expedientes";
 
     this.eventsManagerRegistered = false;
   }
@@ -41,17 +40,6 @@ class MapQuery {
    * @returns {Promise<void>} - Una promesa que resuelve cuando se completan todas las consultas y se muestra el popup.
    */
   async queryByPoint(e) {
-
-    const { x, y } = e.latlng.utm();
-
-    let urlA = new URL(window.location.protocol+'//'+window.location.host+"/opg/write_data_user");
-    const params = {accion:"info_features_vigente", latlng:e.latlng, lat:e.latlng.lat, lng:e.latlng.lng, x:x, y:y};
-    Object.keys(params).forEach(key => urlA.searchParams.append(key, params[key]));
-    const dataRequest = {
-        method: 'POST'
-    }; 
-    await fetch(urlA,dataRequest);
-
     // Activa un spinner de carga en el mapa.
     this.map.spin(true);
 
@@ -75,13 +63,13 @@ class MapQuery {
     }
 
     // Obtiene las coordenadas x e y de e.latlng.utm().
-    //const { x, y } = e.latlng.utm();
+    const { x, y } = e.latlng.utm();
 
     // Define una matriz arrayTablas con nombres de tablas para las consultas.
     const arrayTablas = [
       "parcela_su_ru_calles",
       "pg_rustic",
-      //"suelo_rustico",
+      "suelo_rustico",
       "pg_zou",
       "unidad_ejecucion",
       "pri_unitat_actuacio",
@@ -127,15 +115,10 @@ class MapQuery {
       "pc_pla_parcial",
       "pd_urbanizacion",
       "pe_estudi_detall",
-      //"pf_dotacio_serveis",
-      //"pg_recepcio_obres",
-      //"v_ph_parcelacions_2005",
-      "pi_interes_general",
+      "pf_dotacio_serveis",
+      "pg_recepcio_obres",
+      "ph_parcelacions",
       "pj_delimitacio_ua",
-      //"pk_segregacion_rustic",
-      "pm_varis",
-      "gci_compensacions",
-      "gex_expropiacions",
     ];
 
     // Inicializa variables para almacenar HTML relacionado con las tablas y los expedientes.
@@ -726,9 +709,8 @@ class MapQuery {
         // Ficha CAT_PGOU98
 
         //var btFicha_CAT_PGOU98 = document.getElementById("btFicha_CAT_PGOU98");
-        const btFicha_CAT_PGOU98 =
-          document.getElementsByClassName("btFicha_CAT_PGOU98");
-        for (let i = 0; i < btFicha_CAT_PGOU98.length; i++) {
+        const btFicha_CAT_PGOU98 = document.getElementsByClassName("btFicha_CAT_PGOU98");
+        for(let i = 0; i < btFicha_CAT_PGOU98.length;i++){
           if (btFicha_CAT_PGOU98[i]) {
             btFicha_CAT_PGOU98[i].addEventListener("click", async function () {
               var fid = btFicha_CAT_PGOU98[i].getAttribute("data-fid");
@@ -746,44 +728,41 @@ class MapQuery {
         }
 
         // Ficha CAT_ACTUALIZACION
-        var btFicha_CAT_ACTUALIZACION = document.getElementById(
-          "btFicha_CAT_ACTUALIZACION"
-        );
+        var btFicha_CAT_ACTUALIZACION = document.getElementById("btFicha_CAT_ACTUALIZACION");
         if (btFicha_CAT_ACTUALIZACION) {
-          btFicha_CAT_ACTUALIZACION.addEventListener(
-            "click",
-            async function () {
-              var fid = btFicha_CAT_ACTUALIZACION.getAttribute("data-fid");
-              var clase = btFicha_CAT_ACTUALIZACION.getAttribute("data-clase");
-              console.log("clase", clase);
-
-              const entidad = new FeatureUrbanistic(clase, fid);
-              await entidad.initialize();
-
-              const formParamCAT_ACTUALIZACION =
-                new Form_CATALOGO_ACTUALIZACION(entidad, self.sigduMap);
-              await formParamCAT_ACTUALIZACION.createForm();
-            }
-          );
-        }
-
-        // Ficha CAT_PRI
-        var btFicha_CAT_PRI = document.getElementById("btFicha_CAT_PRI");
-        if (btFicha_CAT_PRI) {
-          btFicha_CAT_PRI.addEventListener("click", async function () {
-            var fid = btFicha_CAT_PRI.getAttribute("data-fid");
-            var clase = btFicha_CAT_PRI.getAttribute("data-clase");
+          btFicha_CAT_ACTUALIZACION.addEventListener("click", async function () {
+            var fid = btFicha_CAT_ACTUALIZACION.getAttribute("data-fid");
+            var clase = btFicha_CAT_ACTUALIZACION.getAttribute("data-clase");
+            console.log("clase",clase);
 
             const entidad = new FeatureUrbanistic(clase, fid);
             await entidad.initialize();
-
-            const formParamCAT_PRI = new Form_CATALOGO_PRI(
+           
+            const formParamCAT_ACTUALIZACION = new Form_CATALOGO_ACTUALIZACION(
               entidad,
               self.sigduMap
             );
-            await formParamCAT_PRI.createForm();
+            await formParamCAT_ACTUALIZACION.createForm();
           });
         }
+
+         // Ficha CAT_PRI
+         var btFicha_CAT_PRI = document.getElementById("btFicha_CAT_PRI");
+         if (btFicha_CAT_PRI) {
+           btFicha_CAT_PRI.addEventListener("click", async function () {
+             var fid = btFicha_CAT_PRI.getAttribute("data-fid");
+             var clase = btFicha_CAT_PRI.getAttribute("data-clase");
+          
+             const entidad = new FeatureUrbanistic(clase, fid);
+             await entidad.initialize();
+            
+             const formParamCAT_PRI = new Form_CATALOGO_PRI(
+               entidad,
+               self.sigduMap
+             );
+             await formParamCAT_PRI.createForm();
+           });
+         }
 
         console.log("cuantos pasa??");
 
@@ -1010,189 +989,14 @@ class MapQuery {
       case "pg_recepcio_obres":
         html = this.createHTML_recepcion_obras(geojsonRES);
         break;
-      case "v_ph_parcelacions_2005":
+      case "ph_parcelacions":
         html = this.createHTML_parcelaciones(geojsonRES);
-        break;
-      case "pi_interes_general":
-        html = this.createHTML_interes_general(geojsonRES);
         break;
       case "pj_delimitacio_ua":
         html = this.createHTML_delimitacio_ua(geojsonRES);
         break;
-      case "pk_segregacion_rustic":
-        html = this.createHTML_segregacion_rustic(geojsonRES);
-        break;
-      case "pm_varis":
-        html = this.createHTML_pm_varios(geojsonRES);
-        break;
-      case "gci_compensacions":
-        html = this.createHTML_compensaciones(geojsonRES);
-        break;
-      case "gex_expropiacions":
-        html = this.createHTML_expropiaciones(geojsonRES);
-        break;
     }
 
-    return html;
-  }
-
-  /**
-   * Genera una tabla HTML que muestra información sobre compensaciones a partir de un objeto GeoJSON.
-   *
-   * @async
-   * @param {Object} geojson - Objeto GeoJSON que contiene la información de compensaciones.
-   * @returns {Promise<string>} - Una cadena HTML que representa la tabla de compensaciones.
-   */
-  async createHTML_compensaciones(geojson) {
-    geojson.features.sort((a, b) => a.properties.codigo - b.properties.codigo);
-    var html = "";
-    if (this.num_exp_PJ == 0) {
-      html =
-        html +
-        `<TABLE  style='margin-top: 0px;margin-bottom: 0px;margin-right: 0px;margin-left: 0px;padding:0px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:50px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-          <tr  align="center"  style='background-color:rgb(102,102,102,1);padding:3px;font-size:8.5pt;font-family:Arial BLACK;color:white;height:22px'>
-              <td colspan="2">COMPENSACIONES</td>                   
-          </tr >`;
-
-      this.num_exp_PJ++;
-    } else {
-      html =
-        html +
-        ` <tr style='height:2px'>                 
-          </tr>`;
-    }
-
-    for (var r = 0; r < geojson.features.length; r++) {
-      if (r > 0)
-        html =
-          html +
-          ` <tr style='height:2px'>                 
-            </tr>`;
-
-      var ruta =
-        this.ruta_exp +
-        "/GCI-Compensacions/GCI-" +
-        geojson.features[r].properties.codigo +
-        "/GCI-" +
-        geojson.features[r].properties.codigo +
-        "_PORTADA.pdf";
-
-      var colorAplicable = "GREEN";
-      var msgAplicable = "";
-      if (geojson.features[r].properties.aplicable == "SI") {
-        colorAplicable = "#1a4d1a";
-        msgAplicable = "ACTUALMENT APLICABLE";
-      }
-      if (geojson.features[r].properties.aplicable == "NO") {
-        colorAplicable = "#990000";
-        msgAplicable = "ACTUALMENT NO APLICABLE";
-      }
-      if (geojson.features[r].properties.aplicable == "D") {
-        colorAplicable = "GREY";
-        msgAplicable = "-----------------------";
-      }
-
-      const reader = new DataReader();
-      let isResource = await reader.checkURLAvailability(ruta);
-
-      let isDoc = `<td align="center"><a href="${ruta}"  target="_blank" title="Informació del expedient" style='color:blue;font-family:Arial;font-size:8.5pt'>${geojson.features[r].properties.codigo}</a></td>`;
-      if (isResource === false) {
-        isDoc = `<td align="center" title="Informació del expedient" style='color:gray;font-family:Arial;font-size:8.5pt'>${geojson.features[r].properties.codigo} (Documentación no disponible)</a></td>`;
-      }
-
-      html =
-        html +
-        ` <tr align="left"  style='background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>
-              <td><LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>GCI - COMPENSACIONES</LABEL></td>  
-              ${isDoc}             
-          </tr> 
-          <tr align="center"  style='background-color:white;padding:3px;font-size:8.5pt;font-family:Arial Black;color:#660000;height:22px'>  
-              <td colspan="2"><LABEL style='text-align: justify;font-size:8.5pt;font-family:Arial;color:grey'>${geojson.features[r].properties.descripcio}</LABEL></td>      
-          </tr>`;
-      //<tr align="center"  style='background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>
-      //<td COLSPAN="2"><LABEL style='font-size:8.4pt;font-family:Arial;color:WHITE;background-color:${colorAplicable}'>${msgAplicable}</LABEL></td>
-      //</tr>
-    }
-    return html;
-  }
-
-  /**
-   * Genera una tabla HTML que muestra información sobre expropiaciones a partir de un objeto GeoJSON.
-   *
-   * @async
-   * @param {Object} geojson - Objeto GeoJSON que contiene la información de expropiaciones.
-   * @returns {Promise<string>} - Una cadena HTML que representa la tabla de expropiaciones.
-   */
-  async createHTML_expropiaciones(geojson) {
-    geojson.features.sort((a, b) => a.properties.codigo - b.properties.codigo);
-    var html = "";
-    if (this.num_exp_PJ == 0) {
-      html =
-        html +
-        `<TABLE  style='margin-top: 0px;margin-bottom: 0px;margin-right: 0px;margin-left: 0px;padding:0px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:50px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-          <tr  align="center"  style='background-color:rgb(102,102,102,1);padding:3px;font-size:8.5pt;font-family:Arial BLACK;color:white;height:22px'>
-              <td colspan="2">EXPROPIACIONES</td>                   
-          </tr >`;
-
-      this.num_exp_PJ++;
-    } else {
-      html =
-        html +
-        ` <tr style='height:2px'>                 
-          </tr>`;
-    }
-
-    for (var r = 0; r < geojson.features.length; r++) {
-      if (r > 0)
-        html =
-          html +
-          ` <tr style='height:2px'>                 
-            </tr>`;
-
-      var ruta =
-        this.ruta_exp +
-        "/GEX-EXPROPIACIONS/GEX-" +
-        geojson.features[r].properties.codigo +
-        "/GEX-" +
-        geojson.features[r].properties.codigo +
-        "_PORTADA.pdf";
-
-      var colorAplicable = "GREEN";
-      var msgAplicable = "";
-      if (geojson.features[r].properties.aplicable == "SI") {
-        colorAplicable = "#1a4d1a";
-        msgAplicable = "ACTUALMENT APLICABLE";
-      }
-      if (geojson.features[r].properties.aplicable == "NO") {
-        colorAplicable = "#990000";
-        msgAplicable = "ACTUALMENT NO APLICABLE";
-      }
-      if (geojson.features[r].properties.aplicable == "D") {
-        colorAplicable = "GREY";
-        msgAplicable = "-----------------------";
-      }
-
-      const reader = new DataReader();
-      let isResource = await reader.checkURLAvailability(ruta);
-
-      let isDoc = `<td align="center"><a href="${ruta}"  target="_blank" title="Informació del expedient" style='color:blue;font-family:Arial;font-size:8.5pt'>${geojson.features[r].properties.codigo}</a></td>`;
-      if (isResource === false) {
-        isDoc = `<td align="center" title="Informació del expedient" style='color:gray;font-family:Arial;font-size:8.5pt'>${geojson.features[r].properties.codigo} (Documentación no disponible)</a></td>`;
-      }
-
-      html =
-        html +
-        ` <tr align="left"  style='background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>
-              <td><LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>GEX - EXPROPIACIONES</LABEL></td>  
-              ${isDoc}             
-          </tr> 
-          <tr align="center"  style='background-color:white;padding:3px;font-size:8.5pt;font-family:Arial Black;color:#660000;height:22px'>  
-              <td colspan="2"><LABEL style='text-align: justify;font-size:8.5pt;font-family:Arial;color:grey'>${geojson.features[r].properties.descripcio}</LABEL></td>      
-          </tr>`;
-      //<tr align="center"  style='background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>
-      //<td COLSPAN="2"><LABEL style='font-size:8.4pt;font-family:Arial;color:WHITE;background-color:${colorAplicable}'>${msgAplicable}</LABEL></td>
-      //</tr>
-    }
     return html;
   }
 
@@ -1286,86 +1090,6 @@ class MapQuery {
    * @param {Object} geojson - Objeto GeoJSON que contiene la información de las parcelaciones.
    * @returns {Promise<string>} - Una cadena HTML que representa la tabla de parcelaciones.
    */
-  async createHTML_pm_varios(geojson) {
-    geojson.features.sort((a, b) => a.properties.codigo - b.properties.codigo);
-    var html = "";
-    if (this.num_exp_PH == 0) {
-      html =
-        html +
-        `<TABLE  style='margin-top: 0px;margin-bottom: 0px;margin-right: 0px;margin-left: 0px;padding:0px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:50px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-          <tr  align="center"  style='background-color:rgb(102,102,102,1);padding:3px;font-size:8.5pt;font-family:Arial BLACK;color:white;height:22px'>
-              <td colspan="2">PLANEAMIENTO VARIOS</td>                   
-          </tr >`;
-
-      this.num_exp_PH++;
-    } else {
-      html =
-        html +
-        ` <tr style='height:2px'>                 
-          </tr>`;
-    }
-
-    for (var r = 0; r < geojson.features.length; r++) {
-      if (r > 0)
-        html =
-          html +
-          ` <tr style='height:2px'>                 
-            </tr>`;
-
-      var ruta =
-        this.ruta_exp +
-        "/PM-VARIS/PM-" +
-        geojson.features[r].properties.codigo +
-        "/PM-" +
-        geojson.features[r].properties.codigo +
-        "_PORTADA.pdf";
-
-      var colorAplicable = "GREEN";
-      var msgAplicable = "";
-      if (geojson.features[r].properties.aplicable == "SI") {
-        colorAplicable = "#1a4d1a";
-        msgAplicable = "ACTUALMENT APLICABLE";
-      }
-      if (geojson.features[r].properties.aplicable == "NO") {
-        colorAplicable = "#990000";
-        msgAplicable = "ACTUALMENT NO APLICABLE";
-      }
-      if (geojson.features[r].properties.aplicable == "D") {
-        colorAplicable = "GREY";
-        msgAplicable = "-----------------------";
-      }
-
-      const reader = new DataReader();
-      let isResource = await reader.checkURLAvailability(ruta);
-
-      let isDoc = `<td align="center"><a href="${ruta}"  target="_blank" title="Información del expediente" style='color:blue;font-family:Arial;font-size:8.5pt'>${geojson.features[r].properties.codigo}</a></td>`;
-      if (isResource === false) {
-        isDoc = `<td align="center" title="Informació del expedient" style='color:gray;font-family:Arial;font-size:8.5pt'>${geojson.features[r].properties.codigo} (Documentación no disponible)</a></td>`;
-      }
-
-      html =
-        html +
-        ` <tr align="left"  style='background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>
-              <td><LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>PM - VARIOS</LABEL></td>  
-              ${isDoc}             
-          </tr> 
-          <tr align="center"  style='background-color:white;padding:3px;font-size:8.5pt;font-family:Arial Black;color:#660000;height:22px'>  
-              <td colspan="2"><LABEL style='text-align: justify;font-size:8.5pt;font-family:Arial;color:grey'>${geojson.features[r].properties.descripcio}</LABEL></td>      
-          </tr>`;
-      //<tr align="center"  style='background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>
-      //<td COLSPAN="2"><LABEL style='font-size:8.4pt;font-family:Arial;color:WHITE;background-color:${colorAplicable}'>${msgAplicable}</LABEL></td>
-      //</tr>
-    }
-    return html;
-  }
-
-  /**
-   * Genera una tabla HTML que muestra información sobre parcelaciones a partir de un objeto GeoJSON.
-   *
-   * @async
-   * @param {Object} geojson - Objeto GeoJSON que contiene la información de las parcelaciones.
-   * @returns {Promise<string>} - Una cadena HTML que representa la tabla de parcelaciones.
-   */
   async createHTML_parcelaciones(geojson) {
     geojson.features.sort((a, b) => a.properties.codigo - b.properties.codigo);
     var html = "";
@@ -1418,86 +1142,6 @@ class MapQuery {
       const reader = new DataReader();
       let isResource = await reader.checkURLAvailability(ruta);
 
-      let isDoc = `<td align="center"><a href="${ruta}"  target="_blank" title="Información del expediente" style='color:blue;font-family:Arial;font-size:8.5pt'>${geojson.features[r].properties.codigo}</a></td>`;
-      if (isResource === false) {
-        isDoc = `<td align="center" title="Informació del expedient" style='color:gray;font-family:Arial;font-size:8.5pt'>${geojson.features[r].properties.codigo} (Documentación no disponible)</a></td>`;
-      }
-
-      html =
-        html +
-        ` <tr align="left"  style='background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>
-              <td><LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>PH - PARCELACIONES</LABEL></td>  
-              ${isDoc}             
-          </tr> 
-          <tr align="center"  style='background-color:white;padding:3px;font-size:8.5pt;font-family:Arial Black;color:#660000;height:22px'>  
-              <td colspan="2"><LABEL style='text-align: justify;font-size:8.5pt;font-family:Arial;color:grey'>${geojson.features[r].properties.situacion}</LABEL></td>      
-          </tr>`;
-      //<tr align="center"  style='background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>
-      //<td COLSPAN="2"><LABEL style='font-size:8.4pt;font-family:Arial;color:WHITE;background-color:${colorAplicable}'>${msgAplicable}</LABEL></td>
-      //</tr>
-    }
-    return html;
-  }
-
-  /**
-   * Genera una tabla HTML que muestra información sobre interes general a partir de un objeto GeoJSON.
-   *
-   * @async
-   * @param {Object} geojson - Objeto GeoJSON que contiene la información de interes general.
-   * @returns {Promise<string>} - Una cadena HTML que representa la tabla de interes general.
-   */
-  async createHTML_interes_general(geojson) {
-    geojson.features.sort((a, b) => a.properties.codigo - b.properties.codigo);
-    var html = "";
-    if (this.num_exp_PJ == 0) {
-      html =
-        html +
-        `<TABLE  style='margin-top: 0px;margin-bottom: 0px;margin-right: 0px;margin-left: 0px;padding:0px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:50px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-          <tr  align="center"  style='background-color:rgb(102,102,102,1);padding:3px;font-size:8.5pt;font-family:Arial BLACK;color:white;height:22px'>
-              <td colspan="2">DELIMITACIÓN UA</td>                   
-          </tr >`;
-
-      this.num_exp_PJ++;
-    } else {
-      html =
-        html +
-        ` <tr style='height:2px'>                 
-          </tr>`;
-    }
-
-    for (var r = 0; r < geojson.features.length; r++) {
-      if (r > 0)
-        html =
-          html +
-          ` <tr style='height:2px'>                 
-            </tr>`;
-
-      var ruta =
-        this.ruta_exp +
-        "/PI-INTERES_GENERAL/PI-" +
-        geojson.features[r].properties.codigo +
-        "/PI-" +
-        geojson.features[r].properties.codigo +
-        "_PORTADA.pdf";
-
-      var colorAplicable = "GREEN";
-      var msgAplicable = "";
-      if (geojson.features[r].properties.aplicable == "SI") {
-        colorAplicable = "#1a4d1a";
-        msgAplicable = "ACTUALMENT APLICABLE";
-      }
-      if (geojson.features[r].properties.aplicable == "NO") {
-        colorAplicable = "#990000";
-        msgAplicable = "ACTUALMENT NO APLICABLE";
-      }
-      if (geojson.features[r].properties.aplicable == "D") {
-        colorAplicable = "GREY";
-        msgAplicable = "-----------------------";
-      }
-
-      const reader = new DataReader();
-      let isResource = await reader.checkURLAvailability(ruta);
-
       let isDoc = `<td align="center"><a href="${ruta}"  target="_blank" title="Informació del expedient" style='color:blue;font-family:Arial;font-size:8.5pt'>${geojson.features[r].properties.codigo}</a></td>`;
       if (isResource === false) {
         isDoc = `<td align="center" title="Informació del expedient" style='color:gray;font-family:Arial;font-size:8.5pt'>${geojson.features[r].properties.codigo} (Documentación no disponible)</a></td>`;
@@ -1506,7 +1150,7 @@ class MapQuery {
       html =
         html +
         ` <tr align="left"  style='background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>
-              <td><LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>PI - INTERES GENERAL</LABEL></td>  
+              <td><LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>PH - PARCELACIONES</LABEL></td>  
               ${isDoc}             
           </tr> 
           <tr align="center"  style='background-color:white;padding:3px;font-size:8.5pt;font-family:Arial Black;color:#660000;height:22px'>  
@@ -1557,7 +1201,7 @@ class MapQuery {
         "/PJ-DELIMITACIO_U_A/PJ-" +
         geojson.features[r].properties.codigo +
         "/PJ-" +
-        geojson.features[r].properties.codigo +
+        geojson.features[r].properties.codigo.substring(0, 8) +
         "_PORTADA.pdf";
 
       var colorAplicable = "GREEN";
@@ -1587,86 +1231,6 @@ class MapQuery {
         html +
         ` <tr align="left"  style='background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>
               <td><LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>PJ - DELIMITACIÓN UA</LABEL></td>  
-              ${isDoc}             
-          </tr> 
-          <tr align="center"  style='background-color:white;padding:3px;font-size:8.5pt;font-family:Arial Black;color:#660000;height:22px'>  
-              <td colspan="2"><LABEL style='text-align: justify;font-size:8.5pt;font-family:Arial;color:grey'>${geojson.features[r].properties.descripcio}</LABEL></td>      
-          </tr>`;
-      //<tr align="center"  style='background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>
-      //<td COLSPAN="2"><LABEL style='font-size:8.4pt;font-family:Arial;color:WHITE;background-color:${colorAplicable}'>${msgAplicable}</LABEL></td>
-      //</tr>
-    }
-    return html;
-  }
-
-  /**
-   * Genera una tabla HTML que muestra información sobre segregación rústico a partir de un objeto GeoJSON.
-   *
-   * @async
-   * @param {Object} geojson - Objeto GeoJSON que contiene la información de segregación rústico.
-   * @returns {Promise<string>} - Una cadena HTML que representa la tabla de segregación rústico.
-   */
-  async createHTML_segregacion_rustic(geojson) {
-    geojson.features.sort((a, b) => a.properties.codigo - b.properties.codigo);
-    var html = "";
-    if (this.num_exp_PJ == 0) {
-      html =
-        html +
-        `<TABLE  style='margin-top: 0px;margin-bottom: 0px;margin-right: 0px;margin-left: 0px;padding:0px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:50px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-          <tr  align="center"  style='background-color:rgb(102,102,102,1);padding:3px;font-size:8.5pt;font-family:Arial BLACK;color:white;height:22px'>
-              <td colspan="2">SEGREGACIÓN RÚSTICO</td>                   
-          </tr >`;
-
-      this.num_exp_PJ++;
-    } else {
-      html =
-        html +
-        ` <tr style='height:2px'>                 
-          </tr>`;
-    }
-
-    for (var r = 0; r < geojson.features.length; r++) {
-      if (r > 0)
-        html =
-          html +
-          ` <tr style='height:2px'>                 
-            </tr>`;
-
-      var ruta =
-        this.ruta_exp +
-        "/PK-SEGREGACIO_RUSTICA/PK-" +
-        geojson.features[r].properties.codigo +
-        "/PK-" +
-        geojson.features[r].properties.codigo +
-        "_PORTADA.pdf";
-
-      var colorAplicable = "GREEN";
-      var msgAplicable = "";
-      if (geojson.features[r].properties.aplicable == "SI") {
-        colorAplicable = "#1a4d1a";
-        msgAplicable = "ACTUALMENT APLICABLE";
-      }
-      if (geojson.features[r].properties.aplicable == "NO") {
-        colorAplicable = "#990000";
-        msgAplicable = "ACTUALMENT NO APLICABLE";
-      }
-      if (geojson.features[r].properties.aplicable == "D") {
-        colorAplicable = "GREY";
-        msgAplicable = "-----------------------";
-      }
-
-      const reader = new DataReader();
-      let isResource = await reader.checkURLAvailability(ruta);
-
-      let isDoc = `<td align="center"><a href="${ruta}"  target="_blank" title="Informació del expedient" style='color:blue;font-family:Arial;font-size:8.5pt'>${geojson.features[r].properties.codigo}</a></td>`;
-      if (isResource === false) {
-        isDoc = `<td align="center" title="Informació del expedient" style='color:gray;font-family:Arial;font-size:8.5pt'>${geojson.features[r].properties.codigo} (Documentación no disponible)</a></td>`;
-      }
-
-      html =
-        html +
-        ` <tr align="left"  style='background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>
-              <td><LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>PK - SEGREGACIÓN RÚSTICO</LABEL></td>  
               ${isDoc}             
           </tr> 
           <tr align="center"  style='background-color:white;padding:3px;font-size:8.5pt;font-family:Arial Black;color:#660000;height:22px'>  
@@ -1717,7 +1281,7 @@ class MapQuery {
         "/PG-RECEPCIO_OBRES/PG-" +
         geojson.features[r].properties.codigo +
         "/PG-" +
-        geojson.features[r].properties.codigo +
+        geojson.features[r].properties.codigo.substring(0, 8) +
         "_ACORD.pdf";
 
       var colorAplicable = "GREEN";
@@ -1797,7 +1361,7 @@ class MapQuery {
         "/PD-URBANITZACIO/PD-" +
         geojson.features[r].properties.codigo +
         "/PD-" +
-        geojson.features[r].properties.codigo +
+        geojson.features[r].properties.codigo.substring(0, 8) +
         "_PORTADA.pdf";
 
       var colorAplicable = "GREEN";
@@ -1877,7 +1441,7 @@ class MapQuery {
         "/PBX_PERIS/PBX-" +
         geojson.features[r].properties.codigo +
         "/PBX-" +
-        geojson.features[r].properties.codigo +
+        geojson.features[r].properties.codigo.substring(0, 8) +
         "_PORTADA.pdf";
 
       var colorAplicable = "GREEN";
@@ -1960,10 +1524,10 @@ class MapQuery {
         "/PA-MODIFICACIO_PG/PA-" +
         geojson.features[r].properties.codigo +
         "/PA-" +
-        geojson.features[r].properties.codigo +
+        /*geojson.features[r].properties.codigo +
+        "_PORTADA.pdf"*/
+        geojson.features[r].properties.codigo.substring(0, 8) +
         "_PORTADA.pdf";
-      /*geojson.features[r].properties.codigo.substring(0, 8) +
-        "_PORTADA.pdf";*/
 
       /*if (
         geojson.features[r].properties.codigo.charAt(
@@ -2002,20 +1566,7 @@ class MapQuery {
           "0000" +
           "/PA-" +
           geojson.features[r].properties.codigo.substring(0, 8) +
-          "0000" +
           "_PORTADA.pdf";
-        isResource = await reader.checkURLAvailability(ruta);
-      }
-
-      if (!isResource) {
-        ruta =
-          this.ruta_exp +
-          "/PA-MODIFICACIO_PG/PA-" +
-          geojson.features[r].properties.codigo.substring(0, 8) +
-          "0000" +
-          "/PA-" +
-          geojson.features[r].properties.codigo.substring(0, 8) +
-          "-PORTADA.pdf";
         isResource = await reader.checkURLAvailability(ruta);
       }
 
@@ -2094,7 +1645,7 @@ class MapQuery {
         "/PE-ESTUDI_DETALL/PE-" +
         geojson.features[r].properties.codigo +
         "/PE-" +
-        geojson.features[r].properties.codigo +
+        geojson.features[r].properties.codigo.substring(0, 8) +
         "_PORTADA.pdf";
 
       var colorAplicable = "GREEN";
@@ -2113,7 +1664,7 @@ class MapQuery {
       }
 
       const reader = new DataReader();
-
+      
       let isResource = await reader.checkURLAvailability(ruta);
       console.log(isResource, ruta);
 
@@ -3169,18 +2720,6 @@ class MapQuery {
       if (geojson.features[r].properties.titulo)
         titulo = geojson.features[r].properties.titulo.toUpperCase();
       else titulo = `-`;
-
-      let htmlFicha = ``;
-      if (geojson.features[r].properties.codigo.substring(0, 3) == "UE/") {
-        htmlFicha = ` <button id="btFicha_UE_PGOU98" 
-          style="padding:3px;font-size:9pt;font-family:Arial Black" 
-          class="ui-button ui-widget ui-corner-all" 
-          title="Ficha del elemento"
-          data-fid="${geojson.features[r].properties.fid}" 
-          data-clase="UE_PGOU98">
-          <i class="fa fa-info-circle"></i> Ficha
-        </button>`;
-      }
       html =
         html +
         ` <tr align="left"  style='background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>
@@ -3193,8 +2732,15 @@ class MapQuery {
         </tr>
         <tr align="center"  style='background-color:white;padding:3px;font-size:8.5pt;font-family:Arial Black;color:#660000;height:22px'>  
             <td colspan="2"> 
-              ${htmlFicha}
-              <!-- <button id="btNormativa_UE_PGOU98" 
+              <button id="btFicha_UE_PGOU98" 
+                style="padding:3px;font-size:9pt;font-family:Arial Black" 
+                class="ui-button ui-widget ui-corner-all" 
+                title="Ficha del elemento"
+                data-fid="${geojson.features[r].properties.fid}" 
+                data-clase="UE_PGOU98">
+                <i class="fa fa-info-circle"></i> Ficha
+              </button>
+              <button id="btNormativa_UE_PGOU98" 
                 style="padding:3px;font-size:9pt;font-family:Arial Black" 
                 class="ui-button ui-widget ui-corner-all" 
                 title="Información normativa asociada"
@@ -3202,7 +2748,7 @@ class MapQuery {
                 data-table="unidad_ejecucion"
                 data-accion="normativa">
                 <i class="fa fa-info-circle"></i> Normativa
-              </button> -->
+              </button>
             </td>      
         </tr>
     `;
@@ -3245,9 +2791,7 @@ class MapQuery {
         "/PB-PLA_ESPECIAL/PB-" +
         geojson.features[r].properties.codigo +
         "/PB-" +
-        /*geojson.features[r].properties.codigo.substring(0, 8) +
-        "_PORTADA.pdf";*/
-        geojson.features[r].properties.codigo +
+        geojson.features[r].properties.codigo.substring(0, 8) +
         "_PORTADA.pdf";
 
       var colorAplicable = "GREEN";
@@ -3324,7 +2868,7 @@ class MapQuery {
         "/PC-PLA_PARCIAL/PC-" +
         geojson.features[r].properties.codigo +
         "/PC-" +
-        geojson.features[r].properties.codigo +
+        geojson.features[r].properties.codigo.substring(0, 8) +
         "_PORTADA.pdf";
 
       var colorAplicable = "GREEN";

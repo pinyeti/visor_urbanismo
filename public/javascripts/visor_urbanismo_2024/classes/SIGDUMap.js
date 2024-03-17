@@ -24,7 +24,6 @@ class SIGDUMap {
         L.control.zoom({ position: opciones.zoomControl }).addTo(this.map);
       }
     }
-
     this.mapLayers = new MapLayersVisor();
     this.setLayers(this.mapLayers);
     this.mapBaseActual = this.mapLayers
@@ -59,7 +58,7 @@ class SIGDUMap {
 
     this.createQueryPG();
     this.createQueryEXP();
-    this.createQueryEXP_Sedipualba();
+    //this.createQueryEXP_Sedipualba();
     this.createQuerySEARCH();
 
     const self = this;
@@ -74,6 +73,316 @@ class SIGDUMap {
       var estadoActual = self.infoButton.options.stateName;
       console.log("estadoActual", self.infoButton._currentState.stateName);
     });
+
+    this.btnMapPDF = L.easyButton(
+      '<i class="fa fa-map" style="color:#6680e6;" ></i>',
+      async function (btn, map) {
+        let find = await self.findCentroHistorico(this.map);
+        console.log("find", find);
+        if (!find) find = await self.findSueloUrbano98(this.map);
+        if (!find) find = await self.findDOT5000(this.map);
+
+        if (self.map.getZoom() >= 15) console.log("activar");
+      },
+      "Abrir Plano original PGOU 1998 (que conté el punt central del mapa)"
+    );
+    this.map.on("zoomend", function () {
+      self.testInPage();
+
+      console.log("termina zoom");
+    });
+    this.map.on("dragend", function () {
+      self.testInPage();
+      console.log("termina drag");
+    });
+
+    /*Toastify({
+      text: "Bienvenido! Aquí tienes información importante sobre el mapa.",
+      duration: 3000 // Duración en pantalla
+    }).showToast();*/
+
+    $("#dialog-message").html(
+      '<div class="dialog-center">' +
+        "<h5>La información mostrada por este visor urbanístico carece de valor legal, no reemplazando el contenido de los expedientes administrativos tramitados.</h5>" +
+        "<p>AREA D´URBANISME, HABITATGE I PROJECTES ESTRATEGICS</p>" +
+        "<p>Servei d´Innovació i Gestió de Dades Urbanistics</p>" +
+        '<img src="https://sigdu-urbanismo.net/opg/SIGDU_logo_H3.png" alt="Logo del Servicio de Innovación y Gestión de Datos de Urbanismo Ajuntament de Palma" class="logo_SIGDU">' +
+        '<br><img src="https://sigdu-urbanismo.net/opg/escudo.jpg" alt="Ajuntament de Palma" class="logo_AJT"><br>' +
+        '<!--<label><input type="checkbox" id="dont-show-again"> No mostrar este mensaje de nuevo</label>-->' +
+        "</div>"
+    );
+
+    $(function () {
+      $("#dialog-message").dialog({
+        modal: true,
+        width: 500, // Establece el ancho a 500px
+        height: 425, // Establece la altura a 400px
+        buttons: {
+          Aceptar: function () {
+            $(this).dialog("close");
+          },
+        },
+      });
+    });
+
+    //localStorage.removeItem('showDialog');
+
+    /*$(function() {
+      // Comprobar si el usuario ya eligió no volver a mostrar el diálogo
+      if (localStorage.getItem('showDialog') === 'false') {
+        $('#dialog-message').hide();
+      } else {
+        $('#dialog-message').dialog({
+          modal: true,
+          width: 500, // Establece el ancho a 500px
+          height: 450, // Establece la altura a 400px
+          buttons: {
+            Ok: function() {
+              // Verificar si la casilla está marcada
+              if ($('#dont-show-again').is(':checked')) {
+                // Guardar la elección en localStorage
+                localStorage.setItem('showDialog', 'false');
+              }
+              $(this).dialog("close");
+            }
+          }
+        });
+      }
+    });*/
+
+    this.write_data_user();
+  }
+
+  async write_data_user() {
+    let urlA = new URL(
+      window.location.protocol +
+        "//" +
+        window.location.host +
+        "/opg/write_data_user"
+    );
+    const paramsA = { accion: "acceso_vigente" };
+    Object.keys(paramsA).forEach((keyA) =>
+      urlA.searchParams.append(keyA, paramsA[keyA])
+    );
+    const dataRequestA = {
+      method: "POST",
+    };
+    fetch(urlA, dataRequestA);
+  }
+
+  async testInPage() {
+    var x = this.map.getCenter().utm().x;
+    var y = this.map.getCenter().utm().y;
+    const tabla = "limite_termino_municipal";
+    console.log(x + "," + y);
+
+    const url = new URL(
+      `${window.location.protocol}//${window.location.host}/opg/featureByPoint`
+    );
+
+    const params = { tabla, x, y };
+    Object.keys(params).forEach((key) =>
+      url.searchParams.append(key, params[key])
+    );
+
+    const dataRequest = {
+      method: "GET",
+    };
+
+    const response = await fetch(url, dataRequest);
+    const geojsonRES = await response.json();
+
+    console.log(geojsonRES.features);
+
+    if (geojsonRES.features !== null && this.map.getZoom() >= 15)
+      this.map.addControl(this.btnMapPDF);
+    else this.map.removeControl(this.btnMapPDF);
+  }
+
+  async findDOT5000(map) {
+    let find = false;
+    var x = this.map.getCenter().utm().x;
+    var y = this.map.getCenter().utm().y;
+
+    const tabla = "hojas5000_pgou98";
+    console.log(x + "," + y);
+
+    const url = new URL(
+      `${window.location.protocol}//${window.location.host}/opg/featureByPoint`
+    );
+
+    const params = { tabla, x, y };
+    Object.keys(params).forEach((key) =>
+      url.searchParams.append(key, params[key])
+    );
+
+    const dataRequest = {
+      method: "GET",
+    };
+
+    const response = await fetch(url, dataRequest);
+    const geojsonRES = await response.json();
+
+    if (geojsonRES.features !== null && this.map.getZoom() >= 15) {
+      find = true;
+      console.log(geojsonRES.features);
+      window.open(
+        "https://sigdu-urbanismo.net/opg/pgou98_pdf/DOT5000/" +
+          geojsonRES.features[0].properties.hoja_pgou +
+          ".pdf",
+        "_blank"
+      );
+    }
+    return find;
+  }
+
+  async findCentroHistorico(map) {
+    let find = false;
+    var x = this.map.getCenter().utm().x;
+    var y = this.map.getCenter().utm().y;
+    const tabla = "limite_centro_historico";
+    console.log(x + "," + y);
+
+    const url = new URL(
+      `${window.location.protocol}//${window.location.host}/opg/featureByPoint`
+    );
+
+    const params = { tabla, x, y };
+    Object.keys(params).forEach((key) =>
+      url.searchParams.append(key, params[key])
+    );
+
+    const dataRequest = {
+      method: "GET",
+    };
+
+    const response = await fetch(url, dataRequest);
+    const geojsonRES = await response.json();
+
+    if (geojsonRES.features !== null && this.map.getZoom() >= 15) {
+      const tabla = "hojas500";
+      console.log(x + "," + y);
+
+      const url = new URL(
+        `${window.location.protocol}//${window.location.host}/opg/featureByPoint`
+      );
+
+      const params = { tabla, x, y };
+      Object.keys(params).forEach((key) =>
+        url.searchParams.append(key, params[key])
+      );
+
+      const dataRequest = {
+        method: "GET",
+      };
+
+      const response = await fetch(url, dataRequest);
+      const geojsonRES = await response.json();
+
+      if (geojsonRES.features !== null && this.map.getZoom() >= 15) {
+        find = true;
+        console.log(geojsonRES.features);
+        window.open(
+          "https://sigdu-urbanismo.net/opg/pgou98_pdf/500/" +
+            geojsonRES.features[0].properties.hoja_pgou +
+            ".pdf",
+          "_blank"
+        );
+      }
+    }
+    return find;
+  }
+
+  async findSueloUrbano98(map) {
+    let find = false;
+    var x = this.map.getCenter().utm().x;
+    var y = this.map.getCenter().utm().y;
+    const tabla = "limite_suelo_urbano98";
+    console.log(x + "," + y);
+
+    const url = new URL(
+      `${window.location.protocol}//${window.location.host}/opg/featureByPoint`
+    );
+
+    const params = { tabla, x, y };
+    Object.keys(params).forEach((key) =>
+      url.searchParams.append(key, params[key])
+    );
+
+    const dataRequest = {
+      method: "GET",
+    };
+
+    const response = await fetch(url, dataRequest);
+    const geojsonRES = await response.json();
+
+    if (geojsonRES.features !== null && this.map.getZoom() >= 15) {
+      const tabla = "hojas1000";
+      console.log(x + "," + y);
+
+      const url = new URL(
+        `${window.location.protocol}//${window.location.host}/opg/featureByPoint`
+      );
+
+      const params = { tabla, x, y };
+      Object.keys(params).forEach((key) =>
+        url.searchParams.append(key, params[key])
+      );
+
+      const dataRequest = {
+        method: "GET",
+      };
+
+      const response = await fetch(url, dataRequest);
+      const geojsonRES = await response.json();
+
+      if (geojsonRES.features !== null && this.map.getZoom() >= 15) {
+        find = true;
+        console.log(geojsonRES.features);
+        window.open(
+          "https://sigdu-urbanismo.net/opg/pgou98_pdf/" +
+            geojsonRES.features[0].properties.hojasCordenadas +
+            ".pdf",
+          "_blank"
+        );
+      }
+    }
+
+    return find;
+  }
+
+  async findHoja(map) {
+    var x = this.map.getCenter().utm().x;
+    var y = this.map.getCenter().utm().y;
+    const tabla = "hojas1000";
+    console.log(x + "," + y);
+
+    const url = new URL(
+      `${window.location.protocol}//${window.location.host}/opg/featureByPoint`
+    );
+
+    const params = { tabla, x, y };
+    Object.keys(params).forEach((key) =>
+      url.searchParams.append(key, params[key])
+    );
+
+    const dataRequest = {
+      method: "GET",
+    };
+
+    const response = await fetch(url, dataRequest);
+    const geojsonRES = await response.json();
+
+    if (geojsonRES.features !== null && this.map.getZoom() >= 17) {
+      console.log(geojsonRES.features);
+      //window.open(window.location.protocol+'//'+window.location.host+'/opg/pgou98_pdf/'+geojsonRES.features[0].properties.hojasCordenadas+".pdf", '_blank');
+      window.open(
+        "https://sigdu-urbanismo.net/opg/pgou98_pdf/" +
+          geojsonRES.features[0].properties.hojasCoordenadas +
+          ".pdf",
+        "_blank"
+      );
+    }
   }
 
   /**
@@ -177,7 +486,7 @@ class SIGDUMap {
     var languageControl = new languageControl({ position: "bottomright" });
     //map.addControl(new languageControl({ position: "bottomleft" }));
     //var languageControl = new languageControl();
-    languageControl.addTo(this.map);
+    //languageControl.addTo(this.map);
 
     return languageControl;
   }
@@ -440,10 +749,10 @@ class SIGDUMap {
     sidebar.addPanel(panelContent);
     sidebar.addPanel(panelQuery);
     sidebar.addPanel(panelQueryEXP);
-    sidebar.addPanel(panelQuerySedipualba);
+    //sidebar.addPanel(panelQuerySedipualba);
     sidebar.addPanel(panelSearch);
 
-    const self=this;
+    const self = this;
     // Maneja eventos de apertura y cierre de la barra lateral.
     sidebar.on("opening", function (e) {
       // e.id contiene el ID del panel abierto

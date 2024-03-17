@@ -27,6 +27,28 @@ class DataReaderSedipualb {
   }
 
   /**
+   * Lista las georreferencias de un expediente.
+   * @param {string} codigoExpediente - Codigo del expediente.
+   * @returns {Promise<object>} - Objeto JSON con información de las materias.
+   */
+  async ListGeorreferenciasExpediente(codigoExpediente) {
+    const baseUrl = `${window.location.protocol}//${window.location.host}/opg/ListGeorreferenciasExpediente`;
+    const params = new URLSearchParams({
+      codigoExpediente: codigoExpediente,
+    });
+    const url = new URL(baseUrl);
+    url.search = params.toString();
+    const dataRequest = { method: "GET" };
+    try {
+      const response = await fetch(url, dataRequest);
+      const info_geojson = await response.json();
+      return info_geojson;
+    } catch (error) {
+      console.error("Error al leer la característica:", error);
+    }
+  }
+
+  /**
    * Lista las materias disponibles.
    * @param {string} wsseg_user - Nombre de usuario.
    * @param {string} clearPassword - Contraseña.

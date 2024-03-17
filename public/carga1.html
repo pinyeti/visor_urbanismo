@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Visor Urbanismo</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      /* Previene el desbordamiento y posibles barras de desplazamiento */
+    }
+
+    #cargando {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: #ffffff;
+      font-size: 20px;
+      /* Ajusta el tamaño del texto según necesites */
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      z-index: 100;
+      /* Asegura que el mensaje de carga esté sobre otros elementos */
+    }
+
+    .spinner {
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      /* Color del borde del spinner */
+      border-radius: 50%;
+      border-top: 4px solid #ffffff;
+      /* Color del borde superior del spinner */
+      width: 40px;
+      height: 40px;
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    iframe {
+      width: 100vw;
+      height: 100vh;
+      /* Ajusta según la necesidad */
+      border: none;
+      /* Elimina el borde del iframe */
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="cargando">
+    <div class="spinner"></div>
+    Cargando Visor Urbanístico de Palma
+  </div>
+
+  <iframe id="iframeVisor" src="https://sigdu-urbanismo.net/opg/visor_urbanismo" title="Visor Urbanismo"></iframe>
+
+  <script>
+    const iframe = document.getElementById('iframeVisor');
+    const cargando = document.getElementById('cargando');
+
+    cargando.style.display = 'flex'; // Muestra el mensaje de carga con el spinner
+
+    iframe.onload = function () {
+      cargando.style.display = 'none'; // Oculta el mensaje de carga una vez el iframe esté completamente cargado
+    };
+
+    iframe.onerror = function () {
+      cargando.style.display = 'none'; // Oculta el mensaje de carga en caso de error
+      alert('Error al cargar el visor de urbanismo.'); // Opcional: muestra un mensaje de error
+    };
+  </script>
+
+</body>
+
+</html>

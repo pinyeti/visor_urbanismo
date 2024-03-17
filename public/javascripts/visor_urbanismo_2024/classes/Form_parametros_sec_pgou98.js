@@ -48,6 +48,14 @@ class Form_PARAMETROS_SEC_PGOU98 {
     this.setHTML_DESCRIPCION();
     this.setHTML_CONDICIONES_EDIFICACION();
     this.setHTML_BUTTONS();
+
+    let urlA = new URL(window.location.protocol+'//'+window.location.host+"/opg/write_data_user");
+    const paramsA = {accion:"ficha_"+this.tipo_edificacion+":"+this.ordenacion};
+        Object.keys(paramsA).forEach(key => urlA.searchParams.append(key, paramsA[key]));
+        const dataRequestA = {
+            method: 'POST'
+        }; 
+    fetch(urlA,dataRequestA);
   }
 
   setHTML_CONDICIONES_EDIFICACION() {

@@ -569,6 +569,22 @@ class QueryDialogEXP_Sedipualba {
       info_json = this.expedientes_con_ubicacion;
     }
 
+    /*if (this.con_ubicacion) {
+
+      for (const expediente of info_exp) {
+        const codigoExpediente = expediente.CodigoExpediente;
+        // Usa await aquí dentro de un método asincrónico
+        const numgeo_exp = await readerSDP.ListGeorreferenciasExpediente(codigoExpediente);
+        //console.log(numgeo_exp);
+    
+        if (numgeo_exp.ListGeorreferenciasExpedienteResult) {
+          this.expedientes_con_ubicacion.push(expediente);
+        }
+      }
+      info_json = this.expedientes_con_ubicacion;
+      
+    }*/
+
     //info_geojson.features.sort((a, b) => a.properties.codigo - b.properties.codigo);
 
     // class="stripe row-border order-column"

@@ -50,7 +50,7 @@ class QueryDialogEXP_Planeamiento {
     let reader = new DataReader();
     let info_geojson = await reader.readDataFeature(table, "fid=" + fid);
 
-    console.log("info_geojson=" , info_geojson);
+    console.log("info_geojson=", info_geojson);
 
     var bbox = turf.bbox(info_geojson.features[0].geometry);
     var polyBBOX = turf.bboxPolygon(bbox);
@@ -163,6 +163,14 @@ class QueryDialogEXP_Planeamiento {
         const a_def = info_geojson.features[n].properties.a_def || "-";
         const boib_ad = info_geojson.features[n].properties.boib_ad || "-";
 
+        let descripcion = info_geojson.features[n].properties.descripcio || "-";
+        if (table == "v_ph_parcelacions_2005")
+          descripcion = info_geojson.features[n].properties.situacion || "-";
+
+        let codigo = info_geojson.features[n].properties.codigo || "-";
+
+        console.log("table=" + table);
+
         html_QUERY_ROWS =
           html_QUERY_ROWS +
           `
@@ -172,8 +180,8 @@ class QueryDialogEXP_Planeamiento {
             data-accion="doActionRowEXP">
 
 						<td>${info_geojson.features[n].properties.fid}</td>                                   
-						<td>${info_geojson.features[n].properties.codigo}</td>
-						<td>${info_geojson.features[n].properties.descripcio}</td>
+						<td>${codigo}</td>
+						<td>${descripcion}</td>
 						<td>${avanc}</td>
 						<td>${boib_avanc}</td>
 						<td>${a_ini}</td>
@@ -318,18 +326,20 @@ class QueryDialogEXP_Planeamiento {
   createSelectTABLE() {
     const strOptionsTables = `
 				<option value="NADA" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optNADA">-</option>
-				<option value="PA" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPA">PA - MODIFICACIÓ PG</option>
-				<option value="PB" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPB">PB - PLÁ ESPECIAL</option>
-				<option value="PBX" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPBX">PBX - PLÁ ESPECIAL REFORMA INTERIOR</option>
-				<option value="PC" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPC">PC - PLÁ PARCIAL</option>
-				<option value="PD" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPD">PD - PROJ. URBANITZACIÓ</option>
-				<option value="PE" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPE">PE - ESTUDI DETALL</option>
-				<option value="PF" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPF">PF - DOTACIÓ SERVEIS</option>
-				<option value="PG" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPG">PG - RECEPCIÓ OBRES</option>
-				<option value="PH" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPH">PH - PARCELACIONS</option>
+				<option value="PA" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPA">PA - MODIFICACIÓN PG</option>
+				<option value="PB" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPB">PB - PLAN ESPECIAL</option>
+				<option value="PBX" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPBX">PBX - PLÁN ESPECIAL REFORMA INTERIOR</option>
+				<option value="PC" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPC">PC - PLAN PARCIAL</option>
+				<option value="PD" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPD">PD - PROY. URBANITZACIÓN</option>
+				<option value="PE" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPE">PE - ESTUDIO DETALLE</option>
+				<!--<option value="PG" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPG">PG - RECEPCIÓN OBRES</option>
+				<option value="PH" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPH">PH - PARCELACIONES</option>-->
 				<option value="PI" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPI">PI - INTERES GENERAL</option>
-				<option value="PJ" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPJ">PJ - DELIMTACIÓ UA</option>
-				<option value="PK" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPK">PK - SEGREGACIÓ RÚSTIC</option>
+				<option value="PJ" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPJ">PJ - DELIMTACIÓN UA</option>
+				<!--<option value="PK" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPK">PK - SEGREGACIÓN RÚSTICO</option>-->
+        <option value="PM" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optPM">PM - VARIOS</option>
+        <option value="GCI" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optGCI">GCI - COMPENSACIONES</option>
+        <option value="GEX" style='font-size:7.5pt.5pt;font-family:Arial;background-color:white;color:black' id="optGEX">GEX - EXPROPIACIONES</option>
 				`;
 
     const strSelectTABLE = `    
@@ -536,7 +546,7 @@ class QueryDialogEXP_Planeamiento {
         this.queryEXP("PG - rececpcion de obras", "pg_recepcio_obres", filter);
         break;
       case "PH":
-        this.queryEXP("PH - Parcelaciones", "ph_parcelacions", filter);
+        this.queryEXP("PH - Parcelaciones", "v_ph_parcelacions_2005", filter);
         break;
       case "PI":
         this.queryEXP("PI - Interes general", "pi_interes_general", filter);
@@ -550,6 +560,19 @@ class QueryDialogEXP_Planeamiento {
           "pk_segregacion_rustic",
           filter
         );
+        break;
+      case "PM":
+        this.queryEXP(
+          "PM - Varios",
+          "pm_varis",
+          filter
+        );
+        break;
+      case "GCI":
+        this.queryEXP("GCI - Compensaciones", "gci_compensacions", filter);
+        break;
+      case "GEX":
+        this.queryEXP("GEX - Expropiaciones", "gex_expropiacions", filter);
         break;
     }
   }

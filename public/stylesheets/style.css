@@ -687,6 +687,95 @@ img {
   font-weight: bold; /* Cambia el estilo de fuente según tu preferencia */
 }
 
+/*body{
+  scrollbar-color: rgb(95, 143, 175) rgb(194, 211, 226);
+}*/
+
+/* prueba visores embebidos*/
+
+.ui-dialog {
+  z-index: 1000 !important;
+}
+
+.ui-dialog .ui-dialog-title {
+  text-align: center;
+  float: none;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+  display: flex;
+  justify-content: center;
+}
+
+/*.ui-dialog .ui-dialog-titlebar-close {
+  position: absolute;
+  right: .3em;
+  top: 50%;
+  transform: translateY(-50%);
+}*/
+
+@media only screen and (max-width: 600px) {
+  .ui-dialog {
+      width: auto !important; /* Ajusta el ancho a automático o a un porcentaje específico */
+      max-width: 70%; /* Asegura que el diálogo no sea más ancho que la pantalla */
+      margin: 10px; /* Agrega un pequeño margen */
+  }
+
+  .ui-dialog .ui-dialog-content {
+      max-height: calc(100vh - 120px); /* Ajusta la altura máxima para asegurar que el contenido es completamente visible */
+      overflow-y: auto; /* Añade scroll si el contenido es demasiado largo */
+  }
+}
+
+.dialog-center {
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.dialog-center h5 {
+  font-size: 1em; /* Ajustado para ser menos grande */
+  font-weight: bold; /* Hacer el texto más grueso */
+  margin-bottom: 0.5em; /* Espacio después del encabezado */
+}
+
+.dialog-center p {
+  font-size: 1em; /* Tamaño estándar para párrafos */
+  margin-bottom: 0.25em; /* Espacio entre los párrafos */
+}
+
+/* Estilo específico para el párrafo de interés */
+.dialog-center p.special-text {
+  font-weight: bold; /* Hace el texto más grueso */
+  color: gray; /* Cambia el color del texto a gris */
+}
+
+.logo_SIGDU {
+  width: 30%; /* Controla el tamaño de las imágenes */
+  margin-top: 10px; /* Espacio antes de la imagen */
+  margin-bottom: 10px; /* Espacio después de la imagen */
+}
+
+.logo_AJT {
+  width: 40%; /* Controla el tamaño de las imágenes */
+  margin-top: 10px; /* Espacio antes de la imagen */
+  margin-bottom: 10px; /* Espacio después de la imagen */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -9,6 +9,7 @@ const fetch = require("cross-fetch");
 const xml2js = require("xml2js");
 const crypto = require("crypto");
 const soap = require("soap");
+const geoip = require('geoip-lite');
 
 
 const https = require('https');
@@ -24,6 +25,60 @@ const pool = new Pool({
   database: con.database,
   port: con.port,
 });
+
+
+const write_data_user = async (req, res) => {
+  try {
+    console.log("write_data_user");
+    var accion=req.query.accion;
+    var x=req.query.x;
+    var y=req.query.y;
+    var lat=req.query.lat;
+    var lng=req.query.lng;
+
+    //var latlng=req.query.latlng;
+    console.log(x,y);
+    console.log(req.query.lat);
+
+     /*const locData = clientIPDATA.lookup(ip);
+  console.log(locData);*/
+  
+  //console.log("The IP is %s", geoip.pretty(ip));
+
+    var ip = req.headers['x-forwarded-for'] || 
+        req.connection.remoteAddress || 
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress;
+    console.log("ip?"+ip);
+
+    if(ip=="::1") ip="81.203.146.181";
+
+    var geo = geoip.lookup(ip);
+    date_ob = new Date();
+
+    console.log("geo="+geo)
+
+ 
+    /*console.log(date_ob.getDate());
+    console.log(geo);
+    console.log(geo.country);
+    console.log(geo.region);
+    console.log(geo.city);
+    console.log(geo.area);*/
+
+    // Ejecuta la sentencia SELECT utilizando el pool de conexiones
+    const response = await pool.query('INSERT INTO users_visor (ip,country,region,city,area,date_obj,day,month,year,hour,minute,second,action,lat,lng,utm_x,utm_y) VALUES ($1, $2 ,$3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)',
+    [ip, geo.country,geo.region,geo.city,geo.area,date_ob,date_ob.getDate(),date_ob.getMonth()+1,date_ob.getFullYear(),date_ob.getHours(),date_ob.getMinutes(),date_ob.getSeconds(),accion, lat,lng , x, y]);
+
+    // Envía los resultados de la consulta como respuesta
+    res.status(201).send("OK");
+  } catch (error) {
+    // Manejo de errores: registra el error y envía un mensaje de error al cliente
+    console.error("Error en servicio postgis_select:", error);
+    res.status(500).send("Error en el servidor");
+    res.end();
+  }
+};
 
 
 const checkURLAvailability = async (req, res) => {
@@ -84,6 +139,9 @@ const getSelect = async (req, res) => {
   try {
     // Obtiene la sentencia SELECT de la solicitud
     const select = req.query.select;
+
+    console.log("select=" + select);
+    //res.send(200);
 
     // Ejecuta la sentencia SELECT utilizando el pool de conexiones
     const response = await pool.query(select);
@@ -278,5 +336,6 @@ module.exports = {
   getGeojson,
   getIntersection,
   getSelect,
-  checkURLAvailability
+  checkURLAvailability,
+  write_data_user
 };
