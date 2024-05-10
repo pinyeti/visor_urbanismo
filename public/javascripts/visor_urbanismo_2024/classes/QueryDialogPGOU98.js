@@ -49,6 +49,8 @@ class QueryDialogPGOU98 {
      * Define el estilo del objeto geográfico.
      * @returns {object} Objeto con las propiedades de estilo.
      */
+
+    this.sigduMap.sidebar.close();
     const style = () => {
       return {
         fillColor: "yellow",
@@ -162,7 +164,7 @@ class QueryDialogPGOU98 {
     //jsonData = JSON.stringify(info_geojson);
 
     let html_QUERY_HEAD = `
-          <button style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Descàrrega en format geojson"  id="download_pgou98"><i class="fa fa-download"></i></button>
+          <button style="padding-top:4px;padding-bottom:4px;display: none;" class="ui-button ui-widget ui-corner-all" title="Descàrrega en format geojson"  id="download_pgou98"><i class="fa fa-download"></i></button>
           <button style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Afegeix consulta a taula de contingut" id="add_layer_toc_pgou98"><i class="fa fa-plus-circle"></i></button>
     
           <TABLE id="table_queryPGOU98"   class="stripe row-border order-column" style="padding:3px;font-size:8pt;font-family:Arial;width:100%">
@@ -260,7 +262,7 @@ class QueryDialogPGOU98 {
     //jsonData = JSON.stringify(info_geojson);
 
     let html_QUERY_HEAD = `
-          <button style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Descàrrega en format geojson"  id="download_pgou98"><i class="fa fa-download"></i></button>
+          <button style="padding-top:4px;padding-bottom:4px;display: none;" class="ui-button ui-widget ui-corner-all" title="Descàrrega en format geojson"  id="download_pgou98"><i class="fa fa-download"></i></button>
           <button style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Afegeix consulta a taula de contingut" id="add_layer_toc_pgou98"><i class="fa fa-plus-circle"></i></button>
     
           <TABLE id="table_queryPGOU98"   class="stripe row-border order-column" style="padding:3px;font-size:8pt;font-family:Arial;width:100%">
@@ -376,7 +378,7 @@ class QueryDialogPGOU98 {
     //jsonData = JSON.stringify(info_geojson);
 
     let html_QUERY_HEAD = `
-          <button style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Descàrrega en format geojson"  id="download_pgou98"><i class="fa fa-download"></i></button>
+          <button style="padding-top:4px;padding-bottom:4px;display: none;" class="ui-button ui-widget ui-corner-all" title="Descàrrega en format geojson"  id="download_pgou98"><i class="fa fa-download"></i></button>
           <button style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Afegeix consulta a taula de contingut" id="add_layer_toc_pgou98"><i class="fa fa-plus-circle"></i></button>
     
           <TABLE id="table_queryPGOU98"   class="stripe row-border order-column" style="padding:3px;font-size:8pt;font-family:Arial;width:100%">
@@ -488,7 +490,7 @@ class QueryDialogPGOU98 {
     //jsonData = JSON.stringify(info_geojson);
 
     let html_QUERY_HEAD = `
-          <button style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Descàrrega en format geojson"  id="download_pgou98"><i class="fa fa-download"></i></button>
+          <button style="padding-top:4px;padding-bottom:4px;display: none;" class="ui-button ui-widget ui-corner-all" title="Descàrrega en format geojson"  id="download_pgou98"><i class="fa fa-download"></i></button>
           <button style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Afegeix consulta a taula de contingut" id="add_layer_toc_pgou98"><i class="fa fa-plus-circle"></i></button>
     
           <TABLE id="table_queryPGOU98"   class="stripe row-border order-column" style="padding:3px;font-size:8pt;font-family:Arial;width:100%">
@@ -610,7 +612,7 @@ class QueryDialogPGOU98 {
     //jsonData = JSON.stringify(info_geojson);
 
     let html_QUERY_HEAD = `
-          <button style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Descàrrega en format geojson"  id="download_pgou98"><i class="fa fa-download"></i></button>
+          <button style="padding-top:4px;padding-bottom:4px;display: none;" class="ui-button ui-widget ui-corner-all" title="Descàrrega en format geojson"  id="download_pgou98"><i class="fa fa-download"></i></button>
           <button style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Afegeix consulta a taula de contingut" id="add_layer_toc_pgou98"><i class="fa fa-plus-circle"></i></button>
     
           <TABLE id="table_queryPGOU98"   class="stripe row-border order-column" style="padding:3px;font-size:8pt;font-family:Arial;width:100%">

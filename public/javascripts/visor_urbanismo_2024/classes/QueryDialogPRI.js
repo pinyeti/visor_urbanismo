@@ -35,6 +35,7 @@ class QueryDialogPRI {
   }
 
   async doActionRow(table, fid) {
+    this.sigduMap.sidebar.close();
     const style = () => {
       return {
         fillColor: "yellow",
@@ -132,7 +133,7 @@ class QueryDialogPRI {
     const info_geojson = await reader.readDataFeature(table, filter);
 
     let html_QUERY_HEAD = `
-          <button style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Descàrrega en format geojson"  id="download_pri"><i class="fa fa-download"></i></button>
+          <button style="padding-top:4px;padding-bottom:4px;display: none;" class="ui-button ui-widget ui-corner-all" title="Descàrrega en format geojson"  id="download_pri"><i class="fa fa-download"></i></button>
           <button style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Afegeix consulta a taula de contingut" id="add_layer_toc_pri"><i class="fa fa-plus-circle"></i></button>
     
           <TABLE id="table_queryPRI"   class="stripe row-border order-column" style="padding:3px;font-size:8pt;font-family:Arial;width:100%">
@@ -219,7 +220,7 @@ class QueryDialogPRI {
     const info_geojson = await reader.readDataFeature(table, filter);
 
     let html_QUERY_HEAD = `
-          <button style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Descàrrega en format geojson"  id="download_pri"><i class="fa fa-download"></i></button>
+          <button style="padding-top:4px;padding-bottom:4px;display: none;" class="ui-button ui-widget ui-corner-all" title="Descàrrega en format geojson"  id="download_pri"><i class="fa fa-download"></i></button>
           <button style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Afegeix consulta a taula de contingut" id="add_layer_toc_pri"><i class="fa fa-plus-circle"></i></button>
     
           <TABLE id="table_queryPRI"   class="stripe row-border order-column" style="padding:3px;font-size:8pt;font-family:Arial;width:100%">
@@ -305,7 +306,7 @@ class QueryDialogPRI {
     const info_geojson = await reader.readDataFeature(table, filter);
 
     let html_QUERY_HEAD = `
-          <button style="padding-top:2px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Descàrrega en format geojson"  id="download_pri"><i class="fa fa-download"></i></button>
+          <button style="padding-top:2px;padding-bottom:4px;display: none; class="ui-button ui-widget ui-corner-all" title="Descàrrega en format geojson"  id="download_pri"><i class="fa fa-download"></i></button>
           <button style="padding-top:2px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Afegeix consulta a taula de contingut" id="add_layer_toc_pri"><i class="fa fa-plus-circle"></i></button>
     
           <TABLE id="table_queryPRI"   class="stripe row-border order-column" style="padding:2px;font-size:8pt;font-family:Arial;width:100%">
@@ -404,7 +405,7 @@ class QueryDialogPRI {
     const info_geojson = await reader.readDataFeature(table, filter);
 
     let html_QUERY_HEAD = `
-          <button style="padding-top:2px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Descàrrega en format geojson"  id="download_pri"><i class="fa fa-download"></i></button>
+          <button style="padding-top:2px;padding-bottom:4px;display: none;" class="ui-button ui-widget ui-corner-all" title="Descàrrega en format geojson"  id="download_pri"><i class="fa fa-download"></i></button>
           <button style="padding-top:2px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Afegeix consulta a taula de contingut" id="add_layer_toc_pri"><i class="fa fa-plus-circle"></i></button>
     
           <TABLE id="table_queryPRI"   class="stripe row-border order-column" style="padding:2px;font-size:8pt;font-family:Arial;width:100%">
@@ -496,7 +497,7 @@ class QueryDialogPRI {
     const info_geojson = await reader.readDataFeature(table, filter);
 
     let html_QUERY_HEAD = `
-          <button style="padding-top:2px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Descàrrega en format geojson"  id="download_pri"><i class="fa fa-download"></i></button>
+          <button style="padding-top:2px;padding-bottom:4px;display: none;" class="ui-button ui-widget ui-corner-all" title="Descàrrega en format geojson"  id="download_pri"><i class="fa fa-download"></i></button>
           <button style="padding-top:2px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Afegeix consulta a taula de contingut" id="add_layer_toc_pri"><i class="fa fa-plus-circle"></i></button>
     
           <TABLE id="table_queryPRI"   class="stripe row-border order-column" style="padding:2px;font-size:8pt;font-family:Arial;width:100%">
@@ -599,7 +600,7 @@ class QueryDialogPRI {
     const info_geojson = await reader.readDataFeature(table, filter);
 
     let html_QUERY_HEAD = `
-          <button style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Descàrrega en format geojson"  id="download_pri"><i class="fa fa-download"></i></button>
+          <button style="padding-top:4px;padding-bottom:4px;display: none;" class="ui-button ui-widget ui-corner-all" title="Descàrrega en format geojson"  id="download_pri"><i class="fa fa-download"></i></button>
           <button style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Afegeix consulta a taula de contingut" id="add_layer_toc_pri"><i class="fa fa-plus-circle"></i></button>
     
           <TABLE id="table_queryPRI"   class="stripe row-border order-column" style="padding:3px;font-size:8pt;font-family:Arial;width:100%">

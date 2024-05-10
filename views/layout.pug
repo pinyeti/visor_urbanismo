@@ -3,8 +3,9 @@ html
   head
     title= title
     meta(name="viewport",content="width=device-width, initial-scale=1.0")
-    //link(rel='stylesheet' href='https://unpkg.com/leaflet@1.7.1/dist/leaflet.css')
-    link(rel='stylesheet' href='https://unpkg.com/leaflet@latest/dist/leaflet.css')
+    link(rel='stylesheet' href='/javascripts/leaflet/leaflet.css')
+    //link(rel='stylesheet' href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css')
+    //link(rel='stylesheet' href='https://unpkg.com/leaflet@latest/dist/leaflet.css')
     //link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
     //link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/6.1.1/css/font-awesome.min.css')
     link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css')
@@ -15,7 +16,7 @@ html
     link(rel='stylesheet', href='/stylesheets/L.Control.Layers.Tree.css')
     link(rel='stylesheet', href='/stylesheets/leaflet.toolbar.css')
     link(rel='stylesheet', href='/stylesheets/leaflet.fullscreen.css')
-    link(rel='stylesheet', href='/stylesheets/leaflet.Dialog.css')
+    //link(rel='stylesheet', href='/stylesheets/leaflet.Dialog.css')
     link(rel='stylesheet', href='/stylesheets/leaflet-sidebar.css')
     link(rel='stylesheet', href='/stylesheets/Leaflet.GraphicScale.min.css')
     link(rel='stylesheet', href='/stylesheets/fixed_table_rc.css')
@@ -79,9 +80,11 @@ html
     //script(src='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js')
 
   
+    script(src='/javascripts/leaflet/leaflet.js')
+  
 
-    //script(src='https://unpkg.com/leaflet@1.7.1/dist/leaflet.js')
-    script(src='https://unpkg.com/leaflet@latest/dist/leaflet.js')
+    //script(src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js')
+    //script(src='https://unpkg.com/leaflet@latest/dist/leaflet.js')
     script(src="https://code.jquery.com/jquery-3.2.1.js")
     //script(src="https://code.jquery.com/jquery-1.12.4.js")
     
@@ -95,7 +98,7 @@ html
     script(src="/javascripts/Leaflet.TileLayer.MBTiles.js")
     script(src="/javascripts/Leaflet.fullscreen.js")
     script(src="/javascripts/Leaflet.Dialog.js")
-    script(src="/javascripts/Leaflet.wms.js")
+    //script(src="/javascripts/Leaflet.wms.js")
     script(src="/javascripts/leaflet-sidebar.js")
     script(src="/javascripts/spin.js")
     script(src="/javascripts/leaflet.spin.js")
@@ -104,7 +107,7 @@ html
     script(src="/javascripts/leaflet.browser.print.min.js")
     script(src="https://unpkg.com/leaflet.vectorgrid@latest/dist/Leaflet.VectorGrid.js")
     script(src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.js")
-    script(src="http://maps.stamen.com/js/tile.stamen.js?v1.3.0")
+    //script(src="http://maps.stamen.com/js/tile.stamen.js?v1.3.0")
     script(src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js")
     script(src="/javascripts/fixed_table_rc.js")
     script(src="https://meetselva.github.io/fixed-table-rows-cols/js/sortable_table.js")
@@ -127,6 +130,10 @@ html
     script(src="https://unpkg.com/es-compromise")
     script(src='/javascripts/PorterStemmer.js')
 
+    script(src='https://unpkg.com/leaflet.nontiledlayer@1.0.9/dist/NonTiledLayer-src.js')
+    script(src='https://unpkg.com/leaflet.nontiledlayer@1.0.9/dist/NonTiledLayer.js')
+    script(src='https://unpkg.com/leaflet.nontiledlayer@1.0.9/dist/NonTiledLayer.js.map')
+   
     
     // script(src='/javascripts/easyui/jquery.easyui.min.js')
     
@@ -142,7 +149,7 @@ html
     script(src="/javascripts/L.Control.SlideMenu.js")
 
 
-    script(src="http://www.webglearth.com/v2/api.js")
+    //script(src="http://www.webglearth.com/v2/api.js")
 
     script(src='https://cdn.jsdelivr.net/npm/spectrum-colorpicker2/dist/spectrum.min.js')
 
@@ -238,7 +245,12 @@ html
     script(src='/javascripts/visor_urbanismo_2024/MainApp.js')
    
     
+    // aplicacion AFECCIONES
 
+    script(src='/javascripts/visor_afecciones/classes/AFMap.js')
+    script(src='/javascripts/visor_afecciones/classes/AFTOC.js')
+    script(src='/javascripts/visor_afecciones/classes/AFMapQuery.js')
+    script(src='/javascripts/visor_afecciones/MainApp_AF.js')
     
 
      

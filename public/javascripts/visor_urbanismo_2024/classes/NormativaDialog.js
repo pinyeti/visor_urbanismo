@@ -24,6 +24,9 @@ class NormativaDialog {
     this.primerFeatureHigh = null;
 
     this.htmlTabsArticulos = ``;
+
+    this.titleArticulo = "";
+    this.contentArticulo = "";
   }
 
   async initialize() {
@@ -147,7 +150,7 @@ class NormativaDialog {
 				<div style='padding:3px;background-color:#fdfde0;border-style: solid;border-width:1pt;border-color:#78c4f0'>
 						<label class="icon"><i class="fa fa-search"></i></label>
 						<input id="search-art_PG2023" class="search-art_PG2023" />   
-						<button  style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Imprimeix norma seleccionada" OnClick="printNormaSelect()"><i class="fa fa-print"></i></button>
+						<button id="printNormaPG2023" style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Imprimeix norma seleccionada"><i class="fa fa-print"></i></button>
 				</div>
 				${this.htmTreeArticulos_normasPG2023}
 			</div>`;
@@ -159,7 +162,7 @@ class NormativaDialog {
 				<div style='padding:3px;background-color:#fdfde0;border-style: solid;border-width:1pt;border-color:#78c4f0'>
 						<label class="icon"><i class="fa fa-search"></i></label>
 						<input id="search-art_PGOU98" class="search-art_PGOU98" />   
-						<button  style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Imprimeix norma seleccionada" OnClick="printNormaSelect()"><i class="fa fa-print"></i></button>
+						<button id="printNormaPGOU98" style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Imprimeix norma seleccionada" ><i class="fa fa-print"></i></button>
 				</div>
 				${this.htmTreeArticulos_normasPGOU98}
 			</div>`;
@@ -171,7 +174,7 @@ class NormativaDialog {
 				<div style='padding:3px;background-color:#fdfde0;border-style: solid;border-width:1pt;border-color:#78c4f0'>
 						<label class="icon"><i class="fa fa-search"></i></label>
 						<input id="search-art_PRI" class="search-art_PRI" />   
-						<button  style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Imprimeix norma seleccionada" OnClick="printNormaSelect()"><i class="fa fa-print"></i></button>
+						<button id="printNormaPRI" style="padding-top:4px;padding-bottom:4px;" class="ui-button ui-widget ui-corner-all" title="Imprimeix norma seleccionada"><i class="fa fa-print"></i></button>
 				</div>
 				${this.htmTreeArticulos_normasPRI}
 			</div>`;
@@ -194,6 +197,8 @@ class NormativaDialog {
   }
 
   async create_content() {
+    this.titleArticulo = this.primerFeatureHigh.properties.titulo;
+    this.contentArticulo = this.primerFeatureHigh.properties.contenido;
     var strDivArt =
       `<div  id="divContentArt">` +
       this.primerFeatureHigh.properties.contenido +
@@ -230,6 +235,39 @@ class NormativaDialog {
     var elem = document.getElementById("userinfo");
     elem.innerHTML = html;
 
+    self=this;
+
+    try{
+    document
+      .getElementById("printNormaPG2023")
+      .addEventListener("click", function () {
+        console.log("printNormativaPG2023")
+        self.printForm();
+      });
+    }catch(e){
+      console.log(e)
+    }
+    try{
+    document
+      .getElementById("printNormaPGOU98")
+      .addEventListener("click", function () {
+        console.log("printNormativaPGOU98") 
+        self.printForm();
+      });
+    }catch(e){
+      console.log(e)
+    }
+    try{
+    document
+      .getElementById("printNormaPRI")
+      .addEventListener("click", function () {
+        console.log("printNormativaPRI") 
+        self.printForm();
+      });
+    }catch(e){
+      console.log(e)
+    }
+
     // ens add
 
     this.sigduMap.sidebar.open("userinfo");
@@ -254,8 +292,36 @@ class NormativaDialog {
     }
   }
 
+  async printForm() {
+    console.log("print ficha");
+    const ventana = window.open(
+      "",
+      "",
+      "top=100,left=100,height=600,width=800"
+    );
+    ventana.hidden = true;
+    ventana.document.write(
+      `<title>${this.titleArticulo}</title>`
+    );
+    ventana.document.write(
+      `<link rel="stylesheet" type="text/css" href="../stylesheets/style.css">`
+    );
+    ventana.document.innerHTML = "";
+
+   
+    ventana.document.write("<strong>" + this.titleArticulo + "</strong>");
+    ventana.document.write("<BR>");
+    ventana.document.write(this.contentArticulo);
+
+    ventana.print();
+    ventana.close();
+    
+  
+
+  }
+
   async create_articulos_normas(arrayArticulos,tipoNorma) {
-    //const self = this;
+    const self = this;
     $(function () {
       $(`#jstree_articulos_normas_${tipoNorma}`).jstree({
         core: {
@@ -299,6 +365,10 @@ class NormativaDialog {
           elem.innerHTML = data.node.data;
           var elem = document.getElementById("tituloArt");
           elem.innerHTML = data.node.text;
+          self.titleArticulo = data.node.text;
+          self.contentArticulo = data.node.data;
+         
+         
         }
       );
 

@@ -73,7 +73,40 @@ a {
   display: inline-block;
   margin-top: 20px;
   border: 1px solid #7c94a7;
-  max-width: 300px;
+  max-width: 200px;
+}
+
+.map-title-af a {
+  margin-left: 5px; /* Agrega un espacio entre el texto y la imagen */
+  text-decoration: none; /* Elimina la subrayado del enlace */
+  text-align: center;
+}
+
+.map-title-af img {
+  max-width: 100px; /* Establece un ancho máximo para la imagen si es necesario */
+  border-radius: 2%;
+  border: 1px solid #afc5d4;
+}
+
+.map-title-af {
+  text-align: center;
+  padding: 3px;
+  background: rgba(199, 199, 197, 0.95); /* Fondo semi-transparente */
+  color: rgb(3, 3, 3);
+  font-family: Arial Black;
+  font-size: 10px;
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  right: 0;
+
+  left: 50%; /* Centra horizontalmente */
+  transform: translate(-50%, -50%);
+
+  display: inline-block;
+  margin-top: 20px;
+  border: 1px solid #7c94a7;
+  max-width: 200px;
 }
 
 #map2 {
@@ -99,6 +132,8 @@ body,
   width: 100%;
   height: 100%;
   position: relative;
+  background-color: rgb(238, 234, 234);
+  
 }
 
 .custom-popup {
@@ -750,7 +785,7 @@ img {
 }
 
 .logo_SIGDU {
-  width: 30%; /* Controla el tamaño de las imágenes */
+  width: 90%; /* Controla el tamaño de las imágenes */
   margin-top: 10px; /* Espacio antes de la imagen */
   margin-bottom: 10px; /* Espacio después de la imagen */
 }
@@ -760,6 +795,167 @@ img {
   margin-top: 10px; /* Espacio antes de la imagen */
   margin-bottom: 10px; /* Espacio después de la imagen */
 }
+
+/* Estilo para hover sobre los nodos en jsTree */
+/*.jstree-hovered {
+  background-color: #FFCC00 !important;  
+  color: black !important;              
+}
+
+.jstree-clicked {
+  background-color: #2d5f91 !important; 
+  color: white !important;     */        
+
+/* Estilo para nodos seleccionados en jsTree con gradiente y borde */
+.jstree-clicked {
+  background: linear-gradient(to bottom, #d4e6ee, #aadcf3) !important; /* Gradiente de color */
+  border: 1px solid rgb(53, 93, 168) !important; /* Borde rojo */
+  color: rgb(0, 0, 0) !important; /* Texto blanco */
+}
+
+/* Estilo para hover sobre nodos en jsTree con gradiente y borde */
+/*.jstree-hovered {
+  background: linear-gradient(to bottom, #466c8f, #1b2f52) !important; 
+  border: 1px solid rgb(88, 180, 230) !important; 
+  color: white !important;
+}*/
+
+
+div.custom-scroll {
+  width: 300px;
+  height: 300px;
+  overflow: auto;
+  background: #f0f0f0; 
+}
+
+::-webkit-scrollbar {
+  height: 15px;
+}
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+/* Estilos de la pista del scrollbar */
+::-webkit-scrollbar-track {
+  background: #d9e8f3; /* Cambia el color de la pista */
+}
+
+/* Estilos del cursor del scrollbar */
+::-webkit-scrollbar-thumb:vertical {
+  background: linear-gradient(to right, #979696, #dfe8ee);
+  border-radius: 6px;
+  cursor: pointer; /* Cambia el cursor al pasar sobre el scrollbar */
+}
+
+/* Estilos del cursor del scrollbar */
+::-webkit-scrollbar-thumb:horizontal {
+  background: linear-gradient(to bottom, #979696, #dfe8ee);
+  border-radius: 6px;
+  cursor: pointer; /* Cambia el cursor al pasar sobre el scrollbar */
+}
+
+
+/* Estilos del cursor del scrollbar al pasar sobre él */
+::-webkit-scrollbar-thumb:hover:vertical {
+  background: linear-gradient(to right, #202020, #918f8f);
+}
+
+/* Estilos del cursor del scrollbar al pasar sobre él */
+::-webkit-scrollbar-thumb:hover:horizontal {
+  background: linear-gradient(to bottom, #202020, #918f8f);
+}
+
+::-webkit-scrollbar-button:start:vertical {
+  background-color: #dfe8ee;
+  background-image: url('scroll_start.png'); /* Puedes añadir una imagen como fondo */
+  background-size: cover;
+  cursor: pointer;
+}
+
+/* Estilos del botón de desplazamiento hacia abajo o hacia la derecha */
+::-webkit-scrollbar-button:end:vertical {
+  background-color: #dfe8ee;
+  background-image: url('scroll_end.png'); /* Puedes añadir una imagen como fondo */
+  background-size: cover;
+  cursor: pointer;
+}
+
+::-webkit-scrollbar-button:start:horizontal {
+  background-color: #dfe8ee;
+  background-image: url('scroll_start_horizontal.png'); /* Puedes añadir una imagen como fondo */
+  background-size: cover;
+  cursor: pointer;
+}
+
+/* Estilos del botón de desplazamiento hacia abajo o hacia la derecha */
+::-webkit-scrollbar-button:end:horizontal {
+  background-color: #dfe8ee;
+  background-image: url('scroll_end_horizontal.png'); /* Puedes añadir una imagen como fondo */
+  background-size: cover;
+  cursor: pointer;
+}
+
+
+/* styles.css */
+.data-tableAF {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-family: 'Calibri', sans-serif; /* Define Calibri como la fuente principal, con sans-serif como alternativa */
+  font-size: 13px;
+}
+
+.data-tableAF th, .data-tableAF td {
+  border: 1px solid #000000; /* Borde negro */
+  padding: 8px;
+  text-align: left; /* Alineación central para todas las celdas */
+}
+
+.data-tableAF th {
+  background-color: #d6d6d6;
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+}
+
+.data-tableAF .organo-cell {
+  font-weight: bold; /* Aplica negrita al texto */
+  text-align: center; 
+}
+
+
+.data-tableAF .observaciones-cell { /* Clase específica para celdas de observaciones */
+  text-align: justify; /* Alineación justificada para las observaciones */
+  vertical-align: top; /* Asegura que el texto empiece desde la parte superior de la celda */
+}
+
+.data-tableAF ul {
+  padding-left: 20px;
+  margin: 0; /* Asegura que no hay espacio extra alrededor del texto */
+}
+
+.data-tableAF li {
+  list-style-type: disc;
+}
+
+.link-atractivo {
+  background-color: #4CAF50; /* Fondo verde */
+  color: white; /* Texto blanco */
+  padding: 8px 16px; /* Padding para hacer el enlace más grande */
+  text-decoration: none; /* No subrayado */
+  border-radius: 5px; /* Bordes redondeados */
+  transition: background-color 0.3s, color 0.3s; /* Transición suave para hover */
+}
+
+.link-atractivo:hover {
+  background-color: #45a049; /* Cambio de color de fondo al pasar el mouse */
+  color: #ffffff; /* Se podría cambiar el color del texto, opcional */
+}
+
+
+
+
+
+
 
 
 

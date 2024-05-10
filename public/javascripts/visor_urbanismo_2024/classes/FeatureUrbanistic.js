@@ -64,6 +64,14 @@ class FeatureUrbanistic {
         this.fillColor = "#3d869a";
         this.color = "blue";
         break;
+      case "RSD_NE_PGOU98":
+        this.title = "RESIDENCIAL";
+        this.subtitle = "-";
+        this.tipo_plan = "PGOU98";
+        this.table = "zona_residencial_no_edificable";
+        this.fillColor = "#3d869a";
+        this.color = "blue";
+        break;
       case "SLEQ_PGOU98":
         this.title = "EQUIPAMIENTO COMUNITARIO";
         this.subtitle = "SISTEMA LOCAL";

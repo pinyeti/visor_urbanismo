@@ -84,44 +84,73 @@ class TOC {
    */
   _createAcoordion() {
     this.htmAccordion = `<div  id="accordion">		 
-      <h3 id="toc_mapas_base">MAPAS BASE</h3>
-        <div style='padding:0px'>
-          ${this.htmStyleBaseMap}
-          ${this.htmlTabsBase} 		
-        </div>
-      <h3 id="toc_ordenacion">ORDENACIÓN</h3>
-        <div style='overflow: hidden;padding:0px'>
-          ${this.htmStyleOrdenacion}
-          ${this.htmTreeOrdenacion}
-        </div>
-      <h3 id="toc_consultas">CONSULTAS</h3>
-        <div style='overflow: hidden;padding:0px'>
-          <input style='font-size:7pt;height:20' class="ui-button ui-widget ui-corner-all" type="button" name="addLayersNormativa" value="BORRAR SELECCIONADOS" id="deleteSelectedConsultas"> </input> 
-          <button style="padding-top:0px;padding-bottom:1px;" class="ui-button ui-widget ui-corner-all" title="Descarga en formato geojson"  id="download_select_consultas"><i class="fa fa-download"></i></button>
-          
-          ${this.htmlStyleConsultas}
-          
-          ${this.htmTreeConsultas}
-        </div>
-		</div>`;
+        <h3 id="toc_mapas_base">MAPAS BASE</h3>
+          <div style='padding:0px'>
+            ${this.htmStyleBaseMap}
+            ${this.htmlTabsBase} 		
+          </div>
+        <h3 id="toc_ordenacion">ORDENACIÓN</h3>
+          <div style='overflow: hidden;padding:0px'>
+            ${this.htmStyleOrdenacion}
+            ${this.htmTreeOrdenacion}
+          </div>
+        <h3 id="toc_consultas">CONSULTAS</h3>
+          <div style='overflow: hidden;padding:0px'>
+            <input style='font-size:7pt;height:20' class="ui-button ui-widget ui-corner-all" type="button" name="addLayersNormativa" value="BORRAR SELECCIONADOS" id="deleteSelectedConsultas"> </input> 
+            <button style="padding-top:0px;padding-bottom:1px;display: none;" class="ui-button ui-widget ui-corner-all" title="Descarga en formato geojson"  id="download_select_consultas"><i class="fa fa-download"></i></button>
+            
+            ${this.htmlStyleConsultas}
+            
+            ${this.htmTreeConsultas}
+          </div>
+          </div>`;
 
     if (!this._isMobile()) {
-      L.control
+      const slideMenu = L.control
         .slideMenu(this.htmAccordion, {
           position: "topright",
           menuposition: "topright",
           width: "350px",
-          height: "571px",
+          //height: "571px",
+          height: "auto",
+          hidden: false,
           //icon: "menu-icon",
         })
         .addTo(this.map);
+
+      //slideMenu.getContainer().style.display = "block";
+
+
+      // Esperar a que el mapa esté listo
+      /*this.map.whenReady(function () {
+        // Intentar encontrar el botón del menú deslizante
+        // Esto depende de cómo el plugin añade el botón al DOM
+        // Aquí asumimos que el botón tiene una clase específica que podemos buscar
+        var menuButton = document.querySelector(
+          ".leaflet-menu-close-button::"
+        );
+
+        if (menuButton) {
+          // Crea un evento de clic
+          var clickEvent = new MouseEvent("click", {
+            view: window,
+            bubbles: true,
+            cancelable: true,
+          });
+
+          // Dispara el evento de clic en el botón del menú
+          menuButton.dispatchEvent(clickEvent);
+        } else {
+          console.log("Botón del menú deslizante no encontrado");
+        }
+      });*/
     } else {
       L.control
         .slideMenu(this.htmAccordion, {
           position: "topright",
           menuposition: "topright",
           width: "295px",
-          height: "571px",
+          height: "auto",
           //icon: "menu-icon",
         })
         .addTo(this.map);
@@ -216,6 +245,86 @@ class TOC {
         id: "1_9",
         text: '<Label style="font-size:8pt"><i>(NR) Núcleo rural</i></Label>',
         icon: "images/legends/RV_NR.png",
+        a_attr: { class: "no_checkbox" },
+        state: { selected: false },
+      },
+    ];
+
+    return data;
+  }
+
+  /**
+   * Crea y devuelve un conjunto de datos representando Areas de protección territorial APT PG2023.<br>
+   * <strong>Private method</strong>
+   * @returns {Object[]} Array de objetos representando Areas de protección territorial APT PG2023.
+   */
+  _createDataAPT2023() {
+    const data = [
+      {
+        id: "6_1",
+        text: '<Label id="tree_APT_C" style="font-size:8pt"><i>(APT-C) Áreas de Protección territorial de carreteras</i></Label>',
+        icon: "images/legends/RV_APT_C.png",
+        a_attr: { class: "no_checkbox" },
+        state: { selected: false },
+      },
+      {
+        id: "6_2",
+        text: '<Label style="font-size:8pt"><i>(APR-L) Áreas de Protección territorial de litoral</i></Label>',
+        icon: "images/legends/RV_APT_L.png",
+        a_attr: { class: "no_checkbox" },
+        state: { selected: false },
+      },
+    ];
+
+    return data;
+  }
+
+  /**
+   * Crea y devuelve un conjunto de datos representando categorías de suelo PG2023.<br>
+   * <strong>Private method</strong>
+   * @returns {Object[]} Array de objetos representando categorías de suelo.
+   */
+  _createDataAPR2023() {
+    const data = [
+      {
+        id: "5_1",
+        text: '<Label id="tree_APR-CN" style="font-size:8pt"><i>(APR-CN) Áreas de Prevención de Riesgos de Contaminación de Acuíferos</i></Label>',
+        icon: "images/legends/RV_APR_CN.png",
+        a_attr: { class: "no_checkbox" },
+        state: { selected: false },
+      },
+      {
+        id: "5_2",
+        text: '<Label style="font-size:8pt"><i>(APR-ER) Zonas de Prevención de Riesgos de Erosión</i></Label>',
+        icon: "images/legends/RV_APR_ER.png",
+        a_attr: { class: "no_checkbox" },
+        state: { selected: false },
+      },
+      {
+        id: "5_3",
+        text: '<Label style="font-size:8pt"><i>(APR-IF)Áreas de Prevención de Riesgos de Incendios Forestal</i></Label>',
+        icon: "images/legends/RV_APR_IF.png",
+        a_attr: { class: "no_checkbox" },
+        state: { selected: false },
+      },
+      {
+        id: "5_4",
+        text: '<Label style="font-size:8pt"><i>(APR-ES) Zonas de Prevención de Riesgos de Deslizamiento</i></Label>',
+        icon: "images/legends/RV_APR_ES.png",
+        a_attr: { class: "no_checkbox" },
+        state: { selected: false },
+      },
+      {
+        id: "5_5",
+        text: '<Label style="font-size:8pt"><i>(APR-IN_T500) Peligro de Retorno 500 años</i></Label>',
+        icon: "images/legends/RV_APR_IN_G.png",
+        a_attr: { class: "no_checkbox" },
+        state: { selected: false },
+      },
+      {
+        id: "5_6",
+        text: '<Label style="font-size:8pt"><i>(APR_IN_G) Planes Geomorfológicos de Inundación</i></Label>',
+        icon: "images/legends/RV_APR_IN_T500.png",
         a_attr: { class: "no_checkbox" },
         state: { selected: false },
       },
@@ -736,6 +845,7 @@ class TOC {
             //state: { checked: false, disabled: false },
             children: this._createDataCategoriasSuelo2023(),
           },
+
           {
             id: 2,
             text: "Calificaciones",
@@ -819,6 +929,28 @@ class TOC {
             data: this.mapLayers.getMapLayerByName("layerPA_ai").getLayer(),
             state: { checked: true, disabled: false, opened: true },
           },
+          {
+            id: 5,
+            text: "(APR) Areas Prevención de riesgos (PG2023)",
+            data: this.mapLayers
+              .getMapLayerByName("pg2023_rustico_apr")
+              .getLayer(),
+            icon: "images/legends/RV_APR_GRUPO.png",
+            state: { checked: false, opened: false },
+            //state: { checked: false, disabled: false },
+            children: this._createDataAPR2023(),
+          },
+          {
+            id: 6,
+            text: "(APT) Areas Protección Territorial (PG2023)",
+            data: this.mapLayers
+              .getMapLayerByName("pg2023_rustico_apt")
+              .getLayer(),
+            icon: "images/legends/RV_APT_GRUPO.png",
+            state: { checked: false, opened: false },
+            //state: { checked: false, disabled: false },
+            children: this._createDataAPT2023(),
+          },
         ],
       },
     ];
@@ -853,21 +985,22 @@ class TOC {
       }
     });
     this.htmStyleOrdenacion = `
-        <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-        
-            <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-                <td style='width:90px'> <LABEL id='label_opacidad_ordenacion' style='width:120px;padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>OPACIDAD</label></td>
-                <td>${this.htmSliderOrdenacion}</td>
-            
-            </tr> 
-         
-        </TABLE>`;
+          <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
+          
+              <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
+                  <td style='width:90px'> <LABEL id='label_opacidad_ordenacion' style='width:120px;padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>OPACIDAD</label></td>
+                  <td>${this.htmSliderOrdenacion}</td>
+              
+              </tr> 
+           
+          </TABLE>`;
   }
 
   createTreeOrdenacion() {
     const self = this;
 
-    this.htmTreeOrdenacion = `<div style='font-size:9pt;overflow:auto;padding:0px;height:417px' id="jstree_ord"></div>`;
+    this.htmTreeOrdenacion = `<div style='font-size:9pt;overflow:auto;padding:0px;height:94%' id="jstree_ord"></div>`;
+    //this.htmTreeOrdenacion = `<div style='font-size:9pt;overflow:auto;padding:0px;height:417px' id="jstree_ord"></div>`;
 
     $(function () {
       $("#html1").jstree();
@@ -947,7 +1080,7 @@ class TOC {
       $("#jstree_ord").bind("loaded.jstree", function (event, data) {
         //$("#sliderOrdenacion").slider("disable");
         /*$("#jstree_ord").jstree(true).deselect_node("root");
-				$("#jstree_ord").jstree(true).select_node(1);*/
+                  $("#jstree_ord").jstree(true).select_node(1);*/
       });
     });
   }
@@ -973,15 +1106,15 @@ class TOC {
     });
 
     this.htmStyleBaseMap = `
-        <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-        
-            <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-                <td style='width:90px'> <LABEL  style='width:120px;padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>OPACITAT</label></td>
-                <td>${this.htmSliderBaseMap}</td>
-            
-            </tr> 
-         
-        </TABLE>`;
+          <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
+          
+              <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
+                  <td style='width:90px'> <LABEL  style='width:120px;padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>OPACITAT</label></td>
+                  <td>${this.htmSliderBaseMap}</td>
+              
+              </tr> 
+           
+          </TABLE>`;
   }
 
   createControlBaseMap() {
@@ -1014,6 +1147,17 @@ class TOC {
               .addTo(self.map);
             self.mapBaseActual = self.mapLayers
               .getMapLayerByName("cartografia_imi_color")
+              .getLayer()
+              .addTo(self.map);
+          }
+          if ($("input[id='topo_pgou98']:checked").val()) {
+            self.map.removeLayer(self.mapBaseActual);
+            self.mapLayers
+              .getMapLayerByName("cartografia98")
+              .getLayer()
+              .addTo(self.map);
+            self.mapBaseActual = self.mapLayers
+              .getMapLayerByName("cartografia98")
               .getLayer()
               .addTo(self.map);
           }
@@ -1106,16 +1250,16 @@ class TOC {
               .addTo(self.map);
           }
           /*if ($("input[id='orto_pnoa_2008_10']:checked").val()) {
-            self.map.removeLayer(self.mapBaseActual);
-            self.mapLayers
-              .getMapLayerByName("pnoa_2008_10")
-              .getLayer()
-              .addTo(self.map);
-            self.mapBaseActual = self.mapLayers
-              .getMapLayerByName("pnoa_2008_10")
-              .getLayer()
-              .addTo(self.map);
-          }*/
+              self.map.removeLayer(self.mapBaseActual);
+              self.mapLayers
+                .getMapLayerByName("pnoa_2008_10")
+                .getLayer()
+                .addTo(self.map);
+              self.mapBaseActual = self.mapLayers
+                .getMapLayerByName("pnoa_2008_10")
+                .getLayer()
+                .addTo(self.map);
+            }*/
           if ($("input[id='pnoa_2008']:checked").val()) {
             self.map.removeLayer(self.mapBaseActual);
             self.mapLayers
@@ -1307,80 +1451,82 @@ class TOC {
   createBaseMap() {
     this.createControlBaseMap();
 
-    const htmSelectADMIN = `<div style='width:100%' class='controlgroup-vertical'>
-                            
-        <input type="radio" name="mapa_base" id="topo_imi_grey" checked>
-        <label for="topo_imi_grey">Topografia (Oficial) Escala grises</label>
-        <input type="radio" name="mapa_base" id="topo_imi_color" >        
-        <label for="topo_imi_color">Topografia (Oficial) Color</label>
-        <input type="radio" name="mapa_base" id="catastro" >        
-        <label for="catastro">Catastro (Oficina Virtual)</label>
-        <input type="radio" name="mapa_base" id="orto_actual" >        
-        <label for="orto_actual">(PNOA) OrtoImagen mas actual</label>
-        <input type="radio" name="mapa_base" id="sigpac">        
-        <label for="sigpac">SIGPAC (1997-2003)</label> 
-        <input type="radio" name="mapa_base" id="ib_2001" >        
-        <label for="ib_2001">Foto aerea IB (2001)</label>     
-        <input type="radio" name="mapa_base" id="olistat" >        
-        <label for="olistat">OLISTAT (1997-1998)</label> 
-        <input type="radio" name="mapa_base" id="mallorca_1995" >        
-        <label for="mallorca_1995">Foto aerea Mallorca (1995)</label>      
-        <input type="radio" name="mapa_base" id="nacional_1981_1986" >        
-        <label for="nacional_1981_1986">Vuelo Nacional (1981-1986)</label>    
-        <input type="radio" name="mapa_base" id="orto_ams_1956" >        
-        <label for="orto_ams_1956">Vuelo Americano Serie B (1956-1957)</label>                   
-         
-      </div>
-   `;
+    const htmSelectADMIN = `<div style='width:100%;height:auto' class='controlgroup-vertical'>
+                              
+          <input type="radio" name="mapa_base" id="topo_imi_grey" checked>
+          <label for="topo_imi_grey">Topografia (Oficial) Escala grises</label>
+          <input type="radio" name="mapa_base" id="topo_imi_color" >        
+          <label for="topo_imi_color">Topografia (Oficial) Color</label>
+          <input type="radio" name="mapa_base" id="topo_pgou98" >        
+          <label for="topo_pgou98">Topografia (PGOU98 Oficial) 1/1000</label>
+          <input type="radio" name="mapa_base" id="catastro" >        
+          <label for="catastro">Catastro (Oficina Virtual)</label>
+          <input type="radio" name="mapa_base" id="orto_actual" >        
+          <label for="orto_actual">(PNOA) OrtoImagen mas actual</label>
+          <input type="radio" name="mapa_base" id="sigpac">     
+          <label for="sigpac">SIGPAC (1997-2003)</label> 
+          <input type="radio" name="mapa_base" id="ib_2001" >        
+          <label for="ib_2001">Foto aerea IB (2001)</label>     
+          <input type="radio" name="mapa_base" id="olistat" >        
+          <label for="olistat">OLISTAT (1997-1998)</label> 
+          <input type="radio" name="mapa_base" id="mallorca_1995" >        
+          <label for="mallorca_1995">Foto aerea Mallorca (1995)</label>      
+          <input type="radio" name="mapa_base" id="nacional_1981_1986" >        
+          <label for="nacional_1981_1986">Vuelo Nacional (1981-1986)</label>    
+          <input type="radio" name="mapa_base" id="orto_ams_1956" >        
+          <label for="orto_ams_1956">Vuelo Americano Serie B (1956-1957)</label>                  
+           
+        </div>
+     `;
 
     /*
-    <input type="radio" name="mapa_base" id="orto_pnoa_2008_10" >        
-        <label for="orto_pnoa_2008_10">(PNOA) OrtoImage 2008 (10cm)</label>  
-  */
+      <input type="radio" name="mapa_base" id="orto_pnoa_2008_10" >        
+          <label for="orto_pnoa_2008_10">(PNOA) OrtoImage 2008 (10cm)</label>  
+    */
 
-    const htmPNOA = `<div style='width:100%' class='controlgroup-vertical'>
+    const htmPNOA = `<div style='width:100%;height:auto' class='controlgroup-vertical'>
+  
+          <input type="radio" name="mapa_base" id="pnoa_2021" >
+          <label for="pnoa_2021">(PNOA) OrtoImage 2021 (25cm) </label>    
+          <input type="radio" name="mapa_base" id="pnoa_2018" >
+          <label for="pnoa_2018">(PNOA) OrtoImage 2018 (15cm) </label>      
+          <input type="radio" name="mapa_base" id="pnoa_2015" >
+          <label for="pnoa_2015">(PNOA) OrtoImage 2015 (25cm) </label>
+          <input type="radio" name="mapa_base" id="pnoa_2012" >
+          <label for="pnoa_2012">(PNOA) OrtoImage 2012 (25cm) </label>
+          <input type="radio" name="mapa_base" id="pnoa_2010" >
+          <label for="pnoa_2010">(PNOA) OrtoImage 2010 (25cm) </label>
+          <input type="radio" name="mapa_base" id="pnoa_2008_10" >        
+          <label for="pnoa_2008_10">(PNOA) OrtoImage 2008 (10cm)</label>  
+          <input type="radio" name="mapa_base" id="pnoa_2008" >
+          <label for="pnoa_2008">(PNOA) OrtoImage 2008 (50cm) </label>
+          <input type="radio" name="mapa_base" id="pnoa_2006" >
+          <label for="pnoa_2006">(PNOA) OrtoImage 2006 (50cm) </label>
+            
+        </div>  
+        `;
 
-        <input type="radio" name="mapa_base" id="pnoa_2021" >
-        <label for="pnoa_2021">(PNOA) OrtoImage 2021 (25cm) </label>    
-        <input type="radio" name="mapa_base" id="pnoa_2018" >
-        <label for="pnoa_2018">(PNOA) OrtoImage 2018 (15cm) </label>      
-        <input type="radio" name="mapa_base" id="pnoa_2015" >
-        <label for="pnoa_2015">(PNOA) OrtoImage 2015 (25cm) </label>
-        <input type="radio" name="mapa_base" id="pnoa_2012" >
-        <label for="pnoa_2012">(PNOA) OrtoImage 2012 (25cm) </label>
-        <input type="radio" name="mapa_base" id="pnoa_2010" >
-        <label for="pnoa_2010">(PNOA) OrtoImage 2010 (25cm) </label>
-        <input type="radio" name="mapa_base" id="pnoa_2008_10" >        
-        <label for="pnoa_2008_10">(PNOA) OrtoImage 2008 (10cm)</label>  
-        <input type="radio" name="mapa_base" id="pnoa_2008" >
-        <label for="pnoa_2008">(PNOA) OrtoImage 2008 (50cm) </label>
-        <input type="radio" name="mapa_base" id="pnoa_2006" >
-        <label for="pnoa_2006">(PNOA) OrtoImage 2006 (50cm) </label>
-          
-      </div>  
+    const htmSelectGoogle = `<div style='width:100%;height:auto' class='controlgroup-vertical'>
+                             
+          <input type="radio" name="mapa_base" id="google_streets" >
+          <label for="google_streets">Google Streets</label>
+          <input type="radio" name="mapa_base" id="google_satellite" >        
+          <label for="google_satellite">Google Satellite</label>
+          <input type="radio" name="mapa_base" id="google_hybrid" >        
+          <label for="google_hybrid">Google Hybrid</label>
+          <input type="radio" name="mapa_base" id="google_terrain" >        
+          <label for="google_terrain">Google Terrain</label>
+          <input type="radio" name="mapa_base" id="google_traffic" >        
+          <label for="google_traffic">Google Traffic</label>
+          <input type="radio" name="mapa_base" id="cartodb_light_all" >        
+          <label for="cartodb_light_all">Cartodb Light</label>
+          <input type="radio" name="mapa_base" id="openstreetmap" >        
+          <label for="openstreetmap">OpenStreetMap</label>
+          <input type="radio" name="mapa_base" id="openstreetmap_gray" >        
+          <label for="openstreetmap_gray">OpenStreetMap (Escala grises)</label>
+           
+        </div>
       `;
-
-    const htmSelectGoogle = `<div style='width:100%' class='controlgroup-vertical'>
-                           
-        <input type="radio" name="mapa_base" id="google_streets" >
-        <label for="google_streets">Google Streets</label>
-        <input type="radio" name="mapa_base" id="google_satellite" >        
-        <label for="google_satellite">Google Satellite</label>
-        <input type="radio" name="mapa_base" id="google_hybrid" >        
-        <label for="google_hybrid">Google Hybrid</label>
-        <input type="radio" name="mapa_base" id="google_terrain" >        
-        <label for="google_terrain">Google Terrain</label>
-        <input type="radio" name="mapa_base" id="google_traffic" >        
-        <label for="google_traffic">Google Traffic</label>
-        <input type="radio" name="mapa_base" id="cartodb_light_all" >        
-        <label for="cartodb_light_all">Cartodb Light</label>
-        <input type="radio" name="mapa_base" id="openstreetmap" >        
-        <label for="openstreetmap">OpenStreetMap</label>
-        <input type="radio" name="mapa_base" id="openstreetmap_gray" >        
-        <label for="openstreetmap_gray">OpenStreetMap (Escala grises)</label>
-         
-      </div>
-    `;
 
     $(function () {
       $("#tabsBase").tabs({
@@ -1393,22 +1539,22 @@ class TOC {
     //this.createControlBaseMap();
 
     this.htmlTabsBase = `<div style='padding:0px' id="tabsBase">
-        <ul>
-          <li><a href="#admin">ADMIN</a></li>      
-          <li><a href="#pnoa">PNOA</a></li>      
-          <li><a href="#google">GOOGLE / OTROS</a></li>              
-        </ul>
-        <div id="admin">
-          ${htmSelectADMIN}        
-        </div>     
-        <div id="pnoa">
-          ${htmPNOA}               
-        </div>   
-        <div id="google">
-          ${htmSelectGoogle}               
-        </div>         
-    </div>        
-    `;
+          <ul>
+            <li><a href="#admin">ADMIN</a></li>      
+            <li><a href="#pnoa">PNOA</a></li>      
+            <li><a href="#google">GOOGLE / OTROS</a></li>              
+          </ul>
+          <div id="admin" style='height:auto'>
+            ${htmSelectADMIN}        
+          </div>     
+          <div id="pnoa" style='height:auto'>
+            ${htmPNOA}               
+          </div>   
+          <div id="google" style='height:auto'>
+            ${htmSelectGoogle}               
+          </div>         
+      </div>        
+      `;
   }
 
   downloadSelectedConsultas() {
@@ -1446,20 +1592,20 @@ class TOC {
 
   createStyleConsultas() {
     this.htmlStyleConsultas = `
-        <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
-        
-            <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-                <td> <LABEL  style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>COLOR</label></td>
-                <td>${this.htmColorConsultas}</td>
-            
-            </tr> 
-            <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
-                <td> <LABEL  style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>OPACITAT</label></td>
-                <td>${this.htmSliderConsultas}</td>
-            
-            </tr> 
-         
-        </TABLE>`;
+          <TABLE style='padding:3px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:10px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
+          
+              <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
+                  <td> <LABEL  style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>COLOR</label></td>
+                  <td>${this.htmColorConsultas}</td>
+              
+              </tr> 
+              <tr align="left" bgcolor="white" style='padding:0px;font-size:9.5px;font-family:Arial;color:#000000;height:20px'>
+                  <td> <LABEL  style='padding:3px;font-size:8pt;font-family:Arial;color:#000000;'>OPACITAT</label></td>
+                  <td>${this.htmSliderConsultas}</td>
+              
+              </tr> 
+           
+          </TABLE>`;
   }
 
   generateIcon(iconColor) {

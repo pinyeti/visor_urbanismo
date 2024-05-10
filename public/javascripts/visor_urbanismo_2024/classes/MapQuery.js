@@ -69,10 +69,10 @@ class MapQuery {
     this.num_exp_PJ = 0;
 
     // Cierra el popup si ya está abierto.
-    if (this.popup != null) {
+    /*if (this.popup != null) {
       this.popup.close();
       console.log("close popup");
-    }
+    }*/
 
     // Obtiene las coordenadas x e y de e.latlng.utm().
     //const { x, y } = e.latlng.utm();
@@ -81,13 +81,17 @@ class MapQuery {
     const arrayTablas = [
       "parcela_su_ru_calles",
       "pg_rustic",
-      //"suelo_rustico",
+      "pg_rustico_riesgos",
+      "pg_rustico_apt",
+      "suelo_rustico",
       "pg_zou",
       "unidad_ejecucion",
+      "conflictos_pgou98_pg2023",
       "pri_unitat_actuacio",
       "pg_actuaciones_suelo_urbano",
       "pg_actuaciones_aisladas",
       "zona_residencial_1",
+      "zona_residencial_no_edificable",
       "zona_secundaria",
       "zona_terciaria",
       "zonasf",
@@ -183,7 +187,8 @@ class MapQuery {
 
     if (html_expedientes !== "") {
       html_expedientes =
-        `<div id="popup_historico_exp" style="background: linear-gradient(to bottom, #c44f39, #660000); border: 1px solid #355c35; border-radius: 5px;  padding: 7px 14px; color: white; font-family: Arial BLACK;font-size: 12px;box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);">HISTORICO EXPEDIENTES</div><br>` +
+        `<div id="popup_historico_exp" style="background: linear-gradient(to bottom, #c44f39, #660000); border: 1px solid #355c35; border-radius: 5px;  padding: 7px 14px; color: white; font-family: Arial BLACK;font-size: 12px;box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);">HISTORICO EXPEDIENTES</div>
+        <h4>Documentación y accesos facilitados por el Departamento de Planeamiento para su publicación.</h4>` +
         html_expedientes;
     }
 
@@ -217,9 +222,9 @@ class MapQuery {
     const self = this; // Almacena una referencia a 'this'
 
     this.map.spin(false);
-    this.i18nHandler.changeLanguage(
+    /*this.i18nHandler.changeLanguage(
       this.languageControl.options.currentLanguage
-    );
+    );*/
 
     /**
      * Gestiona eventos y configuraciones adicionales.
@@ -468,6 +473,25 @@ class MapQuery {
           btFicha_RSD_PGOU98.addEventListener("click", async function () {
             var fid = btFicha_RSD_PGOU98.getAttribute("data-fid");
             var clase = btFicha_RSD_PGOU98.getAttribute("data-clase");
+
+            const entidad = new FeatureUrbanistic(clase, fid);
+            await entidad.initialize();
+            const formParamRSD = new Form_PARAMETROS_RSD_PGOU98(
+              entidad.getFeature().properties.codigo,
+              entidad.getTable(),
+              self.sigduMap
+            );
+            await formParamRSD.initialize();
+            await formParamRSD.createForm();
+          });
+        }
+
+        // Ficha RSD_NE_PGOU98
+        var btFicha_RSD_NE_PGOU98 = document.getElementById("btFicha_RSD_NE_PGOU98");
+        if (btFicha_RSD_NE_PGOU98) {
+          btFicha_RSD_NE_PGOU98.addEventListener("click", async function () {
+            var fid = btFicha_RSD_NE_PGOU98.getAttribute("data-fid");
+            var clase = btFicha_RSD_NE_PGOU98.getAttribute("data-clase");
 
             const entidad = new FeatureUrbanistic(clase, fid);
             await entidad.initialize();
@@ -846,11 +870,20 @@ class MapQuery {
       case "pg_rustic":
         html = this.createHTML_categorias_rustico_PG2023(geojsonRES);
         break;
+      case "pg_rustico_riesgos":
+        html = this.createHTML_rustico_APR_PG2023(geojsonRES);
+        break;
+      case "pg_rustico_apt":
+        html = this.createHTML_rustico_APT_PG2023(geojsonRES);
+        break;
       case "suelo_rustico":
         html = this.createHTML_suelo_rustico_PGOU98(geojsonRES);
         break;
       case "zona_residencial_1":
         html = this.createHTML_zona_residencial(geojsonRES);
+        break;
+      case "zona_residencial_no_edificable":
+        html = this.createHTML_zona_residencial_no_edificable(geojsonRES);
         break;
       case "zona_secundaria":
         html = this.createHTML_zona_secundaria(geojsonRES);
@@ -957,6 +990,9 @@ class MapQuery {
         break;
       case "unidad_ejecucion":
         html = this.createHTML_unidad_ejecucion(geojsonRES);
+        break;
+      case "conflictos_pgou98_pg2023":
+        html = this.createHTML_conflictos_pgou98_pg2023(geojsonRES);
         break;
       case "api":
         html = this.createHTML_area_planeamiento_incorporado(geojsonRES);
@@ -2198,6 +2234,24 @@ class MapQuery {
               <td COLSPAN="2"><LABEL style='font-size:8pt;font-family:Arial;color:BLACK'>${calle}</td>                  
           </tr>`;
       }
+      htmlr =
+          htmlr +
+          `
+          <tr  align="center"  style='background-color:#e6e6e6;padding:3px;font-size:8.5pt;font-family:Arial Black;color:#4d4d4d;height:22px'  >
+            <td colspan="2">
+              <button id="btNormativa_SU_PG2023" 
+                style="padding:3px;font-size:9pt;font-family:Arial Black" 
+                class="ui-button ui-widget ui-corner-all" 
+                title="Calificación detallada de la parcela"
+                data-fid="${geojson.features[r].properties.fid}" 
+                data-table="parcela_su_ru_calles"
+                data-accion="parcela_info">
+                <i class="fa fa-info-circle"></i> Calificación de la parcela
+              </button>
+            </td>  
+                    
+          </tr>`;
+      
     }
     htmlr = htmlr + `</TABLE><br>`;
 
@@ -2256,7 +2310,17 @@ class MapQuery {
           </tr>
           <tr align="center"  style='background-color:white;padding:3px;font-size:8.5pt;font-family:Arial Black;color:#660000;height:22px'>  
               <td colspan="2"> 
-                  <button id="popup_boton_normativa" style="padding:3px;font-size:9pt;font-family:Arial Black" class="ui-button ui-widget ui-corner-all" title="Información normativa asociada" OnClick="createNormativa('suelo_rustico','${geojson.features[r].properties.fid}')"><i class="fa fa-info-circle"></i> Normativa</button>
+                <!--  <button id="popup_boton_normativa" style="padding:3px;font-size:9pt;font-family:Arial Black" class="ui-button ui-widget ui-corner-all" title="Información normativa asociada" OnClick="createNormativa('suelo_rustico','${geojson.features[r].properties.fid}')"><i class="fa fa-info-circle"></i> Normativa</button>-->
+                
+                <button id="btNormativa_subzonas_rustico_PGOU98" 
+                  style="padding:3px;font-size:9pt;font-family:Arial Black" 
+                  class="ui-button ui-widget ui-corner-all" 
+                  title="Información normativa asociada"
+                  data-fid="${geojson.features[r].properties.fid}" 
+                  data-table="suelo_rustico"
+                  data-accion="normativa">
+                  <i class="fa fa-info-circle"></i> Normativa
+                </button>
               </td>      
           </tr>
           `;
@@ -2329,7 +2393,7 @@ class MapQuery {
         </tr>
         <tr align="center"  style='background-color:white;padding:3px;font-size:8.5pt;font-family:Arial Black;color:#660000;height:22px'>  
             <td colspan="2"> 
-                 <a href="${ruta}" target="_blank" class="ui-button ui-widget ui-corner-all" title="Fitxa aprobada" style="padding:3px;font-size:9pt;font-family:Arial Black"><i class="fa fa-info-circle"></i> Ficha</a>
+                 <!--<a href="${ruta}" target="_blank" class="ui-button ui-widget ui-corner-all" title="Fitxa aprobada" style="padding:3px;font-size:9pt;font-family:Arial Black"><i class="fa fa-info-circle"></i> Ficha</a>-->
 
                  <button id="btNormativa_ZOU_PG2023" 
                   style="padding:3px;font-size:9pt;font-family:Arial Black" 
@@ -3154,6 +3218,52 @@ class MapQuery {
 
   // Creación HTML de Unidades de ejecución
 
+  async createHTML_conflictos_pgou98_pg2023(geojson) {
+    var html = "";
+
+    html =
+      html +
+      `<TABLE  style='margin-top: 0px;margin-bottom: 0px;margin-right: 0px;margin-left: 0px;padding:0px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:50px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
+        <tr  align="center"  style='background-color:#4878b7;padding:3px;font-size:8.5pt;font-family:Arial BLACK;color:white;height:22px'>
+            <td colspan="2">CONFLICTOS ENTRE PGOU98/PG2023</td>                   
+        </tr >`;
+
+    for (var r = 0; r < geojson.features.length; r++) {
+      let ruta =
+      window.location.protocol +
+      "//" +
+      window.location.host +
+      "/opg/conflictos/" +
+      geojson.features[r].properties.codigo +
+      ".pdf";
+
+      let titulo = ``;
+      if (geojson.features[r].properties.titulo)
+        titulo = geojson.features[r].properties.titulo.toUpperCase();
+      else titulo = `-`;
+
+      html =
+        html +
+        ` 
+        <tr align="left"  style='text-align: justify;background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>         
+            <td><LABEL style='font-size:8pt;font-family:Arial;color:BLACK'>${geojson.features[r].properties.observaciones}</td>                  
+        </tr>
+        <tr align="center"  style='background-color:white;padding:3px;font-size:8.5pt;font-family:Arial Black;color:#660000;height:22px'>  
+            <td colspan="2"> 
+                <a href="${ruta}" target="_blank" class="ui-button ui-widget ui-corner-all" title="Ficha UE" style="padding:3px;font-size:9pt;font-family:Arial Black"><i class="fa fa-info-circle"></i> Ficha UE</a>
+
+            </td>      
+        </tr>
+       
+    `;
+    }
+    html = html + `</TABLE><br>`;
+
+    return html;
+  }
+
+  // Creación HTML de Unidades de ejecución
+
   async createHTML_unidad_ejecucion(geojson) {
     var html = "";
 
@@ -3367,6 +3477,217 @@ class MapQuery {
     }
 
     return html;
+  }
+
+  // Creación HTML de rústico APR PG2023
+
+  async createHTML_rustico_APR_PG2023(geojson) {
+    var htmlr = "";
+
+    for (var r = 0; r < geojson.features.length; r++) {
+      var back_color = "213,180,60,0.5";
+      var calificacion = geojson.features[r].properties.subcategoria;
+      var calif_desc = geojson.features[r].properties.subcategoria_es;
+      var descr = "";
+      var color = "#4d4d4d";
+      switch (geojson.features[r].properties.subcategoria) {
+        case "APR-CN":
+          back_color = "rgba(104, 190, 219, 0.4)";
+          color = "black";
+          descr = "Sòl Rústic Protegit";
+          break;
+        case "APR-ER":
+          back_color = "rgba(172, 133, 26, 0.4)";
+          color = "black";
+          descr = "Sòl Rústic Protegit";
+          break;
+        case "APR-ES":
+          back_color = "rgba(210, 195, 33, 0.4)";
+          color = "black";
+          descr = "Sòl Rústic Protegit";
+          break;
+        case "APR-IF":
+          back_color = "rgba(235, 101, 80, 0.4)";
+          color = "black";
+          descr = "Sòl Rústic Protegit";
+          break;
+        case "APR-IN_G":
+          case "APR-IN_T500":
+          back_color = "rgba(83, 130, 215, 0.4)";
+          color = "black";
+          descr = "Sòl Rústic Protegit";
+          break;
+       
+        default:
+          back_color = "213,180,60,0.5";
+          break;
+      }
+
+      htmlr =
+        htmlr +
+        `<TABLE style='margin-top: 0px;margin-bottom: 0px;margin-right: 0px;margin-left: 0px;padding:0px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:50px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
+        <tr  align="center"  style='background-color:${back_color};color:${color};padding:3px;font-size:8.5pt;font-family:Arial Black;height:22px'>
+            <td colspan="2">(${geojson.features[r].properties.categoria}) ${geojson.features[r].properties.categoria_es} (PG2023)</td>                   
+        </tr >
+        <tr align="center"  style='background-color:white;padding:3px;font-size:8.5pt;font-family:Arial Black;color:#660000;height:22px'>
+            <td colspan="2">${geojson.features[r].properties.calificacion_}</td>                   
+        </tr>`;
+
+      if (
+        geojson.features[r].properties.nom_ != "-" &&
+        geojson.features[r].properties.nom_ != null
+      ) {
+        htmlr =
+          htmlr +
+          `<tr align="center"  style='background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>
+                   
+            <td  colspan="2"><LABEL style='font-size:8pt;font-family:Arial black;color:GREY'>${geojson.features[r].properties.nom_}</td>                  
+        </tr>
+
+        `;
+      }
+
+      if (
+        geojson.features[r].properties.tipo_es != "-" &&
+        geojson.features[r].properties.tipo_es != null
+      ) {
+        htmlr =
+          htmlr +
+          `<tr align="center"  style='background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>
+                   
+            <td  colspan="2"><LABEL style='font-size:8pt;font-family:Arial black;color:GREY'>(${geojsonRES.features[r].properties.tipo_es})</td>                  
+        </tr>
+
+        `;
+      }
+
+      htmlr =
+        htmlr +
+        `
+          <tr align="left"  style='background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>
+              <td><LABEL id="popup_titulo_calif" style='font-size:8pt;font-family:Arial Black;color:BLACK'>CALIFICACIÓN</LABEL></td>  
+              <td><LABEL style='font-size:8pt;font-family:Arial;color:BLACK'>${calificacion}</td>                  
+          </tr>
+          <tr align="left"  style='background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>
+              <td><LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>DESCRIPCIÓN</LABEL></td>  
+              <td><LABEL style='font-size:8pt;font-family:Arial;color:BLACK'>${calif_desc}</td>                  
+          </tr>
+          <tr align="center"  style='background-color:white;padding:3px;font-size:8.5pt;font-family:Arial Black;color:#660000;height:22px'>
+              <td colspan="2">
+                <button id="btNormativa_SR_PG2023" 
+                  style="padding:3px;font-size:9pt;font-family:Arial Black" 
+                  class="ui-button ui-widget ui-corner-all" 
+                  title="Información normativa asociada"
+                  data-fid="${geojson.features[r].properties.fid}" 
+                  data-table="pg_rustico_riesgos"
+                  data-accion="normativa">
+                  <i class="fa fa-info-circle"></i> Normativa
+                </button>
+            </td>  
+          </tr>
+          
+      `;
+    }
+    htmlr = htmlr + `</TABLE><BR>`;
+
+    return htmlr;
+  }
+
+  async createHTML_rustico_APT_PG2023(geojson) {
+    var htmlr = "";
+
+    for (var r = 0; r < geojson.features.length; r++) {
+      var back_color = "213,180,60,0.5";
+      var calificacion = geojson.features[r].properties.subcategoria;
+      var calif_desc = geojson.features[r].properties.subcategoria_es;
+      var descr = "";
+      var color = "#4d4d4d";
+      switch (geojson.features[r].properties.subcategoria) {
+        case "APT-C":
+        case "APT-C-ZD":
+          back_color = "rgba(159, 35, 35, 0.8)"; 
+          color = "white";
+          descr = "Sòl Rústic Protegit";
+          break;
+        case "APT-L":
+          back_color = "rgba(231, 138, 138, 0.5)";
+          color = "black";
+          descr = "Sòl Rústic Protegit";
+          break;
+       
+        default:
+          back_color = "213,180,60,0.5";
+          break;
+      }
+
+      htmlr =
+        htmlr +
+        `<TABLE style='margin-top: 0px;margin-bottom: 0px;margin-right: 0px;margin-left: 0px;padding:0px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:50px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
+        <tr  align="center"  style='background-color:${back_color};color:${color};padding:3px;font-size:8.5pt;font-family:Arial Black;height:22px'>
+            <td colspan="2">(${geojson.features[r].properties.categoria}) ${geojson.features[r].properties.categoria_es} (PG2023)</td>                   
+        </tr >
+        <tr align="center"  style='background-color:white;padding:3px;font-size:8.5pt;font-family:Arial Black;color:#660000;height:22px'>
+            <td colspan="2">${geojson.features[r].properties.calificacion_}</td>                   
+        </tr>`;
+
+      if (
+        geojson.features[r].properties.nom_ != "-" &&
+        geojson.features[r].properties.nom_ != null
+      ) {
+        htmlr =
+          htmlr +
+          `<tr align="center"  style='background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>
+                   
+            <td  colspan="2"><LABEL style='font-size:8pt;font-family:Arial black;color:GREY'>${geojson.features[r].properties.nom_}</td>                  
+        </tr>
+
+        `;
+      }
+
+      if (
+        geojson.features[r].properties.tipo_es != "-" &&
+        geojson.features[r].properties.tipo_es != null
+      ) {
+        htmlr =
+          htmlr +
+          `<tr align="center"  style='background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>
+                   
+            <td  colspan="2"><LABEL style='font-size:8pt;font-family:Arial black;color:GREY'>(${geojsonRES.features[r].properties.tipo_es})</td>                  
+        </tr>
+
+        `;
+      }
+
+      htmlr =
+        htmlr +
+        `
+          <tr align="left"  style='background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>
+              <td><LABEL id="popup_titulo_calif" style='font-size:8pt;font-family:Arial Black;color:BLACK'>CALIFICACIÓN</LABEL></td>  
+              <td><LABEL style='font-size:8pt;font-family:Arial;color:BLACK'>${calificacion}</td>                  
+          </tr>
+          <tr align="left"  style='background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>
+              <td><LABEL style='font-size:8pt;font-family:Arial Black;color:BLACK'>DESCRIPCIÓN</LABEL></td>  
+              <td><LABEL style='font-size:8pt;font-family:Arial;color:BLACK'>${calif_desc}</td>                  
+          </tr>
+          <tr align="center"  style='background-color:white;padding:3px;font-size:8.5pt;font-family:Arial Black;color:#660000;height:22px'>
+              <td colspan="2">
+                <button id="btNormativa_SR_PG2023" 
+                  style="padding:3px;font-size:9pt;font-family:Arial Black" 
+                  class="ui-button ui-widget ui-corner-all" 
+                  title="Información normativa asociada"
+                  data-fid="${geojson.features[r].properties.fid}" 
+                  data-table="pg_rustico_apt"
+                  data-accion="normativa">
+                  <i class="fa fa-info-circle"></i> Normativa
+                </button>
+            </td>  
+          </tr>
+          
+      `;
+    }
+    htmlr = htmlr + `</TABLE><BR>`;
+
+    return htmlr;
   }
 
   // Creación HTML de categorias rústico PG2023
@@ -3720,6 +4041,7 @@ class MapQuery {
           tipo_zona = "RESIDENCIAL/TERCIARIO (VE) (PGOU98)";
           break;
         case "E":
+        case "B":
           back_color = "234,207,195,0.9";
           tipo_zona = "RESIDENCIAL (VE) (PGOU98)";
           break;
@@ -3987,6 +4309,89 @@ class MapQuery {
 
     return htmlr;
   }
+
+  // Creación HTML de Zona Residencial
+
+  async createHTML_zona_residencial_no_edificable(geojson) {
+    var htmlr = "";
+    for (var r = 0; r < geojson.features.length; r++) {
+      var back_color = "213,180,60,0.5";
+      var tipo_zona = "RESIDENCIAL";
+
+      const agrupacion=geojson.features[r].properties.codigo.substring(0, 1);
+
+      switch (agrupacion) {
+        case "A":
+        case "B":
+        case "C":
+        case "D":
+        case "E":
+        case "G":
+        case "H":
+        case "K":
+          back_color = "234,207,195,0.9";
+          tipo_zona = "RESIDENCIAL PLURIFAMILIAR (PGOU98)";
+          break;
+        case "I":
+        case "J":
+          back_color = "255,255,204,1";
+          tipo_zona = "RESIDENCIAL UNIFAMILIAR (PGOU98)";
+          break;
+        default:
+          back_color = "213,180,60,0.3";
+          break;
+      }
+
+      const botonFicha = `
+        <button id="btFicha_RSD_NE_PGOU98" 
+          style="padding:3px;font-size:9pt;font-family:Arial Black" 
+          class="ui-button ui-widget ui-corner-all" 
+          title="Ficha parametros y condiciones de edificación"
+          data-fid="${geojson.features[r].properties.fid}" 
+          data-clase="RSD_NE_PGOU98">
+          <i class="fa fa-info-circle"></i> Ficha
+        </button>
+				`;
+
+      htmlr =
+        htmlr +
+        `<TABLE style='margin-top: 0px;margin-bottom: 0px;margin-right: 0px;margin-left: 0px;padding:0px;font-size:9px;font-family:Arial;color:#000000;width:100%;height:50px'  BORDER=0  bgcolor="#cfd7e7" BORDERCOLOR="grey" CELLPADDING=3 CELLSPACING=1>
+	 
+		<thead  align="center"  style='background-color:rgb(${back_color});padding:3px;font-size:8.5pt;font-family:Arial Black;color:#4d4d4d;height:22px'>
+				<td colspan="2">${tipo_zona}</td>                   
+		</thead >`;
+
+      htmlr =
+        htmlr +
+        `
+				<tr align="left"  style='background-color:white;padding:3px;font-size:7.7pt;font-family:Arial Black;color:#660000;height:22px'>
+						<td><LABEL id="popup_titulo_calif" style='font-size:8pt;font-family:Arial Black;color:BLACK'>CALIFICACIÓN</LABEL></td>  
+						<td><LABEL style='font-size:8pt;font-family:Arial;color:BLACK'>${geojson.features[r].properties.codigo}</td>                  
+				</tr>
+				
+				<tr align="center"  style='background-color:white;padding:3px;font-size:8.5pt;font-family:Arial Black;color:#660000;height:22px'>
+				
+						<td colspan="2"> 
+								${botonFicha}
+								<button id="btNormativa_RSD_NE_PGOU98" 
+                  style="padding:3px;font-size:9pt;font-family:Arial Black" 
+                  class="ui-button ui-widget ui-corner-all" 
+                  title="Información normativa asociada"
+                  data-fid="${geojson.features[r].properties.fid}" 
+                  data-table="zona_residencial_no_edificable"
+                  data-accion="normativa">
+                  <i class="fa fa-info-circle"></i> Normativa
+                </button>
+						</td>  
+				</tr>
+				
+		`;
+    }
+    htmlr = htmlr + `</TABLE><BR>`;
+
+    return htmlr;
+  }
+
 
   // Creación HTML de Equipamientos PRI
 

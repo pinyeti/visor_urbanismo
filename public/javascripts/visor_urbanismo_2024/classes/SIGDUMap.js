@@ -12,6 +12,14 @@ class SIGDUMap {
    * @param {Object} opciones - Configuraciones opcionales para el mapa.
    */
   constructor(contenedorMapa, opciones) {
+    $("#dialog-message").html(
+      '<div class="dialog-center">' +
+        "<h5>La información facilitada por este visor carece de valor legal, no supliendo la documentación contenida en los correspondientes expedientes de Urbanismo.</h5>" +
+        
+        '<h1><img src="https://sigdu-urbanismo.net/opg/SIGDU_VISOR.jpg" alt="Logo del Servicio de Innovación y Gestión de Datos de Urbanismo Ajuntament de Palma" class="logo_SIGDU" ></h1>' +
+        "</div>"
+    );
+
     this.map = L.map(contenedorMapa, {
       zoomControl: opciones && opciones.zoomControl ? false : true,
       center: [39.57951, 2.68745],
@@ -48,7 +56,7 @@ class SIGDUMap {
     this.setFullScreenControl();
     this.setbrowserPrintControl();
     this.setDeselectionControl();
-    this.setLocateControl();
+    //this.setLocateControl();
     this.infoButton = this.setInfoControl();
     this.setMeasuredControl();
     this.languageControl = this.setLanguageControl();
@@ -58,7 +66,7 @@ class SIGDUMap {
 
     this.createQueryPG();
     this.createQueryEXP();
-    //this.createQueryEXP_Sedipualba();
+    this.createQueryEXP_Sedipualba();
     this.createQuerySEARCH();
 
     const self = this;
@@ -101,19 +109,29 @@ class SIGDUMap {
       duration: 3000 // Duración en pantalla
     }).showToast();*/
 
-    $("#dialog-message").html(
+    /*$("#dialog-message").html(
       '<div class="dialog-center">' +
         "<h5>La información mostrada por este visor urbanístico carece de valor legal, no reemplazando el contenido de los expedientes administrativos tramitados.</h5>" +
         "<p>AREA D´URBANISME, HABITATGE I PROJECTES ESTRATEGICS</p>" +
         "<p>Servei d´Innovació i Gestió de Dades Urbanistics</p>" +
-        '<img src="https://sigdu-urbanismo.net/opg/SIGDU_logo_H3.png" alt="Logo del Servicio de Innovación y Gestión de Datos de Urbanismo Ajuntament de Palma" class="logo_SIGDU">' +
-        '<br><img src="https://sigdu-urbanismo.net/opg/escudo.jpg" alt="Ajuntament de Palma" class="logo_AJT"><br>' +
+        '<img src="https://sigdu-urbanismo.net/opg/SIGDU_VISOR.jpg" alt="Logo del Servicio de Innovación y Gestión de Datos de Urbanismo Ajuntament de Palma" class="logo_SIGDU" >' +
+        '<br><img src="https://sigdu-urbanismo.net/opg/escudo.jpg"  alt="Ajuntament de Palma" class="logo_AJT"><br>' +
         '<!--<label><input type="checkbox" id="dont-show-again"> No mostrar este mensaje de nuevo</label>-->' +
         "</div>"
-    );
+    );*/
+
+    /*$("#dialog-message").html(
+      '<div class="dialog-center">' +
+        "<h5>La información mostrada por este visor urbanístico carece de valor legal, no reemplazando el contenido de los expedientes administrativos tramitados.</h5>" +
+        
+        '<h1><img src="https://sigdu-urbanismo.net/opg/SIGDU_VISOR.jpg" alt="Logo del Servicio de Innovación y Gestión de Datos de Urbanismo Ajuntament de Palma" class="logo_SIGDU" ></h1>' +
+        "</div>"
+    );*/
+
 
     $(function () {
       $("#dialog-message").dialog({
+        title: "VISOR URBANISMO - PALMA",
         modal: true,
         width: 500, // Establece el ancho a 500px
         height: 425, // Establece la altura a 400px
@@ -150,7 +168,34 @@ class SIGDUMap {
       }
     });*/
 
+    /*const sel=this;
+     // Espera a que el mapa se inicialice y renderice
+     this.map.whenReady(function() {
+      // Obtiene las dimensiones del contenedor del mapa
+      var mapContainer = self.map.getContainer();
+      var rect = mapContainer.getBoundingClientRect();
+
+      // Calcula la posición de la esquina superior derecha
+      var x = rect.right - 5; // 10px hacia adentro desde el borde derecho
+      var y = rect.top + 5;   // 10px hacia abajo desde el borde superior
+
+      // Crea un evento de clic
+      var clickEvent = new MouseEvent('click', {
+          view: window,
+          bubbles: true,
+          cancelable: true,
+          clientX: x,
+          clientY: y
+      });
+
+      // Dispara el evento de clic
+      mapContainer.dispatchEvent(clickEvent);
+      console.log("click")
+  });*/
+
+    
     this.write_data_user();
+    
   }
 
   async write_data_user() {
@@ -749,7 +794,7 @@ class SIGDUMap {
     sidebar.addPanel(panelContent);
     sidebar.addPanel(panelQuery);
     sidebar.addPanel(panelQueryEXP);
-    //sidebar.addPanel(panelQuerySedipualba);
+    sidebar.addPanel(panelQuerySedipualba);
     sidebar.addPanel(panelSearch);
 
     const self = this;
@@ -775,6 +820,8 @@ class SIGDUMap {
    * seleccionar y deseleccionar capas base y capas superpuestas de manera jerárquica.
    */
   setLayerControl() {
+
+
     // Define la estructura de capas base y capas superpuestas en forma de árbol.
     const baseTree = [
       {
@@ -862,6 +909,20 @@ class SIGDUMap {
                 name: "(PG2023) Ámbitos",
               },
             ],
+          },
+          {
+            label: "APR (Plan General 2023)",
+            layer: this.mapLayers
+              .getMapLayerByName("pg2023_rustico_apr")
+              .getLayer(),
+            name: "APR (Plan General 2023)",
+          },
+          {
+            label: "APT (Plan General 2023)",
+            layer: this.mapLayers
+              .getMapLayerByName("pg2023_rustico_apt")
+              .getLayer(),
+            name: "APT (Plan General 2023)",
           },
         ],
       },

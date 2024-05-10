@@ -128,18 +128,18 @@ class Form_PARAMETROS_VE_PGOU98 {
           <td class="table-form-td">CALIFICACIÓN</td>
           <td><LABEL class="table-form-label-style">${this.ordenacion}</td>
         </tr>
-        <tr class="table-form-tr-white">
+        <!--<tr class="table-form-tr-white">
           <td class="table-form-td">CALIFICACIÓ PLAN</td>
           <td><LABEL class="table-form-label-style">${calificacion_plan}</td>
-        </tr>
+        </tr>-->
         <!--<tr class="table-form-tr-white">
           <td class="table-form-td">EDIFICABILIDAD M2</td>
           <td><LABEL class="table-form-label-style">${this.edificabilidad}</td>
-        </tr>-->
+        </tr>
         <tr class="table-form-tr-white">
           <td class="table-form-td">Nº VIVIENDAS</td>
           <td><LABEL class="table-form-label-style">${this.num_viv}</td>
-        </tr>
+        </tr>-->
         <tr  class="table-form-tr-white">
           <td colspan=2 class="table-form-td4">${condiciones}</td>
         </tr>  

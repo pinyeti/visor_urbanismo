@@ -105,6 +105,17 @@ router.get("/opg/visor_urbanismo", function (req, res) {
   });
 });
 
+router.get("/opg/visor_afecciones", function (req, res) {
+  res.render("visor_afecciones", {
+    title: "Visor Afecciones v.1",
+  });
+
+  router.use(function (err, req, res, next) {
+    console.log(err.stack); // Por ejemplo, nombre no válido
+    return res.status(500).send("Internal Server Occured");
+  });
+});
+
 router.get("/opg/analytics_browser", function (req, res) {
   res.render("analytics_browser", {
     title: "Analytics Browser",

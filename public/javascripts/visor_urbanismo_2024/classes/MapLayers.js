@@ -126,8 +126,10 @@ class MapLayers {
 class MapLayersVisor extends MapLayers {
   constructor() {
     super();
+    this.setLayer_blankLayer();
     this.setLayer_cartografia_imi_color();
     this.setLayer_cartografia_imi_grey();
+    this.setLayer_cartografia98();
     this.setLayer_wmsPNOA_ACTUAL();
     this.setLayer_wmsPNOA_2021();
     this.setLayer_wmsPNOA_2018();
@@ -159,7 +161,55 @@ class MapLayersVisor extends MapLayers {
     this.setLayer_pri_ambitos();
     this.setLayer_pg2023_calificaciones();
     this.setLayer_pg2023_categorias_rustico();
+    this.setLayer_pg2023_APR();
+    this.setLayer_pg2023_APT();
     this.setLayer_pg2023_ambitos();
+    this.setLayer_PG2023_PGOU98_PRI();
+    this.setLayer_AF_PORN_ST();
+    this.setLayer_AF_NATURA2000();
+    this.setLayer_AF_espacio_natural_protegido();
+    this.setLayer_AF_af_abc_fontanelles();
+    this.setLayer_AF_ZAR_PALMA();
+    this.setLayer_AF_Costas();
+    this.setLayer_AF_ZDPMT_agua();
+    this.setLayer_AF_APT_carreteras();
+    this.setLayer_AF_APT_litoral();
+    this.setLayer_AF_Via_Ferrea_SFM();
+    this.setLayer_AF_Via_Ferrea_SOLLER();
+    this.setLayer_AF_bic_bc_cic();
+    this.setLayer_AF_NT();
+    this.setLayer_AF_Inundables_T500();
+    this.setLayer_AF_Inundables_freatico();
+    this.setLayer_AF_potencialmente_inundable();
+    this.setLayer_AF_flujo_preferente();
+    this.setLayer_AF_zona_servitud();
+    this.setLayer_AF_zona_policia();
+    this.setLayer_AF_zona_humeda();
+    this.setLayer_AF_zona_pot_humeda();
+    this.setLayer_AF_protecc_pous_proveim();
+    this.setLayer_AF_catalogos_molinos_entorno();
+    this.setLayer_pg2023_suelo_urbano();
+    this.setLayer_AF_zona_ports();
+    this.setLayer_AF_zona_aerop();
+    this.setLayer_AF_zpzm();
+    this.setLayer_AF_emerg();
+    this.setLayer_AF_parcbit();
+    this.setLayer_AF_poliducto();
+    this.setLayer_AF_gasoducto();
+    this.setLayer_AF_servitud_aeronautica();
+    this.setLayer_AF_parc_nacional();
+    this.setLayer_AF_aip();
+    this.setLayer_AF_zonas_n_r_parq();
+    this.setLayer_AF_centro_historico();
+    this.setLayer_AF_costas_zsp();
+    this.setLayer_AF_costas_tr();
+    this.setLayer_AF_costas_zdpmt();
+    this.setLayer_AF_rustico();
+    this.setLayer_AF_apr_cn();
+    this.setLayer_AF_apr_er();
+    this.setLayer_AF_apr_es();
+    this.setLayer_base_ideib();
+
     //this.setLayer_PA_aprobacion_inial();
   }
 
@@ -254,18 +304,30 @@ class MapLayersVisor extends MapLayers {
         return L.layerGroup([circleMarker]);
       },
     });
-  
 
     const layerPA_ai = L.layerGroup([pointsLayer]);
     //const layerPA_ai = L.layerGroup([polyLayer,pointsLayer]);
 
     console.log("añadiendo......layer=", layerPA_ai);
-  
-    this.pushMapLayer("layerPA_ai", layerPA_ai);
-   
 
+    this.pushMapLayer("layerPA_ai", layerPA_ai);
   }
 
+  /**
+   * Establece una capa en blanco.
+   * @returns {void}
+   */
+  setLayer_blankLayer() {
+    const blankLayer = L.tileLayer(
+      "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+      {
+        minZoom: 12,
+        maxZoom: 22,
+        edgeBufferTiles: 1,
+      }
+    );
+    this.pushMapLayer("blank_layer", blankLayer);
+  }
 
   /**
    * Establece la capa de tráfico de Google Maps.
@@ -276,7 +338,7 @@ class MapLayersVisor extends MapLayers {
       "https://{s}.google.com/vt/lyrs=m@221097413,traffic&x={x}&y={y}&z={z}",
       {
         minZoom: 10,
-        maxZoom: 20,
+        maxZoom: 22,
         subdomains: ["mt0", "mt1", "mt2", "mt3"],
       }
     );
@@ -355,7 +417,7 @@ class MapLayersVisor extends MapLayers {
     const cartodb_light_all = L.tileLayer(
       "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
       {
-        minZoom: 12,
+        minZoom: 10,
         maxZoom: 22,
         edgeBufferTiles: 1,
       }
@@ -372,6 +434,7 @@ class MapLayersVisor extends MapLayers {
       minZoom: 12,
       maxZoom: 22,
       edgeBufferTiles: 1,
+      opacity: 0.8,
     });
     this.pushMapLayer("openstreetmap", osm);
   }
@@ -387,6 +450,7 @@ class MapLayersVisor extends MapLayers {
         minZoom: 12,
         maxZoom: 22,
         edgeBufferTiles: 1,
+        opacity: 0.7,
       }
     );
     this.pushMapLayer("openstreetmap_gray", osm_gray);
@@ -397,11 +461,12 @@ class MapLayersVisor extends MapLayers {
    * @returns {void}
    */
   setLayer_catastro() {
-    const catastro = L.tileLayer.wms(
+    const catastro = L.nonTiledLayer.wms(
       "https://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?",
       {
         layers: "catastro",
         format: "image/png",
+        noWrap: false,
         transparent: true,
         minZoom: 10,
         maxZoom: 22,
@@ -426,6 +491,34 @@ class MapLayersVisor extends MapLayers {
       }
     );
     this.pushMapLayer("cartografia_imi_color", cartografia_imi_color);
+
+    /*const cartografia_imi_color = new L.nonTiledLayer.wms("https://cartografia.palma.cat/geoserver/BTUP/wms?version=1.1.0&layers=BTUP%3Acomplet&bbox=462467.2602623855%2C4372637.595690957%2C486893.416067546%2C4389962.359308018&width=768&height=544&srs=EPSG%3A25831&styles=", {
+      maxZoom: 22,
+      minZoom: 10,
+      //opacity: 1.0,
+      noWrap: false,
+      layers: 'BTUP_complet',
+      format: 'image/png',
+      transparent: true,
+      //attribution: xMapAttribution,
+      //zIndex: 1
+    });
+    this.pushMapLayer("cartografia_imi_color", cartografia_imi_color);*/
+
+    /*const cartografia_imi_color = new L.nonTiledLayer.wms(
+      "https://cartografia.palma.cat/geoserver/ows?authkey=null&",
+      {
+        layers: "BTUP:complet",
+        format: "image/png",
+        noWrap: false,
+        transparent: true,
+        minZoom: 10,
+        maxZoom: 22,
+        opacity: 0.8,
+        //tileSize: 512,
+      }
+    );
+    this.pushMapLayer("cartografia_imi_color", cartografia_imi_color);*/
   }
 
   /**
@@ -435,14 +528,35 @@ class MapLayersVisor extends MapLayers {
   setLayer_cartografia_imi_grey() {
     const cartografia_imi_grey = L.tileLayer.grayscale(
       "https://cartografia.palma.cat/geoserver/gwc/service/tms/1.0.0/BTUP%3Acomplet@GoogleMapsCompatible@png/{z}/{x}/{y}.png?flipY=true",
+
+      //"https://cartografia.palma.cat/geoserver/gwc/service/tms/1.0.0/BTUP%3Amapa_base@GoogleMapsCompatible@png/{z}/{x}/{y}.png?flipY=true",
       {
         minZoom: 10,
         maxZoom: 22,
         opacity: 0.8,
-        edgeBufferTiles: 1,
+        transparent: true,
+        //tileSize: 512,
+        edgeBufferTiles: 0,
       }
     );
+
     this.pushMapLayer("cartografia_imi_grey", cartografia_imi_grey);
+
+    /*const cartografia_imi_grey = new L.nonTiledLayer.wms(
+      "https://cartografia.palma.cat/geoserver/ows?authkey=null&",
+      {
+        layers:
+          "BTUP:complet",
+        format: "image/png",
+        noWrap: false,
+        transparent: true,
+        minZoom: 10,
+        maxZoom: 22,
+        opacity: 0.8,
+        //tileSize: 512,
+      }
+    );
+    this.pushMapLayer("cartografia_imi_grey", cartografia_imi_grey);*/
   }
 
   /**
@@ -816,7 +930,7 @@ class MapLayersVisor extends MapLayers {
         tileSize: 1024,
       }
     );*/
-    const pgou98_calificaciones = L.tileLayer.wms(
+    /*const pgou98_calificaciones = L.tileLayer.wms(
       "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
       {
         layers:
@@ -825,9 +939,25 @@ class MapLayersVisor extends MapLayers {
         transparent: true,
         minZoom: 10,
         maxZoom: 22,
-        tileSize: 1024,
+        tileSize: 512,
+      }
+    );*/
+
+    const pgou98_calificaciones = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        //opacity: 1.0,
+        noWrap: false,
+        layers: "SIGDU:calificaciones_pgou98",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
       }
     );
+
     this.pushMapLayer("pgou98_calificaciones", pgou98_calificaciones);
   }
 
@@ -869,7 +999,7 @@ class MapLayersVisor extends MapLayers {
         tileSize: 1024,
       }
     );*/
-    const pgou98_ambitos = L.tileLayer.wms(
+    /*const pgou98_ambitos = L.tileLayer.wms(
       "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
       {
         layers:
@@ -878,9 +1008,24 @@ class MapLayersVisor extends MapLayers {
         transparent: true,
         minZoom: 10,
         maxZoom: 22,
-        tileSize: 1024,
+        tileSize: 512,
+      }
+    );*/
+    const pgou98_ambitos = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 0,
+        opacity: 1.0,
+        noWrap: false,
+        layers: "SIGDU:pgou98_ambitos",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
       }
     );
+
     this.pushMapLayer("pgou98_ambitos", pgou98_ambitos);
   }
 
@@ -940,7 +1085,7 @@ class MapLayersVisor extends MapLayers {
         maxZoom: 22,
         tileSize: 1024,
       }*/
-      const pri_calificaciones = L.tileLayer.wms(
+    /*  const pri_calificaciones = L.tileLayer.wms(
         "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
         {
           layers:
@@ -949,8 +1094,23 @@ class MapLayersVisor extends MapLayers {
           transparent: true,
           minZoom: 10,
           maxZoom: 22,
-          tileSize: 1024,
+          tileSize: 512,
         }
+    );*/
+
+    const pri_calificaciones = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        //opacity: 1.0,
+        noWrap: false,
+        layers: "SIGDU:pri_calificaciones",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
     );
     this.pushMapLayer("pri_calificaciones", pri_calificaciones);
   }
@@ -986,7 +1146,7 @@ class MapLayersVisor extends MapLayers {
         tileSize: 1024,
       }
     );*/
-    const pri_ambitos = L.tileLayer.wms(
+    /*const pri_ambitos = L.tileLayer.wms(
       "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
       {
         layers:
@@ -995,7 +1155,21 @@ class MapLayersVisor extends MapLayers {
         transparent: true,
         minZoom: 10,
         maxZoom: 22,
-        tileSize: 1024,
+        tileSize: 512,
+      }
+    );*/
+    const pri_ambitos = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        //opacity: 1.0,
+        noWrap: false,
+        layers: "SIGDU:pri_ambitos",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
       }
     );
     this.pushMapLayer("pri_ambitos", pri_ambitos);
@@ -1038,7 +1212,7 @@ class MapLayersVisor extends MapLayers {
         tileSize: 1024,
       }
     );*/
-    const pg2023_calificaciones = L.tileLayer.wms(
+    /*const pg2023_calificaciones = L.tileLayer.wms(
       "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
       {
         layers:
@@ -1047,7 +1221,21 @@ class MapLayersVisor extends MapLayers {
         transparent: true,
         minZoom: 10,
         maxZoom: 22,
-        tileSize: 1024,
+        tileSize: 512,
+      }
+    );*/
+    const pg2023_calificaciones = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        //opacity: 1.0,
+        noWrap: false,
+        layers: "SIGDU:pg2023_calificaciones",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
       }
     );
     this.pushMapLayer("pg2023_calificaciones", pg2023_calificaciones);
@@ -1069,7 +1257,7 @@ class MapLayersVisor extends MapLayers {
         tileSize: 1024,
       }
     );*/
-    const pg2023_categorias_rustico = L.tileLayer.wms(
+    /*const pg2023_categorias_rustico = L.tileLayer.wms(
       "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
       {
         layers: "SIGDU:pg2023_categorias_suelo_rustico",
@@ -1077,10 +1265,65 @@ class MapLayersVisor extends MapLayers {
         transparent: true,
         minZoom: 10,
         maxZoom: 22,
+        tileSize: 512,
+      }
+    );*/
+    const pg2023_categorias_rustico = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        //opacity: 1.0,
+        noWrap: false,
+        layers: "SIGDU:pg2023_categorias_suelo_rustico",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+
+    this.pushMapLayer("pg2023_categorias_rustico", pg2023_categorias_rustico);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las APT del PG2023.
+   * @returns {void}
+   */
+  setLayer_pg2023_APT() {
+    const pg2023_rustico_apt = L.tileLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        layers: "SIGDU:pg_rustico_apt",
+        format: "image/png",
+        transparent: true,
+        minZoom: 10,
+        maxZoom: 22,
         tileSize: 1024,
       }
     );
-    this.pushMapLayer("pg2023_categorias_rustico", pg2023_categorias_rustico);
+
+    this.pushMapLayer("pg2023_rustico_apt", pg2023_rustico_apt);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las APR del PG2023.
+   * @returns {void}
+   */
+  setLayer_pg2023_APR() {
+    const pg2023_rustico_riesgos = L.tileLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        layers: "SIGDU:pg_rustico_riesgos",
+        format: "image/png",
+        transparent: true,
+        minZoom: 10,
+        maxZoom: 22,
+        tileSize: 1024,
+      }
+    );
+
+    this.pushMapLayer("pg2023_rustico_apr", pg2023_rustico_riesgos);
   }
 
   /**
@@ -1118,7 +1361,7 @@ class MapLayersVisor extends MapLayers {
         tileSize: 1024,
       }
     );*/
-    const pg2023_ambitos = L.tileLayer.wms(
+    /*const pg2023_ambitos = L.tileLayer.wms(
       "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
       {
         layers:
@@ -1127,10 +1370,1063 @@ class MapLayersVisor extends MapLayers {
         transparent: true,
         minZoom: 10,
         maxZoom: 22,
-        tileSize: 1024,
+        tileSize: 512,
+      }
+    );*/
+    const pg2023_ambitos = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        //opacity: 1.0,
+        noWrap: false,
+        layers: "SIGDU:pg2023_ambitos",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
       }
     );
     this.pushMapLayer("pg2023_ambitos", pg2023_ambitos);
-   
   }
+
+  /**
+   * Establece capas WMS correspondientes a los topografia oficial PGOU98.
+   * @returns {void}
+   */
+  setLayer_cartografia98() {
+    const cartografia98 = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 0.8,
+        noWrap: false,
+        layers: "SIGDU:Cartografia98",
+        format: "image/png",
+        //transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("cartografia98", cartografia98);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de costas.
+   * @returns {void}
+   */
+  setLayer_PG2023_PGOU98_PRI() {
+    const pg2023_pgou98_pri = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 0.8,
+        noWrap: false,
+        layers: "SIGDU:pg2023_pgou98_pri",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("pg2023_pgou98_pri", pg2023_pgou98_pri);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de PORN Serra Tramuntana.
+   * @returns {void}
+   */
+  setLayer_AF_PORN_ST() {
+    const af_porn_serra_tramuntana = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_porn_serra_tramuntana",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_porn_serra_tramuntana", af_porn_serra_tramuntana);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de RED NATURA 2000.
+   * @returns {void}
+   */
+  setLayer_AF_NATURA2000() {
+    const af_red_natura_2000 = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_red_natura_2000",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_red_natura_2000", af_red_natura_2000);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de Espacio natural protegido.
+   * @returns {void}
+   */
+  setLayer_AF_espacio_natural_protegido() {
+    const af_espacio_natural_protegido = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_espacio_natural_protegido",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer(
+      "af_espacio_natural_protegido",
+      af_espacio_natural_protegido
+    );
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de Espacio af abc fontanelles.
+   * @returns {void}
+   */
+  setLayer_AF_af_abc_fontanelles() {
+    const af_abc_fontanelles = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_abc_fontanelles",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_abc_fontanelles", af_abc_fontanelles);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de costas.
+   * @returns {void}
+   */
+  setLayer_AF_Costas() {
+    const af_costas = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_costas",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_costas", af_costas);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de ZDPMT (AGUA).
+   * @returns {void}
+   */
+  setLayer_AF_ZDPMT_agua() {
+    const af_zdpmt_agua = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_zdpmt_agua",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_zdpmt_agua", af_zdpmt_agua);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de APT carreteras.
+   * @returns {void}
+   */
+  setLayer_AF_APT_carreteras() {
+    const af_apt_carreteras = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_apt_carreteras",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_apt_carreteras", af_apt_carreteras);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de APT litoral.
+   * @returns {void}
+   */
+  setLayer_AF_APT_litoral() {
+    const af_apt_litoral = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_apt_litoral",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_apt_litoral", af_apt_litoral);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de Via Ferrea SFM.
+   * @returns {void}
+   */
+  setLayer_AF_Via_Ferrea_SFM() {
+    const af_via_ferrea_sfm = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_via_ferrea_sfm",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_via_ferrea_sfm", af_via_ferrea_sfm);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de Via Ferrea SOLLER.
+   * @returns {void}
+   */
+  setLayer_AF_Via_Ferrea_SOLLER() {
+    const af_via_ferrea_soller = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_via_ferrea_soller",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_via_ferrea_soller", af_via_ferrea_soller);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de (BIC/BC/CIC).
+   * @returns {void}
+   */
+  setLayer_AF_bic_bc_cic() {
+    const af_bic_bc_cic = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_bic_bc_cic",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_bic_bc_cic", af_bic_bc_cic);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de ZAR Palma.
+   * @returns {void}
+   */
+  setLayer_AF_ZAR_PALMA() {
+    const af_zar_palma = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_zar_palma",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_zar_palma", af_zar_palma);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de Nucleos tradicionales.
+   * @returns {void}
+   */
+  setLayer_AF_NT() {
+    const af_nucleos_tradicionales = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_nucleos_tradicionales",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_nucleos_tradicionales", af_nucleos_tradicionales);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de Zonas inundables T500.
+   * @returns {void}
+   */
+  setLayer_AF_Inundables_T500() {
+    const af_inundables_t500 = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_inundables_t500",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_inundables_t500", af_inundables_t500);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de Zonas inundables freatico.
+   * @returns {void}
+   */
+  setLayer_AF_Inundables_freatico() {
+    const af_inundables_freatico = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_inundables_freatico",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_inundables_freatico", af_inundables_freatico);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de Zonas potencialmente inundable.
+   * @returns {void}
+   */
+  setLayer_AF_potencialmente_inundable() {
+    const af_potencialmente_inundable = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_potencialmente_inundable",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer(
+      "af_potencialmente_inundable",
+      af_potencialmente_inundable
+    );
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de Zonas flujo preferente.
+   * @returns {void}
+   */
+  setLayer_AF_flujo_preferente() {
+    const af_flujo_preferente = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_flujo_preferente",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_flujo_preferente", af_flujo_preferente);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de Zonas servitud.
+   * @returns {void}
+   */
+  setLayer_AF_zona_servitud() {
+    const af_zona_servitud = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_zona_servitud",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_zona_servitud", af_zona_servitud);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de Zonas policia.
+   * @returns {void}
+   */
+  setLayer_AF_zona_policia() {
+    const af_zona_policia = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_zona_policia",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_zona_policia", af_zona_policia);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de Zonas humedas.
+   * @returns {void}
+   */
+  setLayer_AF_zona_humeda() {
+    const af_zona_humeda = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_zona_humeda",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_zona_humeda", af_zona_humeda);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de Zonas potencialmente humedas.
+   * @returns {void}
+   */
+  setLayer_AF_zona_pot_humeda() {
+    const af_zona_pot_humeda = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_zona_pot_humeda",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_zona_pot_humeda", af_zona_pot_humeda);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de Perímetre de protecció de captació de proveïment a població.
+   * @returns {void}
+   */
+  setLayer_AF_protecc_pous_proveim() {
+    const af_protecc_pous_proveim = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_protecc_pous_proveim",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_protecc_pous_proveim", af_protecc_pous_proveim);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de catalogos/molinos/entorno.
+   * @returns {void}
+   */
+  setLayer_AF_catalogos_molinos_entorno() {
+    const af_catalogos_molinos_entorno = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_catalogos_molinos_entorno",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer(
+      "af_catalogos_molinos_entorno",
+      af_catalogos_molinos_entorno
+    );
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de zona puertos.
+   * @returns {void}
+   */
+  setLayer_AF_zona_ports() {
+    const af_zona_ports = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_zona_ports",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_zona_ports", af_zona_ports);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de zona aeropuerto.
+   * @returns {void}
+   */
+  setLayer_AF_zona_aerop() {
+    const af_zona_aerop = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_zona_aerop",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_zona_aerop", af_zona_aerop);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de zona protección zonas militares.
+   * @returns {void}
+   */
+  setLayer_AF_zpzm() {
+    const af_zpzm = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_zpzm",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_zpzm", af_zpzm);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de zona seguridad emergencias.
+   * @returns {void}
+   */
+  setLayer_AF_emerg() {
+    const af_emerg = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_emerg",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_emerg", af_emerg);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de Parcbit.
+   * @returns {void}
+   */
+  setLayer_AF_parcbit() {
+    const af_parcbit = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_parcbit",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_parcbit", af_parcbit);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de zona poliducto.
+   * @returns {void}
+   */
+  setLayer_AF_poliducto() {
+    const af_poliducto = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_poliducto",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_poliducto", af_poliducto);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de zona gasoducto.
+   * @returns {void}
+   */
+  setLayer_AF_gasoducto() {
+    const af_gasoducto = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_gasoducto",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_gasoducto", af_gasoducto);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de servitud aeronautica.
+   * @returns {void}
+   */
+  setLayer_AF_servitud_aeronautica() {
+    const af_servitud_aeronautica = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_servitud_aeronautica",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_servitud_aeronautica", af_servitud_aeronautica);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de Parc Nacional Cabrera.
+   * @returns {void}
+   */
+  setLayer_AF_parc_nacional() {
+    const af_parc_nacional = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_parc_nacional",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_parc_nacional", af_parc_nacional);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de AIP.
+   * @returns {void}
+   */
+  setLayer_AF_aip() {
+    const af_aip = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_aip",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_aip", af_aip);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones dde zonas N,R,r.
+   * @returns {void}
+   */
+  setLayer_AF_zonas_n_r_parq() {
+    const af_zonas_n_r_parq = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_zonas_n_r_parq",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_zonas_n_r_parq", af_zonas_n_r_parq);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de zona
+   * @returns {void}
+   */
+  setLayer_AF_centro_historico() {
+    const af_centro_historico = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_centro_historico",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_centro_historico", af_centro_historico);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de zona costas ZSP
+   * @returns {void}
+   */
+  setLayer_AF_costas_zsp() {
+    const af_costas_zsp = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_costas_zsp",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_costas_zsp", af_costas_zsp);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de zona costas TR
+   * @returns {void}
+   */
+  setLayer_AF_costas_tr() {
+    const af_costas_tr = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_costas_tr",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_costas_tr", af_costas_tr);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de zona costas TR
+   * @returns {void}
+   */
+  setLayer_AF_costas_zdpmt() {
+    const af_costas_zdpmt = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_costas_zd,SIGDU:af_zdpmt_agua",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_costas_zdpmt", af_costas_zdpmt);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de zona costas TR
+   * @returns {void}
+   */
+  setLayer_AF_rustico() {
+    const af_rustico = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_rustico",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_rustico", af_rustico);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de zona APR-CN
+   * @returns {void}
+   */
+  setLayer_AF_apr_cn() {
+    const af_apr_cn = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_apr_cn",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_apr_cn", af_apr_cn);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de zona APR-ER
+   * @returns {void}
+   */
+  setLayer_AF_apr_er() {
+    const af_apr_er = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_apr_er",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_apr_er", af_apr_er);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a las afecciones de zona APR-ES
+   * @returns {void}
+   */
+  setLayer_AF_apr_es() {
+    const af_apr_es = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:af_apr_es",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("af_apr_es", af_apr_es);
+  }
+
+  /**
+   * Establece capas WMS correspondientes a delimitación del Suelo Urbano.
+   * @returns {void}
+   */
+  setLayer_pg2023_suelo_urbano() {
+    const pg2023_suelo_urbano = new L.nonTiledLayer.wms(
+      "https://sigdu-urbanismo.net/geoserver/ows?authkey=null&",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "SIGDU:pg2023_suelo_urbano",
+        format: "image/png",
+        transparent: true,
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("pg2023_suelo_urbano", pg2023_suelo_urbano);
+  }
+
+  /**
+   * Establece la capa base IDEIB basada en teselas
+   * @returns {void}
+   */
+  setLayer_base_ideib() {
+    var paramServeisWMTS =
+      //"?SERVICE: WMTS&VERSION=1.0.0&REQUEST=GetTile&STYLE=default&TILEMATRIXSET=default028mm&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}";
+      "?";
+    const base_ideib = L.tileLayer(
+      "https://ideib.caib.es/geoserveis/rest/services/public/GOIB_MapaBase_IB/MapServer/WMTS" +
+        paramServeisWMTS,
+      {
+        layer: "public_GOIB_MapaBase_IB",
+        crs: "EPSG:25831&dpiMode=7&format=image/jpgpng&layers=public_GOIB_MapaBase_IB&styles=default&tileMatrixSet=default028mm&url=https://ideib.caib.es/geoserveis/rest/services/public/GOIB_MapaBase_IB/MapServer/WMTS",
+        attribution: '<a href="https://ideib.caib.es">SITIBSA-GOIB</a>',
+        format: "image/png",
+      }
+    );
+    this.pushMapLayer("base_ideib", base_ideib);
+  }
+
+  /*setLayer_base_ideib() {
+    
+    const base_ideib = new L.nonTiledLayer.wms(
+      "https://ideib.caib.es/geoserveis/services/public/GOIB_MapaBase_IB/MapServer/WMSServer?",
+      {
+        maxZoom: 22,
+        minZoom: 10,
+        opacity: 1,
+        noWrap: false,
+        layers: "public_GOIB_MapaBase_IB",
+        format: "image/png",
+        transparent: true,
+        //crs: "EPSG:25831",
+        //attribution: xMapAttribution,
+        //zIndex: 1
+      }
+    );
+    this.pushMapLayer("base_ideib", base_ideib);
+  }*/
 }
